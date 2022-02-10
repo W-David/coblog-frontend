@@ -1,28 +1,23 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import router from '@/router'
+import { ElMessage } from 'element-plus'
+import { setToken, getToken, encodeToken, getUserType, removeToken, removeUserType } from '@/util/auth'
 import store from '@/store'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { getCurrentInstance } from 'vue'
 
 const Home = () => import(/* webpackChunkName: "home" */ '@/views/home')
 const About = () => import(/* webpackChunkName: "about" */ '@/views/about')
 const Tag = () => import(/* webpackChunkName: "tag" */ '@/views/tag')
 const Login = () => import(/* webpackChunkName: "login" */ '@/views/login.vue')
-const Article = () => import(/* webpackChunkName: "article" */ '@/views/article')
+const Archive = () => import(/* webpackChunkName: "article" */ '@/views/archive')
 const Category = () => import(/* webpackChunkName: "category" */ '@/views/category')
-const Register = () => import(/* webpackChunkName: "register" */ '@/views/register.vue')
+const Blog = () => import(/* webpackChunkName: "blog" */ '@/views/blog')
 
 const routes = [
   {
     path: '/login',
     name: 'login',
     component: Login
-  },
-  {
-    path: '/register',
-    name: 'register',
-    component: Register
   },
   {
     path: '/',
@@ -41,9 +36,9 @@ const routes = [
     component: About
   },
   {
-    path: '/article',
-    name: 'article',
-    component: Article
+    path: '/archive',
+    name: 'archive',
+    component: Archive
   },
   {
     path: '/category',
@@ -54,6 +49,11 @@ const routes = [
     path: '/tag',
     name: 'tag',
     component: Tag
+  },
+  {
+    path: '/blog',
+    name: 'blog',
+    component: Blog
   }
 ]
 
@@ -63,47 +63,60 @@ const router = createRouter({
 })
 
 NProgress.configure({ showSpinner: false })
-const { msgSuccess, msgError } = getCurrentInstance().proxy
 const whiteList = ['/login', '/register']
 const redirectList = ['/login']
 
-const token = state.getters.token
-const userInfo = state.getters.userInfo
-const isLogin = state.getters.isLogin
-
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
   NProgress.start()
+
+  const token = getToken() || ''
+  const userType = getUserType() || ''
+	const isUserLogin = store.getters.isUserLogin
+	const isAdminLogin = store.getters.isAdminLogin
+  const isLogin = isUserLogin || isAdminLogin
 
   const needRedirect = redirectList.includes(to.path)
   const isWhiteList = whiteList.includes(to.path)
 
-  if (isLogin) {
-    //已登录则一定存在token,对登录页重定向
-    needRedirect ? next({ path: '/' }) : next()
-  } else {
-    if (token) {
+  if (token) {
+    //登录过，存在token
+    if (isLogin) {
       if (needRedirect) {
-        //未登录但存在token代表登陆过，同样对登录页重定向
-        next({ path: '/' })
+        return { path: '/' }
       } else {
-        if (!userInfo) {
-          //未获取userInfo
-          const [err, res] = await store.dispatch('GetInfo')
-          if (!err) {
-            msgSuccess(`欢迎您, ${res.data.username}, 您已成功登录`)
-            next()
-          } else {
-            msgError(`${err?.msg || err.message}, 登录失败`)
-            next({ path: '/' })
-          }
-        } else {
-          //已获取用户信息
-          next()
-        }
+        return
       }
     } else {
-      // 没有token
-      isWhiteList ? next() : next({ path: '/login' })
+      if (userType === 'admin') {
+        const res = await store.dispatch('admin/GetInfo')
+        if (res.code === 200) {
+          ElMessage({ type: 'success', message: `欢迎回来，管理员${res.data.email}` })
+          return { path: '/' }
+        } else {
+          return { path: '/login' }
+        }
+      } else if (userType === 'user') {
+        const res = await store.dispatch('user/GetInfo')
+        if (res.code === 200) {
+          ElMessage({ type: 'success', message: `欢迎回来，用户${res.data.email}` })
+          return { path: '/' }
+        } else {
+          return { path: '/login' }
+        }
+      } else {
+        ElMessage({ type: 'error', message: '未知用户,无法登录' })
+        removeToken()
+        removeUserType()
+        return { path: '/login' }
+      }
+    }
+  } else {
+    // 没有登录信息
+    if (!isWhiteList) {
+      ElMessage({ showClose: true, type: 'warning', message: `请先登录` })
+      return { path: '/login' }
+    } else {
+      return
     }
   }
 })

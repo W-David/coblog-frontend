@@ -2,7 +2,7 @@ import { GET, POST, PUT, DELETE } from '@/util/http'
 
 export function login(data) {
   return POST({
-    url: '/user/register',
+    url: '/user/login',
     data
   })
 }

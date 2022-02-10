@@ -1,8 +1,10 @@
 import Cookies from 'js-cookie'
 
 const app = {
+  namespaced: true,
   state: () => ({
-    device: 'desktop'
+    device: 'desktop',
+    size: ''
   }),
   mutations: {
     TOGGLE_DEVICE: (state, device) => {
@@ -14,7 +16,7 @@ const app = {
     }
   },
   actions: {
-    toggleDevice({ commit }, device) {
+    ToggleDevice({ commit }, device) {
       commit('TOGGLE_DEVICE', device)
     }
   }

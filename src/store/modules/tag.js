@@ -1,6 +1,7 @@
 import { listTag } from '@/api/tag'
 
 const tag = {
+  namespaced: true,
   state: () => ({
     tagList: []
   }),
@@ -13,16 +14,12 @@ const tag = {
     async getTagList({ state, commit }, params = {}) {
       const tagList = state.getters.tagList
       if (Array.isArray(tagList) && tagList.length > 0) {
-        return Promise.resolve([null, state.tagList])
+        return tagList
       } else {
-        const [err, res] = await listTag(params)
-        if (!err) {
-          const tagList = res.data.data
-          commit('SET_TAG_LIST', tagList)
-          return [null, res]
-        } else {
-          return [err, null]
-        }
+        const res = await listTag(params)
+        const tagList = res.data || []
+        commit('SET_TAG_LIST', tagList)
+        return tagList
       }
     }
   }

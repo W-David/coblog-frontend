@@ -1,46 +1,28 @@
 import service from './request'
 
-const GET = config =>
-  service
-    .get(config.url, config)
-    .then(res => [null, res])
-    .catch(err => [err, null])
+export async function GET(args) {
+  const { url, params } = args
+  const config = { params }
+  return await service.get(url, config)
+}
 
-const POST = config =>
-  service
-    .post(config.url, config)
-    .then(res => [null, res])
-    .catch(err => [err, null])
+export async function POST(args) {
+  const { url, data, config } = args
+  return await service.post(url, data, config)
+}
 
-const PATCH = config =>
-  service
-    .patch(config.url, config)
-    .then(res => [null, res])
-    .catch(err => [err, null])
+export async function PATCH(args) {
+  const { url, data, config } = args
+  return await service.patch(url, data, config)
+}
 
-const PUT = config =>
-  service
-    .put(config.url, config)
-    .then(res => [null, res])
-    .catch(err => [err, null])
+export async function PUT(args) {
+  const { url, data, config } = args
+  return await service.put(url, data, config)
+}
 
-const DELETE = config =>
-  service
-    .delete(config.url, config)
-    .then(res => [null, res])
-    .catch(err => [err, null])
-
-const UPDATE = config =>
-  service
-    .update(config.url, config)
-    .then(res => [null, res])
-    .catch(err => [err, null])
-
-export default {
-  GET,
-  POST,
-  PUT,
-  PATCH,
-  DELETE,
-  UPDATE
+export async function DELETE(args) {
+  const { url, params } = args
+  const config = { params }
+  return await service.delete(url, config)
 }

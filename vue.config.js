@@ -45,6 +45,12 @@ module.exports = {
       }
     }
   },
+  pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'scss',
+      patterns: [path.resolve(__dirname, './src/assets/style/index.scss')]
+    }
+  },
   chainWebpack(config) {
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
@@ -62,7 +68,7 @@ module.exports = {
       })
       .end()
 
-    config.when(process.env.NODE_ENV !== 'development', (config) => {
+    config.when(!isDev, config => {
       config
         .plugin('ScriptExtHtmlWebpackPlugin')
         .after('html')

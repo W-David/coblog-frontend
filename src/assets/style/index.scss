@@ -1,0 +1,79 @@
+/* 导入模块 */
+@import 'color';
+@import 'font';
+@import 'mixin';
+@import 'variable';
+@import 'media';
+@import 'animate';
+
+/* 页面容器 */
+html,
+body,
+#app {
+  @include scroll-bar;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
+}
+
+body {
+  /* drawer 样式，组件有scope限制 */
+  .el-overlay {
+    z-index: 300000 !important;
+  }
+  .el-overlay > .el-drawer > .el-drawer__body {
+    @include layout(100%, 100%, 0, 28px 0 18px 0);
+    @include flex-box(column, space-between, center);
+
+    .collapse-container {
+      @include flex-box(column, space-between, center);
+      .el-menu {
+        border-right: none !important;
+      }
+      .mb {
+        margin-bottom: 36px;
+      }
+    }
+  }
+  .el-popper {
+    z-index: 500000 !important;
+  }
+}
+
+/* 使用怪异盒模型 */
+* {
+  box-sizing: border-box !important;
+}
+
+/* 列表格式化 */
+ol,
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: $font-color-a;
+  &:hover {
+    color: $font-color;
+  }
+}
+
+/* html5元素 */
+footer,
+header,
+hgroup,
+nav,
+main,
+article,
+aside,
+details,
+menu,
+section,
+figure,
+figcaption {
+  display: block;
+}
