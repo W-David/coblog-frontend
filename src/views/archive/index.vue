@@ -1,5 +1,5 @@
 <template>
-  <div class="archive-container">
+  <div class="archive-page">
     <div class="archive-timeline-container">
       <el-row justify="center">
         <el-col :xs="24" :sm="20" :md="18" :lg="16" :xl="16">
@@ -153,7 +153,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.archive-container {
+.archive-page {
   @include layout(100%, 100%, 0, 16px);
   .archive-timeline-container {
     ul {

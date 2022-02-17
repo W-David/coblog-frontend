@@ -1,13 +1,18 @@
 <template>
   <div class="selected-list-container">
     <el-card v-loading="loading" shadow="never" class="checkbox-card">
-      <el-check-tag
-        @change="handleCheckChange(item)"
-        v-for="item in list"
-        :checked="isChecked(item)"
-        :key="item.id">
-        {{ item.name }}
-      </el-check-tag>
+      <div v-if="list && list.length">
+        <el-check-tag
+          @change="handleCheckChange(item)"
+          v-for="item in list"
+          :checked="isChecked(item)"
+          :key="item.id">
+          {{ item.name }}
+        </el-check-tag>
+      </div>
+      <div v-else>
+        <span class="empty-hint">这里还空空如也(┬┬﹏┬┬)</span>
+      </div>
     </el-card>
   </div>
 </template>
@@ -73,6 +78,12 @@ export default {
           margin-right: 12px;
         }
       }
+    }
+    .empty-hint {
+      @include font-hei;
+      color: $danger-color;
+      font-size: 18px;
+      font-weight: bold;
     }
   }
 }

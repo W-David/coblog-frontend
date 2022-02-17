@@ -27,6 +27,8 @@
         <avatar-upload
           :isUploaded="!!avatar"
           :imgUrl="avatar"
+          trigHint="上传头像"
+          descripHint="头像"
           @on-upload="handleUpload"
           @on-delete="handleDelete">
         </avatar-upload>
@@ -65,7 +67,7 @@ import { computed, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import AvatarUpload from '@/components/AvatarUpload.vue'
+import AvatarUpload from '@/components/FileUpload.vue'
 import useDOMCreate from '@/hooks/useDOMCreate'
 
 export default {

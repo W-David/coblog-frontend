@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <div class="login-page">
     <el-row justify="center">
       <el-col :xs="24" :sm="20" :md="12" :lg="6" :xl="6">
         <div class="login-card">
@@ -167,7 +167,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.login-container {
+.login-page {
   @include layout(100%, 100%, 0, 16px);
   .login-card {
     @include layout(100%, auto, 80px 0 0 0, 16px);

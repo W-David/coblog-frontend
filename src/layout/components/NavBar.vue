@@ -25,7 +25,7 @@
     </div>
     <div
       v-if="isUserLogin || isAdminLogin"
-      class="nav-search hidden-sm-and-down">
+      class="nav-search hidden-md-and-down">
       <el-input
         v-model="queryText"
         @keyup.enter="query"
@@ -199,6 +199,7 @@ export default {
       .el-menu {
         border-color: transparent;
         .el-menu-item {
+          padding: 0 16px;
           &.is-active {
             color: $primary-color;
           }

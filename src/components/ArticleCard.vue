@@ -1,5 +1,20 @@
 <template>
   <div class="article-card-container">
+    <div class="article-banner-container">
+      <div class="article-banner-img">
+        <img :src="article.banner" alt="noImg" />
+      </div>
+      <div
+        @mouseenter="isBannerHover = true"
+        @mouseleave="isBannerHover = false"
+        :class="[
+          'article-banner-description',
+          !isBannerHover ? 'spinner-border' : ''
+        ]"
+        @click="openDetail">
+        阅读全文
+      </div>
+    </div>
     <div class="article-title-container">
       <span class="title-content">
         {{ article.title }}
@@ -39,6 +54,7 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 export default {
   name: 'articleCard',
   props: {
@@ -49,8 +65,10 @@ export default {
   },
   setup() {
     const openDetail = () => {}
+    const isBannerHover = ref(false)
     return {
-      openDetail
+      openDetail,
+      isBannerHover
     }
   }
 }
@@ -59,15 +77,75 @@ export default {
 $descrip-mr: 12px;
 
 .article-card-container {
-  @include layout(100%, 100%, 0, 32px 16px 16px 22px);
+  @include layout(100%, 100%, 0, 0 0 16px 0);
   @include border(1px solid $border-color-a, 6px);
   @include transition(all 120ms ease-in-out);
+  @include box-shadow;
   background-color: white;
   z-index: 1000;
 
+  .article-banner-container {
+    @include layout(100%, 280px, 0, 0);
+    @include position(relative);
+    border-bottom-color: $border-color-a;
+    @include pointer;
+    .article-banner-description {
+      @include position(absolute);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      @include layout(auto, auto, 0, 6px 12px);
+      @include border(2px solid white, 6px);
+      opacity: 0;
+      transition: all 220ms ease-out;
+      &:hover {
+        @include layout(auto, auto, 0, 12px 18px);
+      }
+    }
+    .article-banner-img {
+      @include layout(100%, 100%, 0, 0);
+      @include position(relative);
+      border-radius: 6px 6px 0 0;
+      overflow: hidden;
+      &::after {
+        @include position(absolute);
+        content: '';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        transition: transform 600ms ease-out;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        transform: scale(1.2);
+        object-fit: cover;
+        transition: transform 600ms ease-out;
+      }
+    }
+    &:hover {
+      .article-banner-description {
+        opacity: 1;
+        color: $primary-color;
+        border-color: $primary-color;
+      }
+      .article-banner-img {
+        img {
+          transform: scale(1.08);
+        }
+        &:after {
+          background-color: #00000050;
+        }
+      }
+    }
+  }
+
   .article-title-container {
+    @include layout(100%, 42px, 28px 0 0 0, 12px 0);
     @include flex-box(row, center, center);
-    @include layout(100%, 42px, 0, 12px 0);
 
     .title-content {
       @include font-kai;
@@ -114,7 +192,7 @@ $descrip-mr: 12px;
   }
 
   .article-content-container {
-    margin-top: 16px;
+    @include layout(100%, auto, 16px 0 18px 0, 0 24px);
     font-size: 16px;
     line-height: 1.6;
     text-align: left;
@@ -122,7 +200,7 @@ $descrip-mr: 12px;
   }
 
   .article-description-container {
-    @include layout(100%, auto, 16px 0 0 0, 0);
+    @include layout(100%, auto, 16px 0 0 0, 0 22px);
     @include flex-box(row, space-between);
 
     .description-content {
@@ -149,8 +227,7 @@ $descrip-mr: 12px;
 
   &:hover {
     border-color: $border-color;
-    @include box-shadow;
-    // transform: scale(1.02);
+    @include box-shadow(4px 4px 12px 0 rgba(0, 0, 0, 0.1));
   }
 }
 </style>

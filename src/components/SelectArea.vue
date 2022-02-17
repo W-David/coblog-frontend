@@ -57,7 +57,7 @@ export default {
       default: () => []
     }
   },
-  emits: ['on-select'],
+  emits: ['on-select', 'on-add-item'],
   setup(props, { emit }) {
     const { items } = toRefs(props)
     const touchAdd = ref(false)
@@ -70,7 +70,6 @@ export default {
       touchAdd.value = false
       inputValue.value = ''
     }
-    const startId = ref(1)
     const handleAdd = () => {
       if (!inputValue.value) {
         ElMessage({ message: '内容不能为空', type: 'warning' })
@@ -78,10 +77,8 @@ export default {
         inputValue.value = ''
         return
       }
-      items.value.push({
-        id: startId.value++,
-        name: inputValue.value
-      })
+      const curContent = inputValue.value
+      emit('on-add-item', curContent)
       touchAdd.value = false
       inputValue.value = ''
     }

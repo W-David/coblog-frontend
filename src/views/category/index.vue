@@ -1,5 +1,5 @@
 <template>
-  <div class="category-container">
+  <div class="category-page">
     <el-row justify="center">
       <el-col :xs="24" :sm="20" :md="20" :lg="20" :xl="20">
         <div class="category-list-container">
@@ -266,7 +266,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.category-container {
+.category-page {
   @include layout(100%, 100%, 0, 12px);
   .category-list-container {
     @include flex-box(row, center, center, wrap);

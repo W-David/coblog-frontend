@@ -10,6 +10,13 @@ export function uploadFile(data) {
   })
 }
 
+export function addFile(data) {
+  return POST({
+    url: '/upload/add',
+    data
+  })
+}
+
 export function getFile(id) {
   return GET({
     url: `/upload/${id}`

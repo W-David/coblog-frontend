@@ -1,5 +1,5 @@
 <template>
-  <div class="tag-container">
+  <div class="tag-page">
     <el-row justify="center">
       <el-col :xs="24" :sm="20" :md="20" :lg="20" :xl="20">
         <div class="tag-list-container">
@@ -263,7 +263,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tag-container {
+.tag-page {
   @include layout(100%, 100%, 0, 12px);
   .tag-list-container {
     @include flex-box(row, center, center, wrap);

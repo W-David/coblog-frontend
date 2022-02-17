@@ -1,5 +1,5 @@
 <template>
-  <div class="about-container">
+  <div class="about-page">
     <el-row justify="center">
       <el-col :xs="24" :sm="20" :md="18" :lg="16" :xl="16">
         <div class="about-card">Hi, I'am Coody,This is a test profile.</div>
@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.about-container {
+.about-page {
   @include layout;
   .about-card {
     @include flex-box(row, center, center);
