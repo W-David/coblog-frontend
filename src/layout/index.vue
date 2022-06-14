@@ -79,7 +79,6 @@ export default {
     .main-container {
       position: relative;
       margin-top: $header-height;
-
       #particles-js {
         position: fixed;
         @include layout;

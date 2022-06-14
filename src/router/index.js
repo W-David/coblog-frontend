@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { setToken, getToken, encodeToken, getUserType, removeToken, removeUserType } from '@/util/auth'
 import store from '@/store'
@@ -9,9 +9,10 @@ const Home = () => import(/* webpackChunkName: "home" */ '@/views/home')
 const About = () => import(/* webpackChunkName: "about" */ '@/views/about')
 const Tag = () => import(/* webpackChunkName: "tag" */ '@/views/tag')
 const Login = () => import(/* webpackChunkName: "login" */ '@/views/login.vue')
-const Archive = () => import(/* webpackChunkName: "article" */ '@/views/archive')
+const Archive = () => import(/* webpackChunkName: "archive" */ '@/views/archive')
 const Category = () => import(/* webpackChunkName: "category" */ '@/views/category')
 const Blog = () => import(/* webpackChunkName: "blog" */ '@/views/blog')
+const Article = () => import(/* webpackChunkName: "article" */ '@/views/article')
 
 const routes = [
   {
@@ -54,11 +55,16 @@ const routes = [
     path: '/blog',
     name: 'blog',
     component: Blog
+  },
+  {
+    path: '/article/:id',
+    name: 'article',
+    component: Article
   }
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 })
 
@@ -71,8 +77,8 @@ router.beforeEach(async (to, from) => {
 
   const token = getToken() || ''
   const userType = getUserType() || ''
-	const isUserLogin = store.getters.isUserLogin
-	const isAdminLogin = store.getters.isAdminLogin
+  const isUserLogin = store.getters.isUserLogin
+  const isAdminLogin = store.getters.isAdminLogin
   const isLogin = isUserLogin || isAdminLogin
 
   const needRedirect = redirectList.includes(to.path)

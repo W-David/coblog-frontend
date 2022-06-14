@@ -16,7 +16,8 @@ module.exports = {
   productionSourceMap: false,
   css: {
     extract: isProd,
-    sourceMap: false
+    sourceMap: false,
+    loaderOptions: {}
   },
   // webpack-dev-server 相关配置
   devServer: {

@@ -37,6 +37,11 @@
                 :items="cates"></select-area>
             </div>
           </div>
+          <div class="blog-desc">
+            <textarea
+              v-model="blogDesc"
+              placeholder="请输入文章描述(^///^)"></textarea>
+          </div>
           <div class="blog-text" ref="text"></div>
           <div class="blog-edit"></div>
           <div class="blog-ctrl">
@@ -70,6 +75,7 @@ import getOssClient from '@/util/alioss'
 import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
 
+import { createArticle, updateArticle } from '@/api/article'
 import { addFile, deleteFile } from '@/api/file'
 import { createTag, listTag } from '@/api/tag'
 import { createCategory, listCategory } from '@/api/category'
@@ -88,6 +94,7 @@ export default {
     const showAll = ref(false)
     const blogImg = ref('')
     const blogTitle = ref('')
+    const blogDesc = ref('')
     const adminInfo = computed(() => store.getters.adminInfo)
     const blogBannerId = ref('')
     const list = ref([])
@@ -215,7 +222,6 @@ export default {
       const client = getOssClient(store)
       const res = await client.put(file.name, file)
       if (res.res.status === 200 && res.res.statusCode === 200) {
-        ElMessage({ message: '上传成功', type: 'success' })
         const url = res.url
         blogImg.value = url
         const fileData = {
@@ -234,6 +240,7 @@ export default {
         return
       }
     }
+
     const handleDelete = async () => {
       const bannerId = blogBannerId.value || ''
       if (!bannerId) return
@@ -244,14 +251,25 @@ export default {
       ElMessage({ message: '头图已删除', type: 'success' })
     }
 
-    const submitBlog = () => {
+    const submitBlog = async () => {
       const title = blogTitle.value
       const content = contentInstance.txt.html()
       const adminId = adminInfo.value.id || ''
       const categoryIds = tags.value.map(tag => tag.id)
       const tagIds = cates.value.map(cate => cate.id)
-      const description = ''
+      const description = blogDesc.value || '默认描述内容'
       const bannerId = blogBannerId.value || ''
+      const articleRes = await createArticle({
+        title,
+        content,
+        adminId,
+        categoryIds,
+        tagIds,
+        description,
+        bannerId
+      })
+      if (articleRes.code !== 200) return
+      ElMessage({ message: '提交文章成功', type: 'success' })
     }
 
     return {
@@ -266,6 +284,7 @@ export default {
       type,
       blogImg,
       blogTitle,
+      blogDesc,
       previewHtml,
       isListLoading,
       handleTagSelect,
@@ -285,7 +304,7 @@ export default {
   @include layout(calc(100% - 32px), calc(100% - 32px), 16px, 8px);
   @include border(1px solid #ccc, 8px);
   background-color: white;
-  z-index: 1000;
+  // z-index: 1000;
   .blog-edit-area {
     @include layout(100%, 100%, 0, 0);
     .blog-img {
@@ -315,6 +334,20 @@ export default {
       }
       .cate-area {
         @include layout(100%, auto, 0, 0);
+      }
+    }
+    .blog-desc {
+      @include layout(100%, auto, 8px 0, 6px);
+      @include border(1px solid #ccc);
+      textarea {
+        width: 100%;
+        height: 120px;
+        resize: none;
+        border: none;
+        outline: none;
+        font-size: 20px;
+        font-weight: 550;
+        @include font-hei;
       }
     }
     .blog-text {

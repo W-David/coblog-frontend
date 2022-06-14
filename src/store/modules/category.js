@@ -1,26 +1,49 @@
-import { listCategory } from '@/api/category'
+import { listCategory, detailCategory, deleteCategory } from '@/api/category'
 
 const category = {
   namespaced: true,
   state: () => ({
-    categoryList: []
+    categoryMap: new Map()
   }),
+  getters: {
+    getCategoryById: state => id => state.categoryMap.get(id),
+    getCategoryList: state => () => state.categoryMap.values()
+  },
   mutations: {
-    SET_CATEGORY_LIST(state, categoryList) {
-      state.categoryList = categoryList
+    SET_CATEGORIES: (state, categories) => {
+      categories.forEach(category => {
+        state.categoryMap.set(category.id, category)
+      })
+    },
+    SET_CATEGORY: (state, category) => {
+      state.categoryMap.set(category.id, category)
+    },
+    DEL_CATEGORY: (state, categoryId) => {
+      state.categoryMap.delete(categoryId)
+    },
+    CLEAR_CATEGORIES: state => {
+      state.categoryMap.clear()
     }
   },
   actions: {
-    async getCategoryList({ state, commit }, params = {}) {
-      const categoryList = state.getters.categoryList
-      if (Array.isArray(categoryList) && categoryList.length > 0) {
-        return categoryList
-      } else {
-        const res = await listCategory(params)
-        const categoryList = res.data || []
-        commit('SET_CATEGORY_LIST', categoryList)
-        return categoryList
-      }
+    async GetCategories({ state, commit }, params = {}) {
+      const res = await listCategory(params)
+      const categories = res.data.rows || []
+      const total = res.data.count || 0
+      commit('SET_CATEGORIES', categories)
+      return [categories, total]
+    },
+    async GetCategory({ state, commit }, categoryId) {
+      const res = await detailCategory(categoryId)
+      const category = res.data || null
+      commit('SET_CATEGORY', category)
+      return category
+    },
+    async DelCategory({ state, commit }, categoryId) {
+      const res = await deleteCategory(categoryId)
+      const category = res.data || null
+      commit('DEL_CATEGORY', category)
+      return category
     }
   }
 }

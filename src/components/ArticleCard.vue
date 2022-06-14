@@ -2,7 +2,11 @@
   <div class="article-card-container">
     <div class="article-banner-container">
       <div class="article-banner-img">
-        <img :src="article.banner" alt="noImg" />
+        <img
+          v-if="article.banner && article.banner.path"
+          :src="article.banner.path"
+          alt="noImg" />
+        <img v-else src="/static/img/defaultCover.jpg" alt="noImg" />
       </div>
       <div
         @mouseenter="isBannerHover = true"
@@ -14,6 +18,10 @@
         @click="openDetail">
         阅读全文
       </div>
+      <!-- <div class="article-no-banner" v-if="!article.banner">
+        <div class="article-no-banner-hint">暂无头图</div>
+        <div class="article-no-banner-link" @click="openDetail">阅读原文</div>
+      </div> -->
     </div>
     <div class="article-title-container">
       <span class="title-content">
@@ -23,7 +31,7 @@
     <div class="article-ct-container">
       <span
         class="article-cate"
-        v-for="category in article.categorys"
+        v-for="category in article.categories"
         :key="category.id">
         <el-icon><i-folder-opened /></el-icon>
         {{ '↪' + category.name }}
@@ -33,14 +41,12 @@
         {{ '#' + tag.name }}
       </span>
     </div>
-    <div class="article-content-container">
-      {{ article.content }}
-    </div>
+    <div class="article-content-container" v-html="article.description"></div>
     <div class="article-description-container">
       <div class="description-content">
         <span class="article-time">
           <el-icon><i-calendar /></el-icon>
-          {{ article.createTime }}
+          {{ article.createdAt }}
         </span>
       </div>
       <div class="load-more">
@@ -55,6 +61,8 @@
 
 <script>
 import { ref } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
 export default {
   name: 'articleCard',
   props: {
@@ -63,8 +71,12 @@ export default {
       required: true
     }
   },
-  setup() {
-    const openDetail = () => {}
+  setup(props, { emit }) {
+    const router = useRouter()
+    const openDetail = () => {
+      const { id } = props.article
+      router.push({ name: 'article', params: { id } })
+    }
     const isBannerHover = ref(false)
     return {
       openDetail,
@@ -126,6 +138,28 @@ $descrip-mr: 12px;
         transition: transform 600ms ease-out;
       }
     }
+    .article-no-banner {
+      @include layout(100%, 100%, 0, 0);
+      @include flex-box(rows, center, center);
+      background-color: rgba(0, 0, 0, 0.085);
+      transition: background-color 600ms ease-out;
+      position: relative;
+      font-size: 24px;
+      .article-no-banner-hint {
+        transition: all 600ms ease-out;
+        color: $primary-color-a;
+      }
+      .article-no-banner-link {
+        padding: 6px 12px;
+        border-radius: 4px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: all 600ms ease-out;
+      }
+    }
     &:hover {
       .article-banner-description {
         opacity: 1;
@@ -138,6 +172,18 @@ $descrip-mr: 12px;
         }
         &:after {
           background-color: #00000050;
+        }
+      }
+      .article-no-banner {
+        background-color: rgba(0, 0, 0, 0.2);
+        .article-no-banner-hint {
+          opacity: 0;
+        }
+        .article-no-banner-link {
+          background-color: $success-color;
+          padding: 12px 24px;
+          color: white;
+          opacity: 1;
         }
       }
     }
@@ -207,7 +253,7 @@ $descrip-mr: 12px;
       color: $font-color-b;
       .article-time {
         margin-right: $descrip-mr;
-        .el-icon {
+        &:deep .el-icon {
           margin-right: 2px;
         }
       }

@@ -14,10 +14,10 @@ export function updateArticle(data) {
   })
 }
 
-export function listArticle(params) {
-  return GET({
+export function listArticle(data) {
+  return POST({
     url: '/article/list',
-    params
+    data
   })
 }
 

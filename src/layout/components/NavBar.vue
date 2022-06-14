@@ -181,6 +181,7 @@ export default {
   padding: 5px 16px;
   background-color: $header-bg;
   box-shadow: 0 0 4px $border-color;
+  z-index: 5000;
   .nav-icon {
     @include flex-box(row, space-between, center);
     @include font-hei;

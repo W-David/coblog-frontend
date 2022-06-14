@@ -4,6 +4,7 @@ import app from './app'
 import user from './user'
 import category from './category'
 import tag from './tag'
+import article from './article'
 
 export default {
   admin,
@@ -11,5 +12,6 @@ export default {
   app,
   user,
   category,
-  tag
+  tag,
+	article
 }

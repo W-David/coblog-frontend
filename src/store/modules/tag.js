@@ -1,26 +1,48 @@
-import { listTag } from '@/api/tag'
+import { listTag, detailTag, deleteTag } from '@/api/tag'
 
 const tag = {
   namespaced: true,
   state: () => ({
-    tagList: []
+    tagMap: new Map()
   }),
+  getters: {
+    getTagById: state => id => state.tagMap.get(id),
+    getTagList: state => () => state.tagMap.values()
+  },
   mutations: {
-    SET_TAG_LIST(state, tagList) {
-      state.tagList = tagList
+    SET_TAGS: (state, tags) => {
+      tags.forEach(tag => {
+        state.tagMap.set(tag.id, tag)
+      })
+    },
+    SET_TAG: (state, tag) => {
+      state.tagMap.set(tag.id, tag)
+    },
+    DEL_TAG: (state, tagId) => {
+      state.tagMap.delete(tagId)
+    },
+    CLEAR_TAGS: state => {
+      state.tagMap.clear()
     }
   },
   actions: {
-    async getTagList({ state, commit }, params = {}) {
-      const tagList = state.getters.tagList
-      if (Array.isArray(tagList) && tagList.length > 0) {
-        return tagList
-      } else {
-        const res = await listTag(params)
-        const tagList = res.data || []
-        commit('SET_TAG_LIST', tagList)
-        return tagList
-      }
+    async GetTags({ state, commit }, params = {}) {
+      const res = await listTag(params)
+      const tags = res.data || []
+      commit('SET_TAGS', tags)
+      return tags
+    },
+    async GetTag({ state, commit }, tagId) {
+      const res = await detailTag(tagId)
+      const tag = res.data || null
+      commit('SET_TAG', tag)
+      return tag
+    },
+    async DelTag({ state, commit }, tagId) {
+      const res = await deleteTag(tagId)
+      const tag = res.data || null
+      commit('DEL_TAG', tag)
+      return tag
     }
   }
 }
