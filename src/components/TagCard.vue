@@ -1,19 +1,16 @@
 <template>
-  <div class="tag-card-container">
+  <div :class="['tag-card-container', isActive ? 'is-active' : '']">
     <div class="tag-name">
       <span class="name-content">
         {{ tag.name }}
       </span>
       <span class="info-content hidden-sm-and-down">
-        {{ 'create by ' + tag.createdBy }}
+        {{ tag.createdBy ? 'create by ' + tag.createdBy : '暂无' }}
       </span>
     </div>
     <div class="tag-article-list">
-      <div
-        class="tag-article-card"
-        v-for="article in tag.articles"
-        :key="article.id">
-        <div class="tag-article-title">
+      <div class="tag-article-card" v-for="article in tag.articles" :key="article.id">
+        <div class="tag-article-title" @click="toArticle(article)">
           <span class="title-content">
             {{ article.title }}
           </span>
@@ -28,15 +25,25 @@
 
 <script>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 export default {
   name: 'tagCard',
   props: {
     tag: {
       type: Object,
       required: true
-    }
+    },
+    isActive: Boolean
   },
-  setup() {}
+  setup() {
+    const router = useRouter()
+    const toArticle = article => {
+      router.push({ name: 'article', params: { id: article.id } })
+    }
+    return {
+      toArticle
+    }
+  }
 }
 </script>
 
@@ -57,7 +64,7 @@ export default {
     text-align: left;
 
     .name-content {
-      @include font-fang-song;
+      @include font-kai;
       color: $primary-color;
       font-size: 20px;
       font-weight: bold;
@@ -72,29 +79,42 @@ export default {
     .tag-article-card {
       @include layout(100%, 100%, 0, 0 6px);
       @include line-height(36px, 36px);
-      @include border(1px solid $primary-color-h, 0, bottom);
+      @include border(1px solid $primary-color-g, 0, bottom);
       @include pointer;
       @include transition(all 120ms linear);
       .tag-article-title {
         @include flex-box(row, space-between, center);
+        @include transition(all 120ms linear);
         .title-content {
-          color: $font-color;
+          color: $font-color-b;
           @include font-kai;
           @include text-overflow(1, 60%);
           font-size: 16px;
           text-align: left;
+          font-weight: bold;
         }
         .time-content {
-          color: $font-color-a;
+          color: $font-color-b;
+          font-size: 12px;
+          font-style: italic;
         }
-      }
-      &:hover {
-        transform: scaleX(1.02);
-        font-weight: bold;
+        &:hover {
+          transform: scaleX(1.02);
+          .title-content {
+            color: $font-color;
+          }
+          .time-content {
+            color: $font-color;
+          }
+        }
       }
     }
   }
   &:hover {
+    @include box-shadow;
+    // background-color: $primary-color-h;
+  }
+  &.is-active {
     border-color: $primary-color;
     @include box-shadow;
   }

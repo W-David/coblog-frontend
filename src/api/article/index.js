@@ -21,6 +21,13 @@ export function listArticle(data) {
   })
 }
 
+export function listByTimeArticle(data) {
+  return POST({
+    url: '/article/listByTime',
+    data
+  })
+}
+
 export function detailArticle(id) {
   return GET({
     url: `/article/detail/${id}`

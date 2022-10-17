@@ -1,35 +1,20 @@
 <template>
   <div class="nav-bar-container">
     <div class="nav-icon">
-      <el-icon
-        :size="20"
-        class="hidden-md-and-up"
-        @click.stop.prevent="handleExpand">
+      <el-icon :size="20" class="hidden-md-and-up" @click.stop.prevent="handleExpand">
         <i-expand />
       </el-icon>
       Cody's blog
     </div>
     <div v-if="isUserLogin || isAdminLogin" class="nav-menu hidden-sm-and-down">
-      <el-menu
-        :default-active="activePage"
-        :router="true"
-        mode="horizontal"
-        ref="menuRef">
-        <el-menu-item
-          v-for="menu in menuList"
-          :key="menu.id"
-          :index="menu.path">
+      <el-menu :default-active="activePage" :router="true" mode="horizontal" ref="menuRef">
+        <el-menu-item v-for="menu in menuList" :key="menu.id" :index="menu.path">
           {{ menu.name }}
         </el-menu-item>
       </el-menu>
     </div>
-    <div
-      v-if="isUserLogin || isAdminLogin"
-      class="nav-search hidden-md-and-down">
-      <el-input
-        v-model="queryText"
-        @keyup.enter="query"
-        placeholder="标题 / 标签 / 类别">
+    <div v-if="isUserLogin || isAdminLogin" class="nav-search hidden-md-and-down">
+      <el-input v-model="queryText" @keyup.enter="query" placeholder="标题 / 标签 / 类别">
         <template #prefix>
           <el-icon><i-search /></el-icon>
         </template>
@@ -39,55 +24,26 @@
       <user v-if="isUserLogin"></user>
       <admin v-else-if="isAdminLogin"></admin>
       <span v-else>
-        <el-button size="large" type="text" @click="toLogin">
-          请先登录
-        </el-button>
+        <el-button size="large" type="text" @click="toLogin"> 请先登录 </el-button>
       </span>
     </div>
   </div>
   <div class="drawer-container hidden-md-and-up">
-    <el-drawer
-      v-model="showDrawer"
-      :with-header="false"
-      direction="ltr"
-      append-to-body
-      :z-index="10000">
+    <el-drawer v-model="showDrawer" :with-header="false" direction="ltr" append-to-body :z-index="10000">
       <div class="collapse-container">
-        <el-icon
-          class="mb m-collapse"
-          :size="20"
-          @click.stop.prevent="handleCollapse">
+        <el-icon class="mb m-collapse" :size="20" @click.stop.prevent="handleCollapse">
           <i-fold />
         </el-icon>
-        <el-avatar
-          class="mb m-avatar"
-          :src="userAvatar || adminAvatar"
-          fit="cover"
-          @click.stop.prevent="handleInfo">
+        <el-avatar class="mb m-avatar" :src="userAvatar || adminAvatar" fit="cover" @click.stop.prevent="handleInfo">
           <span>空</span>
         </el-avatar>
-        <el-menu
-          class="mb m-menu"
-          :default-active="activePage"
-          :router="true"
-          mode="veritical"
-          @select="handleChange">
-          <el-menu-item
-            v-for="menu in menuList"
-            :key="menu.id"
-            :index="menu.path">
+        <el-menu class="mb m-menu" :default-active="activePage" :router="true" mode="veritical" @select="handleChange">
+          <el-menu-item v-for="menu in menuList" :key="menu.id" :index="menu.path">
             {{ menu.name }}
           </el-menu-item>
         </el-menu>
       </div>
-      <el-button
-        class="m-logout"
-        type="info"
-        size="small"
-        plain
-        @click="handleLogout">
-        退出登录
-      </el-button>
+      <el-button class="m-logout" type="info" size="small" plain @click="handleLogout"> 退出登录 </el-button>
     </el-drawer>
   </div>
 </template>
@@ -199,10 +155,17 @@ export default {
     &:deep {
       .el-menu {
         border-color: transparent;
+        background-color: $header-bg;
         .el-menu-item {
           padding: 0 16px;
           &.is-active {
             color: $primary-color;
+            background-color: $header-bg;
+          }
+          &:hover {
+            color: $primary-color;
+            outline: none;
+            background-color: $header-bg;
           }
         }
       }

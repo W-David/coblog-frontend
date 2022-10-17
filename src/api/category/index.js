@@ -21,6 +21,13 @@ export function listCategory(params) {
   })
 }
 
+export function listCategoryArticles(data) {
+  return POST({
+    url: '/category/list/articles',
+    data
+  })
+}
+
 export function detailCategory(id) {
   return GET({
     url: `/category/detail/${id}`

@@ -2,19 +2,13 @@
   <div class="article-card-container">
     <div class="article-banner-container">
       <div class="article-banner-img">
-        <img
-          v-if="article.banner && article.banner.path"
-          :src="article.banner.path"
-          alt="noImg" />
+        <img v-if="article.banner && article.banner.path" :src="article.banner.path" alt="noImg" />
         <img v-else src="/static/img/defaultCover.jpg" alt="noImg" />
       </div>
       <div
         @mouseenter="isBannerHover = true"
         @mouseleave="isBannerHover = false"
-        :class="[
-          'article-banner-description',
-          !isBannerHover ? 'spinner-border' : ''
-        ]"
+        :class="['article-banner-description', !isBannerHover ? 'spinner-border' : '']"
         @click="openDetail">
         阅读全文
       </div>
@@ -29,14 +23,11 @@
       </span>
     </div>
     <div class="article-ct-container">
-      <span
-        class="article-cate"
-        v-for="category in article.categories"
-        :key="category.id">
+      <span class="article-cate" v-for="category in article.categories" :key="category.id" @click="toCategory(category.id)">
         <el-icon><i-folder-opened /></el-icon>
         {{ '↪' + category.name }}
       </span>
-      <span class="article-tag" v-for="tag in article.tags" :key="tag.id">
+      <span class="article-tag" v-for="tag in article.tags" :key="tag.id" @click="toTag(tag.id)">
         <el-icon><i-collection-tag /></el-icon>
         {{ '#' + tag.name }}
       </span>
@@ -74,13 +65,23 @@ export default {
   setup(props, { emit }) {
     const router = useRouter()
     const openDetail = () => {
-      const { id } = props.article
+      const {
+        article: { id }
+      } = props
       router.push({ name: 'article', params: { id } })
     }
     const isBannerHover = ref(false)
+    const toCategory = id => {
+      router.push({ name: 'category', params: { id } })
+    }
+    const toTag = id => {
+      router.push({ name: 'tag', params: { id } })
+    }
     return {
       openDetail,
-      isBannerHover
+      isBannerHover,
+      toCategory,
+      toTag
     }
   }
 }

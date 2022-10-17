@@ -42,19 +42,20 @@ const routes = [
     component: Archive
   },
   {
-    path: '/category',
+    path: '/category/:id?',
     name: 'category',
     component: Category
   },
   {
-    path: '/tag',
+    path: '/tag/:id?',
     name: 'tag',
     component: Tag
   },
   {
-    path: '/blog',
+    path: '/blog/:id?',
     name: 'blog',
-    component: Blog
+    component: Blog,
+    props: true
   },
   {
     path: '/article/:id',

@@ -7,12 +7,7 @@
     </el-row>
     <el-row justify="center">
       <el-col :span="24">
-        <pagination
-          v-show="totalRef > 0"
-          :total="totalRef"
-          v-model:page="queryParams.pageNum"
-          v-model:limit="queryParams.pageSize"
-          @pagination="getList" />
+        <pagination v-show="totalRef > 0" :total="totalRef" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
       </el-col>
     </el-row>
   </div>
@@ -33,14 +28,11 @@ export default {
     const queryParams = reactive({
       title: '',
       pageNum: 1,
-      pageSize: 2
+      pageSize: 8
     })
 
     const getList = async () => {
-      const [_, total] = await store.dispatch(
-        'article/GetArticles',
-        queryParams
-      )
+      const [_, total] = await store.dispatch('article/GetArticles', queryParams)
       totalRef.value = total || 0
     }
     onMounted(() => {

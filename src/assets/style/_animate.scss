@@ -32,3 +32,34 @@
     @include use-animation(spinner-border 6s infinite -3s linear);
   }
 }
+
+@mixin bg-fade() {
+	@include define-animation(bg-fade)	{
+ 		0% {
+    	opacity: 0;
+    	transform: scale(1.25);
+    	animation-timing-function: ease-out;
+  	}
+  	12.5% {
+    	opacity: 1;
+    	transform: scale(1);
+    	animation-timing-function: ease-out;
+  	}
+		19.25% {
+			transform: scale(1.05);
+    	animation-timing-function: ease-in;
+		}
+  	25% {
+    	opacity: 1;
+    	transform: scale(1);
+    	animation-timing-function: ease-in;
+  	}
+  	37.5% {
+    	opacity: 0;
+    	transform: scale(1.25);
+  	}
+  	100% {
+    	opacity: 0;
+  	}
+	}
+}

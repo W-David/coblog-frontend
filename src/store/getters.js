@@ -5,6 +5,7 @@ const getters = {
   isAdminLogin: state => state.admin.isLogin,
   userInfo: state => state.user.userInfo,
   adminInfo: state => state.admin.adminInfo,
+  loginInfo: state => (state.user.isLogin ? state.user.userInfo : state.admin.isLogin ? state.admin.adminInfo : {}),
   device: state => state.app.device,
   sts: state => state.alioss.sts
 }

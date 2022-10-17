@@ -4,13 +4,7 @@
       <el-col :xs="24" :sm="20" :md="18" :lg="12" :xl="12">
         <div class="blog-edit-area">
           <div class="blog-img">
-            <banner-upload
-              :isUploaded="!!blogImg"
-              :imgUrl="blogImg"
-              trigHint="上传头图"
-              descripHint="头图"
-              @on-upload="handleUpload"
-              @on-delete="handleDelete">
+            <banner-upload :isUploaded="!!blogBanner" :imgUrl="blogBanner" trigHint="上传头图" descripHint="头图" @on-upload="handleUpload" @on-delete="handleDelete">
             </banner-upload>
           </div>
           <div class="blog-title">
@@ -19,28 +13,14 @@
           <div class="blog-toolbar" ref="toolbar"></div>
           <div class="blog-tc">
             <div class="tag-area">
-              <select-area
-                styl="primary"
-                @on-select="handleTagSelect"
-                @on-add-item="handleTagAdd"
-                selectText="选择标签"
-                addText="添加标签"
-                :items="tags"></select-area>
+              <select-area styl="primary" @on-select="handleTagSelect" @on-add-item="handleTagAdd" selectText="选择标签" addText="添加标签" :items="tags"></select-area>
             </div>
             <div class="cate-area">
-              <select-area
-                styl="success"
-                @on-select="handleCateSelect"
-                @on-add-item="handleCateAdd"
-                selectText="选择分类"
-                addText="添加分类"
-                :items="cates"></select-area>
+              <select-area styl="success" @on-select="handleCateSelect" @on-add-item="handleCateAdd" selectText="选择分类" addText="添加分类" :items="cates"></select-area>
             </div>
           </div>
           <div class="blog-desc">
-            <textarea
-              v-model="blogDesc"
-              placeholder="请输入文章描述(^///^)"></textarea>
+            <textarea v-model="blogDesc" placeholder="请输入文章描述(^///^)"></textarea>
           </div>
           <div class="blog-text" ref="text"></div>
           <div class="blog-edit"></div>
@@ -49,12 +29,7 @@
           </div>
         </div>
         <el-dialog v-model="showAll" :title="title.text">
-          <selected-list
-            :loading="isListLoading"
-            :isShow="showAll"
-            :list="list"
-            v-model:checkedArr="checkedArr">
-          </selected-list>
+          <selected-list :loading="isListLoading" :isShow="showAll" :list="list" v-model:checkedArr="checkedArr"> </selected-list>
         </el-dialog>
       </el-col>
       <!-- <el-col class="hidden-md-and-down" :md="12" :lg="12" :xl="12">
@@ -67,12 +42,13 @@
 <script>
 import WangEditor from 'wangeditor'
 import hljs from 'highlight.js'
-import { onMounted, onBeforeUnmount, ref, reactive, watch, computed } from 'vue'
+import { onMounted, onBeforeUnmount, ref, reactive, watch, computed, toRaw } from 'vue'
 import BannerUpload from '@/components/FileUpload.vue'
 import SelectArea from '@/components/SelectArea.vue'
 import SelectedList from '@/components/SelectedList.vue'
 import getOssClient from '@/util/alioss'
 import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
 import { createArticle, updateArticle } from '@/api/article'
@@ -82,36 +58,43 @@ import { createCategory, listCategory } from '@/api/category'
 
 export default {
   name: 'blog',
+  props: ['id'],
   components: {
     BannerUpload,
     SelectArea,
     SelectedList
   },
-  setup() {
+  setup(props) {
     const store = useStore()
+    const router = useRouter()
+
     const toolbar = ref()
     const text = ref()
+
+    const title = ref('')
+    const list = ref([])
+    const type = ref('')
     const showAll = ref(false)
-    const blogImg = ref('')
+    const isListLoading = ref(false)
+    const checkedArr = ref([])
+
+    const blogBanner = ref('')
+    const blogBannerId = ref('')
     const blogTitle = ref('')
     const blogDesc = ref('')
-    const adminInfo = computed(() => store.getters.adminInfo)
-    const blogBannerId = ref('')
-    const list = ref([])
+    const previewHtml = ref('')
     const tags = ref([])
     const cates = ref([])
-    const checkedArr = ref([])
-    const title = ref('')
-    const type = ref('')
-    const previewHtml = ref('')
-    const isListLoading = ref(false)
+
+    const adminInfo = computed(() => store.getters.adminInfo)
+    const isEditMode = computed(() => !!props.id)
 
     let contentInstance = null
     const createContentInstance = () => {
       contentInstance = new WangEditor(toolbar.value, text.value)
       Object.assign(contentInstance.config, {
         highlight: hljs,
-        zIndex: 1010,
+        zIndex: 1000,
         showFullScreen: false,
         customUploadImg,
         onchange,
@@ -119,8 +102,21 @@ export default {
       })
       contentInstance.create()
     }
+
     onMounted(() => {
       createContentInstance()
+      if (isEditMode.value) {
+        const article = computed(() => store.getters['article/getArticleById'](+props.id))
+        const { title = '', content = '', banner = {}, description = '', categories = [], tags: tgs = [] } = article.value
+
+        blogTitle.value = title
+        blogBannerId.value = (banner && banner.id) || ''
+        blogBanner.value = (banner && banner.path) || ''
+        blogDesc.value = description
+        cates.value = categories
+        tags.value = tgs
+        contentInstance.txt.html(content)
+      }
     })
 
     onBeforeUnmount(() => {
@@ -223,7 +219,7 @@ export default {
       const res = await client.put(file.name, file)
       if (res.res.status === 200 && res.res.statusCode === 200) {
         const url = res.url
-        blogImg.value = url
+        blogBanner.value = url
         const fileData = {
           name,
           size,
@@ -236,7 +232,7 @@ export default {
         ElMessage({ message: '头图已成功上传', type: 'success' })
       } else {
         ElMessage({ message: '头图上传失败', type: 'error' })
-        blogImg.value = ''
+        blogBanner.value = ''
         return
       }
     }
@@ -244,7 +240,7 @@ export default {
     const handleDelete = async () => {
       const bannerId = blogBannerId.value || ''
       if (!bannerId) return
-      blogImg.value = ''
+      blogBanner.value = ''
       blogBannerId.value = ''
       const deleteRes = await deleteFile(bannerId)
       if (deleteRes.code !== 200) return
@@ -254,22 +250,24 @@ export default {
     const submitBlog = async () => {
       const title = blogTitle.value
       const content = contentInstance.txt.html()
-      const adminId = adminInfo.value.id || ''
-      const categoryIds = tags.value.map(tag => tag.id)
-      const tagIds = cates.value.map(cate => cate.id)
+      // const adminId = adminInfo.value.id || ''
+      const categoryIds = cates.value.map(cate => cate.id)
+      const tagIds = tags.value.map(tag => tag.id)
       const description = blogDesc.value || '默认描述内容'
       const bannerId = blogBannerId.value || ''
-      const articleRes = await createArticle({
+      const blog = {
         title,
         content,
-        adminId,
-        categoryIds,
-        tagIds,
+        // adminId,
         description,
-        bannerId
-      })
+        bannerId,
+        categoryIds,
+        tagIds
+      }
+      const articleRes = isEditMode.value ? await updateArticle({ ...blog, id: +props.id }) : await createArticle(blog)
       if (articleRes.code !== 200) return
-      ElMessage({ message: '提交文章成功', type: 'success' })
+      router.push({ name: 'home' })
+      ElMessage({ message: `已保存 • ${title}`, type: 'success' })
     }
 
     return {
@@ -282,7 +280,7 @@ export default {
       checkedArr,
       title,
       type,
-      blogImg,
+      blogBanner,
       blogTitle,
       blogDesc,
       previewHtml,

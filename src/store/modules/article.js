@@ -1,4 +1,5 @@
 import { createArticle, updateArticle, deleteArticle, listArticle, detailArticle } from '@/api/article'
+import { cloneLoop, cloneForce } from '@jsmini/clone'
 
 const article = {
   namespaced: true,
@@ -6,17 +7,18 @@ const article = {
     articleMap: new Map()
   }),
   getters: {
+    getArticleMap: state => () => cloneLoop(state.articleMap),
     getArticleById: state => id => state.articleMap.get(id),
     getArticleList: state => () => state.articleMap.values()
   },
   mutations: {
     SET_ARTICLES: (state, articles) => {
       articles.forEach(article => {
-        state.articleMap.set(article.id, article)
+        state.articleMap.set(article.id, cloneLoop(article))
       })
     },
     SET_ARTICLE: (state, article) => {
-      state.articleMap.set(article.id, article)
+      state.articleMap.set(article.id, cloneLoop(article))
     },
     DEL_ARTICLE: (state, articleId) => {
       state.articleMap.delete(articleId)

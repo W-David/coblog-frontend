@@ -4,42 +4,37 @@
       <el-row justify="center">
         <el-col :xs="24" :sm="20" :md="18" :lg="16" :xl="16">
           <el-timeline>
-            <el-timeline-item
-              :timestamp="a.time"
-              placement="top"
-              :hollow="true"
-              v-for="a in archive"
-              :key="a.time">
-              <div
-                class="article-card"
-                v-for="article in a.articles"
-                :key="article.id">
-                <div class="article-title">
-                  <span class="title-content">{{ article.title }}</span>
-                  <span class="time-content hidden-sm-and-down">{{
-                    article.createdAt
-                  }}</span>
-                </div>
-                <div class="article-info">
-                  <span
-                    class="article-info-category"
-                    v-for="category in article.categories"
-                    :key="category.id">
-                    {{ '↪' + category.name }}
-                  </span>
-                  <span
-                    class="article-info-tag"
-                    v-for="tag in article.tags"
-                    :key="tag.id">
-                    {{ '#' + tag.name }}
-                  </span>
-                </div>
-                <div class="m-article-time hidden-md-and-up">
-                  <span class="time-content">
-                    {{ article.createdAt }}
-                  </span>
-                </div>
-              </div>
+            <el-timeline-item :timestamp="a.time" type="primary" placement="top" :hollow="true" v-for="a in archive" :key="a.time">
+              <el-collapse>
+                <el-collapse-item :name="a.time">
+                  <template #title>
+                    <div class="display-title-container">
+                      <div class="display-title" v-for="(title, index) in generateArchiveTitles(a.articles)" :key="index">
+                        <span class="display-title-content">{{ title }}</span>
+                      </div>
+                    </div>
+                  </template>
+                  <div class="article-card" v-for="article in a.articles" :key="article.id">
+                    <div class="article-title">
+                      <span class="title-content">{{ article.title }}</span>
+                      <span class="time-content hidden-sm-and-down">{{ article.createdAt }}</span>
+                    </div>
+                    <div class="article-info" v-if="(article.categories && article.categories.length) || (article.tags && article.tags.length)">
+                      <span class="article-info-category" v-for="category in article.categories" :key="category.id" @click="toCategory(category.id)">
+                        {{ '↪' + category.name }}
+                      </span>
+                      <span class="article-info-tag" v-for="tag in article.tags" :key="tag.id" @click="toTag(tag.id)">
+                        {{ '#' + tag.name }}
+                      </span>
+                    </div>
+                    <div class="m-article-time hidden-md-and-up">
+                      <span class="time-content">
+                        {{ article.createdAt }}
+                      </span>
+                    </div>
+                  </div>
+                </el-collapse-item>
+              </el-collapse>
             </el-timeline-item>
           </el-timeline>
         </el-col>
@@ -49,104 +44,57 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { listByTimeArticle } from '@/api/article'
+
 export default {
   name: 'archive',
   setup() {
-    const archive = reactive([
-      {
-        time: '2021-9-9',
-        articles: [
-          {
-            id: 1,
-            title: 'ceshi-title1-ceshi-title1-ceshi-title1',
-            createdAt: '2021-9-9 10:30:45',
-            categories: [
-              { id: 1, name: 'cate1' },
-              { id: 2, name: 'cate2' },
-              { id: 3, name: 'cate2' },
-              { id: 4, name: 'cate2' }
-            ],
-            tags: [
-              { id: 1, name: 'tag1' },
-              { id: 2, name: 'tag2' }
-            ]
-          },
-          {
-            id: 2,
-            title: 'ceshi-title1',
-            createdAt: '2021-9-9 10:30:45',
-            categories: [
-              { id: 1, name: 'cate1' },
-              { id: 2, name: 'cate2' }
-            ],
-            tags: [
-              { id: 1, name: 'tag1' },
-              { id: 2, name: 'tag2' }
-            ]
-          },
-          {
-            id: 3,
-            title: 'ceshi-title1',
-            createdAt: '2021-9-9 10:30:45',
-            categories: [
-              { id: 1, name: 'cate1' },
-              { id: 2, name: 'cate2' }
-            ],
-            tags: [
-              { id: 1, name: 'tag1' },
-              { id: 2, name: 'tag2' }
-            ]
+    const router = useRouter()
+    const archive = ref([])
+    const getArchive = async (beginTime, endTime) => {
+      const res = await listByTimeArticle(beginTime, endTime)
+      if (res.code !== 200) return
+      const rawArchive = res.data.rows || []
+      const articles2Archive = () => {
+        let curTime = '',
+          curArticles = null,
+          _list = []
+        for (let i = 0, len = rawArchive.length; i < len; i++) {
+          const time = rawArchive[i].createdAt.split(' ')[0]
+          if (curTime !== time) {
+            const curArchive = { time, articles: [] }
+            _list.push(curArchive)
+            curTime = time
+            curArticles = curArchive.articles
           }
-        ]
-      },
-      {
-        time: '2021-10-10',
-        articles: [
-          {
-            id: 1,
-            title: 'ceshi-title1',
-            createdAt: '2021-10-10 10:30:45',
-            categories: [
-              { id: 1, name: 'cate1' },
-              { id: 2, name: 'cate2' }
-            ],
-            tags: [
-              { id: 1, name: 'tag1' },
-              { id: 2, name: 'tag2' }
-            ]
-          },
-          {
-            id: 2,
-            title: 'ceshi-title1',
-            createdAt: '2021-10-10 10:30:45',
-            categories: [
-              { id: 1, name: 'cate1' },
-              { id: 2, name: 'cate2' }
-            ],
-            tags: [
-              { id: 1, name: 'tag1' },
-              { id: 2, name: 'tag2' }
-            ]
-          },
-          {
-            id: 3,
-            title: 'ceshi-title1',
-            createdAt: '2021-10-10 10:30:45',
-            categories: [
-              { id: 1, name: 'cate1' },
-              { id: 2, name: 'cate2' }
-            ],
-            tags: [
-              { id: 1, name: 'tag1' },
-              { id: 2, name: 'tag2' }
-            ]
-          }
-        ]
+          curArticles.push(rawArchive[i])
+        }
+        return _list
       }
-    ])
+      archive.value = articles2Archive()
+    }
+    const generateArchiveTitles = articles => {
+      if (articles && articles.length) {
+        const len = Math.min(articles.length, 3)
+        return articles.slice(0, len).map(article => article.title)
+      } else {
+        return ['暂无文章']
+      }
+    }
+    const toCategory = id => {
+      router.push({ name: 'category', params: { id } })
+    }
+    const toTag = id => {
+      router.push({ name: 'tag', params: { id } })
+    }
+    onMounted(() => getArchive())
     return {
-      archive
+      archive,
+      generateArchiveTitles,
+      toCategory,
+      toTag
     }
   }
 }
@@ -154,7 +102,7 @@ export default {
 
 <style lang="scss" scoped>
 .archive-page {
-  @include layout(100%, 100%, 0, 16px);
+  @include layout(100%, 100%, 24px 0, 16px);
   .archive-timeline-container {
     ul {
       padding-inline-start: 0;
@@ -164,8 +112,21 @@ export default {
         text-align: left;
       }
       .el-timeline-item__content {
+        .display-title-container {
+          @include layout(100%, auto, 0, 8px);
+          @include flex-box(row, flex-start, center, wrap);
+          .display-title {
+            display: inline-block;
+            max-width: 120px;
+            .display-title-content {
+              @include text-overflow(1);
+              margin: 0 16px;
+              color: $success-color;
+            }
+          }
+        }
         .article-card {
-          @include layout(100%, 100%, 20px 0, 16px);
+          @include layout(95%, 100%, 20px auto, 16px);
           @include border(1px solid $success-color-a, 4px);
           @include transition(all 120ms ease-in-out);
           background-color: white;

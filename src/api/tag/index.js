@@ -21,6 +21,13 @@ export function listTag(params) {
   })
 }
 
+export function listTagArticles(data) {
+  return POST({
+    url: '/tag/list/articles',
+    data
+  })
+}
+
 export function detailTag(id) {
   return GET({
     url: `/tag/detail/${id}`

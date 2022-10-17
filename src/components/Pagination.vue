@@ -7,6 +7,7 @@
       :layout="layout"
       :total="total"
       v-bind="$attrs"
+      :pager-count="5"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange" />
   </div>
