@@ -1,0 +1,60 @@
+@mixin fade($duration: 500ms) {
+	.fade-enter-active,
+	.fade-leave-active {
+  	transition: opacity $duration ease;
+	}
+	.fade-enter-from,
+	.fade-leave-to {
+  	opacity: 0;
+	}
+}
+
+@mixin slide-fade-top($duration-enter: 300ms, $duration-leave: 800ms, $offset: 120px) {
+	.slide-fade-enter-active {
+  	transition: all $duration-enter ease-out;
+	}
+
+	.slide-fade-leave-active {
+  	transition: all $duration-leave cubic-bezier(1, 0.5, 0.8, 1);
+	}
+
+	.slide-fade-enter-from,
+	.slide-fade-leave-to {
+  	transform: translateY(-#{$offset});
+  	opacity: 0;
+	}
+}
+
+
+@mixin slide-fade-right($duration-enter: 300ms, $duration-leave: 800ms, $offset: 120px) {
+	.slide-fade-enter-active {
+  	transition: all $duration-enter ease-out;
+	}
+
+	.slide-fade-leave-active {
+  	transition: all $duration-leave cubic-bezier(1, 0.5, 0.8, 1);
+	}
+
+	.slide-fade-enter-from,
+	.slide-fade-leave-to {
+  	transform: translateX($offset);
+  	opacity: 0;
+	}
+}
+
+
+@mixin slide-fade-left($duration-enter: 300ms, $duration-leave: 800ms, $offset: 120px) {
+	.slide-fade-enter-active {
+  	transition: all $duration-enter ease-out;
+	}
+
+	.slide-fade-leave-active {
+  	transition: all $duration-leave cubic-bezier(1, 0.5, 0.8, 1);
+	}
+
+	.slide-fade-enter-from,
+	.slide-fade-leave-to {
+  	transform: translateX(-#{$offset});
+  	opacity: 0;
+	}
+}

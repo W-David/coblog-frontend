@@ -2,11 +2,7 @@
   <div class="selected-list-container">
     <el-card v-loading="loading" shadow="never" class="checkbox-card">
       <div v-if="list && list.length">
-        <el-check-tag
-          @change="handleCheckChange(item)"
-          v-for="item in list"
-          :checked="isChecked(item)"
-          :key="item.id">
+        <el-check-tag @change="handleCheckChange(item)" v-for="item in list" :checked="isChecked(item)" :key="item.id">
           {{ item.name }}
         </el-check-tag>
       </div>
@@ -20,7 +16,7 @@
 <script>
 import { ref, toRefs, watch } from 'vue'
 export default {
-  name: 'selectedList',
+  name: 'SelectedList',
   props: {
     loading: {
       type: Boolean,

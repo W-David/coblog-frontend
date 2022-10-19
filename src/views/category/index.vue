@@ -104,7 +104,7 @@ export default {
     background-color: white;
     z-index: 1000;
 
-    @mixin span-styl($mc, $bc) {
+    @mixin panel-styl($mc, $bc) {
       color: $mc;
       display: inline-block;
       line-height: 36px;
@@ -126,9 +126,9 @@ export default {
     }
 
     .article-cate {
-      @include span-styl($success-color, $success-color-b);
+      @include panel-styl($success-color, $success-color-b);
       &.ctrl-btn {
-        @include span-styl($font-color, $font-color-c);
+        @include panel-styl($font-color, $font-color-c);
       }
     }
   }

@@ -23,14 +23,8 @@
       </span>
     </div>
     <div class="article-ct-container">
-      <span class="article-cate" v-for="category in article.categories" :key="category.id" @click="toCategory(category.id)">
-        <el-icon><i-folder-opened /></el-icon>
-        {{ '↪' + category.name }}
-      </span>
-      <span class="article-tag" v-for="tag in article.tags" :key="tag.id" @click="toTag(tag.id)">
-        <el-icon><i-collection-tag /></el-icon>
-        {{ '#' + tag.name }}
-      </span>
+      <category-panel :size="12" :category="category" v-for="category in article.categories" :key="category.id"></category-panel>
+      <tag-panel :size="12" :tag="tag" v-for="tag in article.tags" :key="tag.id"></tag-panel>
     </div>
     <div class="article-content-container" v-html="article.description"></div>
     <div class="article-description-container">
@@ -54,8 +48,16 @@
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
+
+import CategoryPanel from '@/components/CategoryPanel'
+import TagPanel from '@/components/TagPanel'
+
 export default {
-  name: 'articleCard',
+  name: 'ArticleCard',
+  components: {
+    CategoryPanel,
+    TagPanel
+  },
   props: {
     article: {
       type: Object,
@@ -71,17 +73,9 @@ export default {
       router.push({ name: 'article', params: { id } })
     }
     const isBannerHover = ref(false)
-    const toCategory = id => {
-      router.push({ name: 'category', params: { id } })
-    }
-    const toTag = id => {
-      router.push({ name: 'tag', params: { id } })
-    }
     return {
       openDetail,
-      isBannerHover,
-      toCategory,
-      toTag
+      isBannerHover
     }
   }
 }
@@ -211,31 +205,6 @@ $descrip-mr: 12px;
     @include layout(100%, auto, 0, 12px 0);
     @include flex-box(row, center, center, wrap);
     @include border(1.2px solid $border-color-c, null, bottom);
-
-    @mixin span-styl($mc, $bc) {
-      color: $mc;
-      @include layout(auto, auto, 6px, 4px 10px);
-      @include border(1px solid $mc, 14px);
-      font-size: 10px;
-      white-space: nowrap;
-      background-color: $bc;
-      @include transition(all 120ms ease-in-out);
-      @include pointer;
-      .el-icon {
-        vertical-align: middle;
-      }
-      &:hover {
-        color: white;
-        background-color: $mc;
-      }
-    }
-
-    .article-cate {
-      @include span-styl($success-color, $success-color-b);
-    }
-    .article-tag {
-      @include span-styl($primary-color, $primary-color-h);
-    }
   }
 
   .article-content-container {

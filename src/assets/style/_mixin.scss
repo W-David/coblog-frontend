@@ -277,6 +277,21 @@
   -o-transition: $params;
 }
 
+@mixin panel-styl($mc, $bc) {
+  color: $mc;
+  @include layout(auto, auto, 4px, 0 12px);
+  @include border(1px solid $mc, none);
+	display: inline-block;
+  white-space: nowrap;
+  background-color: $bc;
+  @include transition(all 120ms ease-in-out);
+  @include pointer;
+  &:hover {
+    color: white;
+    background-color: $mc;
+  }
+}
+
 @mixin article-styl() {
 	/* table 样式 */
 	table {

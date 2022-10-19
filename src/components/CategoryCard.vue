@@ -10,7 +10,7 @@
     </div>
     <div class="category-article-list">
       <div class="category-article-card" v-for="article in category.articles" :key="article.id">
-        <div class="category-article-title" @click="toArticle(article)">
+        <div class="category-article-title" @click="toArticle(article.id)">
           <span class="title-content">
             {{ article.title }}
           </span>
@@ -27,7 +27,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 export default {
-  name: 'categoryCard',
+  name: 'CategoryCard',
   props: {
     category: {
       type: Object,
@@ -37,8 +37,8 @@ export default {
   },
   setup() {
     const router = useRouter()
-    const toArticle = article => {
-      router.push({ name: 'article', params: { id: article.id } })
+    const toArticle = id => {
+      router.push({ name: 'article', params: { id } })
     }
     return {
       toArticle
@@ -54,6 +54,7 @@ export default {
   @include border(1px solid $success-color-a, 8px);
   @include pointer;
   @include transition(all 120ms ease-in-out);
+  @include box-shadow(2px 2px 4px 0 rgba(0, 0, 0, 0.1));
   background-color: white;
   z-index: 1000;
 
@@ -99,7 +100,7 @@ export default {
         }
       }
       &:hover {
-        transform: scaleX(1.02);
+        // transform: scaleX(1.02);
         .title-content {
           color: $font-color;
         }
@@ -110,7 +111,7 @@ export default {
     }
   }
   &:hover {
-    @include box-shadow;
+    @include box-shadow(4px 4px 8px 0 rgba(0, 0, 0, 0.16));
     // background-color: $success-color-b;
   }
   &.is-active {

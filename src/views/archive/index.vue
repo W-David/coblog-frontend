@@ -14,18 +14,14 @@
                       </div>
                     </div>
                   </template>
-                  <div class="article-card" v-for="article in a.articles" :key="article.id">
+                  <div class="article-card" v-for="article in a.articles" :key="article.id" @click="toArticle(article.id)">
                     <div class="article-title">
                       <span class="title-content">{{ article.title }}</span>
                       <span class="time-content hidden-sm-and-down">{{ article.createdAt }}</span>
                     </div>
                     <div class="article-info" v-if="(article.categories && article.categories.length) || (article.tags && article.tags.length)">
-                      <span class="article-info-category" v-for="category in article.categories" :key="category.id" @click="toCategory(category.id)">
-                        {{ '↪' + category.name }}
-                      </span>
-                      <span class="article-info-tag" v-for="tag in article.tags" :key="tag.id" @click="toTag(tag.id)">
-                        {{ '#' + tag.name }}
-                      </span>
+                      <category-panel :size="12" :category="category" v-for="category in article.categories" :key="category.id"></category-panel>
+                      <tag-panel :size="12" :tag="tag" v-for="tag in article.tags" :key="tag.id"></tag-panel>
                     </div>
                     <div class="m-article-time hidden-md-and-up">
                       <span class="time-content">
@@ -40,40 +36,43 @@
         </el-col>
       </el-row>
     </div>
+    <div class="archive-load-more-container">
+      <load-more @on-load-more="handleLoadMore"></load-more>
+    </div>
   </div>
 </template>
 
 <script>
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { listByTimeArticle } from '@/api/article'
+import { useStore } from 'vuex'
+
+import LoadMore from '@/components/LoadMore'
+
+import CategoryPanel from '@/components/CategoryPanel'
+import TagPanel from '@/components/TagPanel'
 
 export default {
   name: 'archive',
+  components: {
+    LoadMore,
+    CategoryPanel,
+    TagPanel
+  },
   setup() {
+    const store = useStore()
     const router = useRouter()
-    const archive = ref([])
-    const getArchive = async (beginTime, endTime) => {
-      const res = await listByTimeArticle(beginTime, endTime)
-      if (res.code !== 200) return
-      const rawArchive = res.data.rows || []
-      const articles2Archive = () => {
-        let curTime = '',
-          curArticles = null,
-          _list = []
-        for (let i = 0, len = rawArchive.length; i < len; i++) {
-          const time = rawArchive[i].createdAt.split(' ')[0]
-          if (curTime !== time) {
-            const curArchive = { time, articles: [] }
-            _list.push(curArchive)
-            curTime = time
-            curArticles = curArchive.articles
-          }
-          curArticles.push(rawArchive[i])
-        }
-        return _list
-      }
-      archive.value = articles2Archive()
+
+    const form = reactive({
+      pageNum: 1,
+      pageSize: 20,
+      beginTime: undefined,
+      endTime: undefined
+    })
+
+    const archive = computed(() => store.getters['article/getArticleArchive'])
+    const getArchive = async () => {
+      await store.dispatch('article/GetArticleArchive', form)
     }
     const generateArchiveTitles = articles => {
       if (articles && articles.length) {
@@ -83,18 +82,19 @@ export default {
         return ['暂无文章']
       }
     }
-    const toCategory = id => {
-      router.push({ name: 'category', params: { id } })
+    const toArticle = id => {
+      router.push({ name: 'article', params: { id } })
     }
-    const toTag = id => {
-      router.push({ name: 'tag', params: { id } })
-    }
-    onMounted(() => getArchive())
+    const handleLoadMore = () => {}
+    onMounted(() => {
+      store.commit('article/CLEAR_ARCHIVE')
+      getArchive()
+    })
     return {
       archive,
       generateArchiveTitles,
-      toCategory,
-      toTag
+      toArticle,
+      handleLoadMore
     }
   }
 }
@@ -153,33 +153,6 @@ export default {
           .article-info {
             @include layout(100%, auto, 0, 12px 0);
             @include flex-box(row, flex-start, center, wrap);
-
-            @mixin custom-tc {
-              @include layout(auto, auto, 6px, 4px 10px);
-              @include transition(all 120ms ease-in-out);
-              @include border(null, 14px);
-              @include pointer;
-              white-space: wrap;
-            }
-
-            .article-info-category {
-              @include custom-tc;
-              color: $success-color;
-              background-color: $success-color-b;
-              &:hover {
-                color: white;
-                background-color: $success-color;
-              }
-            }
-            .article-info-tag {
-              @include custom-tc;
-              color: $primary-color;
-              background-color: $primary-color-h;
-              &:hover {
-                color: white;
-                background-color: $primary-color;
-              }
-            }
           }
           .m-article-time {
             @include clearfix;
@@ -197,6 +170,9 @@ export default {
         }
       }
     }
+  }
+  .archive-load-more-container {
+    @include flex-box(row, center, center);
   }
 }
 </style>

@@ -6,7 +6,12 @@
     <div class="content-container">
       <main class="main-container">
         <div id="particles-js"></div>
-        <router-view></router-view>
+        <router-view :key="route.path"></router-view>
+        <!-- <router-view v-slot="{ Component, route }">
+          <transition :name="route.meta.transition">
+            <component :is="Component" :key="route.path" />
+          </transition>
+        </router-view> -->
       </main>
       <footer class="footer-container">
         <h-footer></h-footer>
@@ -60,7 +65,8 @@ export default {
     return {
       currentPath,
       activePage,
-      menuList
+      menuList,
+      route
     }
   }
 }
@@ -76,6 +82,9 @@ export default {
   .content-container {
     @include flex-box(column);
     @include layout;
+    // @include fade();
+    // @include slide-fade-left();
+    // @include slide-fade-right();
     .main-container {
       position: relative;
       margin-top: $header-height;

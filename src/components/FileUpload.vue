@@ -1,14 +1,6 @@
 <template>
   <div class="file-uploader-container">
-    <el-upload
-      v-show="!isUploaded"
-      ref="uploadRef"
-      class="file-uploader"
-      action="#"
-      :multiple="false"
-      :limit="1"
-      :show-file-list="false"
-      :before-upload="beforeFileUpload">
+    <el-upload v-show="!isUploaded" ref="uploadRef" class="file-uploader" action="#" :multiple="false" :limit="1" :show-file-list="false" :before-upload="beforeFileUpload">
       <template #default>
         <div id="trigger" class="trigger-area">
           <el-icon :size="18"><i-plus /></el-icon>
@@ -18,12 +10,7 @@
     </el-upload>
     <transition name="fade">
       <div class="file-img-container" v-if="isUploaded">
-        <img
-          class="file-img"
-          :src="imgUrl"
-          alt="noImg"
-          width="100%"
-          height="100%" />
+        <img class="file-img" :src="imgUrl" alt="noImg" width="100%" height="100%" />
         <div class="file-cover">
           <span class="file-ctrl" @click="handleView">
             <el-icon><i-view /></el-icon>
@@ -33,12 +20,7 @@
             <el-icon><i-upload /></el-icon>
             <span> 重新上传</span>
           </span>
-          <el-popconfirm
-            confirm-button-text="是的"
-            cancel-button-text="按错了"
-            @confirm="handleDelete"
-            icon-color="red"
-            title="确定删除?">
+          <el-popconfirm confirm-button-text="是的" cancel-button-text="按错了" @confirm="handleDelete" icon-color="red" title="确定删除?">
             <template #reference>
               <span class="file-ctrl">
                 <el-icon><i-delete /></el-icon>
@@ -60,7 +42,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-  name: 'fileUpload',
+  name: 'FileUpload',
   props: {
     isUploaded: {
       type: Boolean,
@@ -94,10 +76,7 @@ export default {
     const handleView = () => (isShow.value = true)
     const handleDelete = () => emit('on-delete')
     const handleUpload = () => {
-      document.body
-        .getElementsByClassName('file-uploader')[0]
-        .getElementsByClassName('el-upload__input')[0]
-        .click()
+      document.body.getElementsByClassName('file-uploader')[0].getElementsByClassName('el-upload__input')[0].click()
     }
     return {
       isShow,

@@ -28,7 +28,7 @@ export default {
     const queryParams = reactive({
       title: '',
       pageNum: 1,
-      pageSize: 8
+      pageSize: 10
     })
 
     const getList = async () => {

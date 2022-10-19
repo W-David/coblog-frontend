@@ -86,7 +86,6 @@ export default {
     const tags = ref([])
     const cates = ref([])
 
-    const adminInfo = computed(() => store.getters.adminInfo)
     const isEditMode = computed(() => !!props.id)
 
     let contentInstance = null

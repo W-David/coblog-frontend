@@ -4,30 +4,12 @@
       {{ selectText }}
     </el-button>
     <span v-if="items && items.length">
-      <el-tag
-        :type="styl"
-        v-for="item in items"
-        :key="item.id"
-        closable
-        @close="handleClose(item)">
+      <el-tag :type="styl" v-for="item in items" :key="item.id" closable @close="handleClose(item)">
         {{ item.name }}
       </el-tag>
     </span>
-    <el-input
-      v-if="touchAdd"
-      ref="inputRef"
-      v-model="inputValue"
-      class="input-new-item"
-      size="small"
-      @keyup.enter="handleAdd"
-      @blur="handleCancel">
-    </el-input>
-    <el-button
-      v-else
-      plain
-      size="small"
-      class="btn-new-item"
-      @click="showInput">
+    <el-input v-if="touchAdd" ref="inputRef" v-model="inputValue" class="input-new-item" size="small" @keyup.enter="handleAdd" @blur="handleCancel"> </el-input>
+    <el-button v-else plain size="small" class="btn-new-item" @click="showInput">
       {{ '+ ' + addText }}
     </el-button>
   </div>
@@ -38,7 +20,7 @@ import { ref, nextTick, toRefs } from 'vue'
 import { ElMessage } from 'element-plus'
 
 export default {
-  name: 'selectArea',
+  name: 'SelectArea',
   props: {
     styl: {
       type: String,

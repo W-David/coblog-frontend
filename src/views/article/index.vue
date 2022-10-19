@@ -13,11 +13,27 @@
           <div class="article-main-area" v-if="article">
             <div class="article-banner-container" v-if="article.banner && article.banner.path">
               <img :src="article.banner.path" alt="noImg" />
+              <div class="article-info-content">
+                <span class="article-author">{{ article.admin?.nickname || '佚名' }}</span>
+                <span class="article-sp">|</span>
+                <span class="article-date">{{ article.createdAt }}</span>
+              </div>
             </div>
             <div class="article-title-container">
-              <div class="article-title-content">
-                <h3>{{ article.title }}</h3>
+              <div class="row-container">
+                <div class="article-title-content">{{ article.title }}</div>
+                <div class="article-favorite-content">
+                  <div class="favorite-icon">
+                    <svg-icon icon-class="favorite-full"></svg-icon>
+                  </div>
+                  <div class="favorite-num">{{ article.favoriteNum }}</div>
+                </div>
               </div>
+              <div class="article-panel-content">
+                <category-panel :size="10" :category="category" v-for="category in article.categories" :key="category.id"></category-panel>
+                <tag-panel :size="10" :tag="tag" v-for="tag in article.tags" :key="tag.id"></tag-panel>
+              </div>
+              <div class="article-desc-content">{{ article.description }}</div>
             </div>
             <div class="article-content-container">
               <div id="article-content" class="article-content" v-html="article.content"></div>
@@ -35,16 +51,22 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, onUnmounted, computed, nextTick } from 'vue'
+import { ref, reactive, onMounted, onUnmounted, computed, nextTick, onActivated } from 'vue'
 import { deleteArticle } from '@/api/article'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 // import tocbot from 'tocbot'
 
+import CategoryPanel from '@/components/CategoryPanel'
+import TagPanel from '@/components/TagPanel'
+
 export default {
   name: 'h-article',
-  props: {},
+  components: {
+    CategoryPanel,
+    TagPanel
+  },
   setup() {
     const store = useStore()
     const route = useRoute()
@@ -52,7 +74,9 @@ export default {
     const articleId = +route.params.id
     const loginInfo = computed(() => store.getters.loginInfo)
     const article = computed(() => store.getters['article/getArticleById'](articleId))
-    const isCurUser = computed(() => article.value.admin.id === loginInfo.value.id)
+    const isCurUser = computed(() => article.value?.admin?.id === loginInfo.value?.id)
+
+    const getArticle = async articleId => await store.dispatch('article/GetArticle', articleId)
     const handleDel = async () => {
       const { value: title } = await ElMessageBox.prompt('【请输入文章标题确认删除】', '删除确认', {
         confirmButtonText: '删除此文章',
@@ -77,7 +101,7 @@ export default {
       router.back()
     }
     onMounted(async () => {
-      await store.dispatch('article/GetArticle', articleId)
+      await getArticle(articleId)
       // nextTick(() => {
       //   tocbot.init({
       //     tocSelector: '#article-toc',
@@ -96,6 +120,7 @@ export default {
       handleDel,
       handleEdit,
       toBack,
+      getArticle,
       article,
       articleId,
       isCurUser
@@ -143,36 +168,85 @@ export default {
       background-color: white;
       .article-banner-container {
         @include layout(100%, 320px, 0, 0);
+        position: relative;
         img {
           object-fit: cover;
           width: 100%;
           height: 100%;
+          border-radius: 4px;
+        }
+        .article-info-content {
+          @include layout(auto, auto, 8px 0 0 0, 4px 8px);
+          @include border(1px solid rgba(0, 0, 0, 0.8), 4px);
+          @include box-shadow(2px 2px 8px rgba(0, 0, 0, 0.1));
+          background-color: rgba(0, 0, 0, 0.6);
+          position: absolute;
+          right: 8px;
+          bottom: 8px;
+          .article-author {
+            color: $success-color;
+            font-weight: bold;
+            font-size: 14px;
+            // text-align: end;
+          }
+          .article-sp {
+            margin: 0 8px;
+            font-weight: lighter;
+            color: #000;
+          }
+          .article-date {
+            color: $warning-color;
+            font-size: 12px;
+          }
         }
       }
       .article-title-container {
-        @include layout(100%, auto, 0, 8px);
+        @include layout(100%, auto, 8px 0, 8px);
+        @include border(1px solid #f1f1f1, 4px);
+        .row-container {
+          @include layout(100%, auto, 4px 0, 4px 8px);
+          @include flex-box(row, space-between, flex-start, wrap);
+        }
+        .article-panel-content {
+          @include layout(100%, auto, 4px 0, 4px);
+          text-align: start;
+        }
         .article-title-content {
-          font-size: 24px;
-          font-weight: 800;
-          line-height: 1.5 !important;
-          text-align: center;
+          @include font-hei;
+          max-width: 90%;
+          font-size: 28px;
+          font-weight: bolder;
+          line-height: 1.2 !important;
+        }
+        .article-favorite-content {
+          .favorite-icon {
+            color: #e74645;
+            text-align: center;
+            cursor: pointer;
+            font-size: 22px;
+          }
+          .favorite-num {
+            @include font-hei;
+            font-size: 12px;
+            color: #272643;
+          }
         }
         .article-desc-content {
-          @include layout(100%, 80px, 4px 0, 8px 0);
-          @include flex-box(row, space-between, center);
-          .article-author {
-            color: $primary-color;
-            font-size: 12px;
-          }
-          .article-date {
-            color: $font-color-a;
-            font-size: 12px;
-          }
+          @include layout(100%, auto, 0, 8px);
+          @include font-fang-song;
+          color: $font-color-a;
+          font-style: italic;
+          font-weight: bold;
+          // @include border(none, 4px);
+          // background-color: #fcfcfc;
+          text-align: start;
         }
       }
       .article-content-container {
-        @include layout(100%, auto, 0, 24px);
-        background-color: rgba(245, 236, 211, 0.2);
+        @include layout(100%, auto, 0, 16px 24px);
+        @include border(none, 4px);
+        // background-color: rgba(245, 236, 211, 0.2);
+        background-color: #f5f6f7;
         .article-content {
           @include font-hei;
           &:deep {
