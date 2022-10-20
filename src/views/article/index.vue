@@ -30,7 +30,12 @@
                 </div>
               </div>
               <div class="article-panel-content">
-                <category-panel :size="10" :category="category" v-for="category in article.categories" :key="category.id"></category-panel>
+                <category-panel
+                  :size="10"
+                  :category="category"
+                  v-for="category in article.categories"
+                  :key="category.id"
+                ></category-panel>
                 <tag-panel :size="10" :tag="tag" v-for="tag in article.tags" :key="tag.id"></tag-panel>
               </div>
               <div class="article-desc-content">{{ article.description }}</div>
@@ -39,7 +44,7 @@
               <div id="article-content" class="article-content" v-html="article.content"></div>
             </div>
           </div>
-          <div class="article-edit-area" v-if="isCurUser">
+          <div class="article-edit-area" v-if="isAdminLogin && isCurAdmin">
             <el-button type="danger" plain round size="small" @click="handleDel">【删除 • 需输入文章标题】</el-button>
             <el-button type="success" plain round size="small" @click="handleEdit">【修改文章】</el-button>
           </div>
@@ -73,8 +78,9 @@ export default {
     const router = useRouter()
     const articleId = +route.params.id
     const loginInfo = computed(() => store.getters.loginInfo)
+    const isAdminLogin = computed(() => store.getters.isAdminLogin)
     const article = computed(() => store.getters['article/getArticleById'](articleId))
-    const isCurUser = computed(() => article.value?.admin?.id === loginInfo.value?.id)
+    const isCurAdmin = computed(() => article.value?.admin?.id === loginInfo.value?.id)
 
     const getArticle = async articleId => await store.dispatch('article/GetArticle', articleId)
     const handleDel = async () => {
@@ -123,7 +129,8 @@ export default {
       getArticle,
       article,
       articleId,
-      isCurUser
+      isAdminLogin,
+      isCurAdmin
     }
   }
 }

@@ -23,6 +23,6 @@ export function concatArchive(cachedArchive, newArchive) {
     lastCachedArchive.articles.push(...firstNewArchive.articles)
     cachedArchive.push(...newArchive.slice(1))
   } else {
-    cachedArchive.push(newArchive)
+    cachedArchive.push(...newArchive)
   }
 }

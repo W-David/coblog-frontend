@@ -80,13 +80,5 @@ export default {
 .pagination-container {
   padding: 16px 8px;
   text-align: center;
-  &:deep .el-pagination {
-    .btn-prev,
-    .btn-next {
-      .el-icon {
-        left: 8px;
-      }
-    }
-  }
 }
 </style>

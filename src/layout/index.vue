@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
-    <header class="header-container">
-      <nav-bar :activePage="activePage" :menuList="menuList"> </nav-bar>
-    </header>
+    <div class="header-container">
+      <nav-bar :activePage="activePage" :menuList="menuList"></nav-bar>
+    </div>
     <div class="content-container">
-      <main class="main-container">
+      <div class="main-container">
         <div id="particles-js"></div>
         <router-view :key="route.path"></router-view>
         <!-- <router-view v-slot="{ Component, route }">
@@ -12,10 +12,10 @@
             <component :is="Component" :key="route.path" />
           </transition>
         </router-view> -->
-      </main>
-      <footer class="footer-container">
+      </div>
+      <div class="footer-container">
         <h-footer></h-footer>
-      </footer>
+      </div>
     </div>
   </div>
 </template>
@@ -45,7 +45,8 @@ export default {
 
     watch(
       () => route.path,
-      val => (activePage.value = val)
+      val => (activePage.value = val),
+      { immediate: true }
     )
 
     onMounted(async () => {
@@ -75,28 +76,34 @@ export default {
 <style lang="scss" scoped>
 .app-container {
   @include layout(100%, 100%);
+
   .header-container {
     @include position(fixed, 0, 0, 0);
     z-index: 1005;
   }
+
   .content-container {
     @include flex-box(column);
     @include layout;
+
     // @include fade();
     // @include slide-fade-left();
     // @include slide-fade-right();
     .main-container {
       position: relative;
       margin-top: $header-height;
+
       #particles-js {
         position: fixed;
         @include layout;
         z-index: -1;
       }
     }
+
     .footer-container {
       margin-top: auto;
     }
   }
 }
-</style>>
+</style>
+>

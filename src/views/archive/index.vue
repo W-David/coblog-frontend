@@ -4,13 +4,13 @@
       <el-row justify="center">
         <el-col :xs="24" :sm="20" :md="18" :lg="16" :xl="16">
           <el-timeline>
-            <el-timeline-item :timestamp="a.time" type="primary" placement="top" :hollow="true" v-for="a in archive" :key="a.time">
+            <el-timeline-item :timestamp="a.time" type="primary" :hollow="true" placement="top" v-for="a in archive" :key="a.time">
               <el-collapse>
                 <el-collapse-item :name="a.time">
                   <template #title>
                     <div class="display-title-container">
                       <div class="display-title" v-for="(title, index) in generateArchiveTitles(a.articles)" :key="index">
-                        <span class="display-title-content">{{ title }}</span>
+                        <div class="display-title-content">{{ title }}</div>
                       </div>
                     </div>
                   </template>
@@ -37,7 +37,7 @@
       </el-row>
     </div>
     <div class="archive-load-more-container">
-      <load-more @on-load-more="handleLoadMore"></load-more>
+      <load-more v-show="hasArchive" @on-load-more="handleLoadMore"></load-more>
     </div>
   </div>
 </template>
@@ -71,8 +71,10 @@ export default {
     })
 
     const archive = computed(() => store.getters['article/getArticleArchive'])
+    const hasArchive = ref(true)
     const getArchive = async () => {
-      await store.dispatch('article/GetArticleArchive', form)
+      const [articleArchive, total] = await store.dispatch('article/GetArticleArchive', form)
+      hasArchive.value = articleArchive && articleArchive.length && form.pageNum * form.pageSize < total
     }
     const generateArchiveTitles = articles => {
       if (articles && articles.length) {
@@ -85,13 +87,17 @@ export default {
     const toArticle = id => {
       router.push({ name: 'article', params: { id } })
     }
-    const handleLoadMore = () => {}
+    const handleLoadMore = () => {
+      form.pageNum = form.pageNum + 1
+      getArchive()
+    }
     onMounted(() => {
       store.commit('article/CLEAR_ARCHIVE')
       getArchive()
     })
     return {
       archive,
+      hasArchive,
       generateArchiveTitles,
       toArticle,
       handleLoadMore
@@ -108,20 +114,34 @@ export default {
       padding-inline-start: 0;
     }
     &:deep {
+      // .el-timeline-item__node {
+      //   background-color: $primary-color;
+      // }
       .el-timeline-item__timestamp {
+        @include font-fang-song;
         text-align: left;
+        font-weight: bolder;
+        color: $font-color;
       }
       .el-timeline-item__content {
         .display-title-container {
           @include layout(100%, auto, 0, 8px);
-          @include flex-box(row, flex-start, center, wrap);
+          @include flex-box(row, flex-start, center, nowrap);
+          overflow: hidden;
           .display-title {
             display: inline-block;
-            max-width: 120px;
+            margin-right: 16px;
+            padding: 0 8px;
+            max-width: calc(100vw - 120px);
             .display-title-content {
               @include text-overflow(1);
-              margin: 0 16px;
-              color: $success-color;
+              @include font-fang-song;
+              font-style: italic;
+              font-weight: bolder;
+              color: $primary-color-a;
+              &:hover {
+                color: $primary-color;
+              }
             }
           }
         }

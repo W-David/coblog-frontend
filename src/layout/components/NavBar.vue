@@ -7,7 +7,7 @@
       Cody's blog
     </div>
     <div v-if="isUserLogin || isAdminLogin" class="nav-menu hidden-sm-and-down">
-      <el-menu :default-active="activePage" :router="true" mode="horizontal" ref="menuRef">
+      <el-menu :default-active="activePage" :router="true" mode="horizontal" ref="menuRef" :ellipsis="false">
         <el-menu-item v-for="menu in menuList" :key="menu.id" :index="menu.path">
           {{ menu.name }}
         </el-menu-item>
@@ -24,7 +24,7 @@
       <user v-if="isUserLogin"></user>
       <admin v-else-if="isAdminLogin"></admin>
       <span v-else>
-        <el-button size="large" type="text" @click="toLogin"> 请先登录 </el-button>
+        <el-button size="large" link @click="toLogin"> 请先登录 </el-button>
       </span>
     </div>
   </div>

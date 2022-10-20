@@ -1,10 +1,15 @@
 <template>
   <div class="user-container">
     <el-avatar class="user-avatar hidden-xs-only" :src="avatar" fit="cover">
-      <span>空</span>
+      <span>{{ userInfo.username.substr(0, 1) }}</span>
     </el-avatar>
-    <el-dropdown type="text" split-button trigger="click">
-      Hi,{{ userInfo.email }}
+    <el-dropdown>
+      <span class="dropdown-link">
+        Hello, {{ userInfo.username }}
+        <el-icon class="el-icon--right">
+          <i-arrow-down />
+        </el-icon>
+      </span>
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item>
@@ -18,11 +23,7 @@
     </el-dropdown>
   </div>
   <teleport to="#rootUserInfo">
-    <el-dialog
-      v-model="openUserInfo"
-      center
-      :show-close="false"
-      :width="isMobile ? '70%' : '30%'">
+    <el-dialog v-model="openUserInfo" center :show-close="false" :width="isMobile ? '70%' : '30%'">
       <div class="avatar-container">
         <avatar-upload
           :isUploaded="!!avatar"
@@ -30,7 +31,8 @@
           trigHint="上传头像"
           descripHint="头像"
           @on-upload="handleUpload"
-          @on-delete="handleDelete">
+          @on-delete="handleDelete"
+        >
         </avatar-upload>
       </div>
       <div class="info-container">
@@ -160,10 +162,7 @@ $avatar-radius: 4px;
   .info-name,
   .info-email {
     @include layout(100%, auto, 12px 0, 12px);
-    @include box-shadow(
-      inset 2px 2px 4px $info-color-b,
-      inset -1px -1px 2px $info-color-b
-    );
+    @include box-shadow(inset 2px 2px 4px $info-color-b, inset -1px -1px 2px $info-color-b);
     @include border(1px solid transparent, 8px);
     @include pointer;
     .info-hint {

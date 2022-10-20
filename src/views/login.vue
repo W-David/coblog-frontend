@@ -8,14 +8,23 @@
         backgroundImage: 'url(' + bgImg + ')',
         animationDelay: (animationDuration / bgImgs.length) * index + 's',
         animationDuration: animationDuration + 's'
-      }"></div>
+      }"
+    ></div>
     <el-row justify="center" class="login-row-container">
       <el-col class="login-col-container" :xs="24" :sm="20" :md="10" :lg="7" :xl="7">
         <div class="login-card">
           <div class="login-card-header">
             <span :class="[needRegister ? 'regis-header-hint' : 'login-header-hint']">欢迎来到Coody's Blog</span>
           </div>
-          <el-form class="login-card-content" v-model="form" ref="formRef" label-position="right" :rules="rules" status-icon inline-message>
+          <el-form
+            class="login-card-content"
+            v-model="form"
+            ref="formRef"
+            label-position="right"
+            :rules="rules"
+            status-icon
+            inline-message
+          >
             <el-form-item prop="email">
               <el-input v-model="form.email" placeholder="邮箱"></el-input>
             </el-form-item>
@@ -89,7 +98,9 @@ export default {
         email: form.email,
         password: form.password
       }
-      const res = isAdmin ? await store.dispatch('admin/Login', submitForm) : await store.dispatch('user/Login', submitForm)
+      const res = isAdmin
+        ? await store.dispatch('admin/Login', submitForm)
+        : await store.dispatch('user/Login', submitForm)
       if (res.code !== 200) return
       router.push({ name: 'home' })
       ElMessage({ type: 'success', message: res.msg })
@@ -109,7 +120,9 @@ export default {
             rPassword: form.rPassword,
             username: form.nickName
           }
-      const res = isAdmin ? await store.dispatch('admin/Register', submitForm) : await store.dispatch('user/Register', submitForm)
+      const res = isAdmin
+        ? await store.dispatch('admin/Register', submitForm)
+        : await store.dispatch('user/Register', submitForm)
       if (res.code !== 200) return
       router.push({ name: 'home' })
       ElMessage({ type: 'success', message: res.msg })
@@ -156,7 +169,7 @@ export default {
     .login-col-container {
       @include layout(100%, auto, 0, 0);
       .login-card {
-        @include layout(80%, auto, 20% auto, 12px);
+        @include layout(80%, auto, 33.3% auto, 12px);
         @include border(1px solid #ececec, 8px);
         background-color: white;
         .login-card-header {
@@ -182,10 +195,12 @@ export default {
             }
           }
           .register-hint {
+            user-select: none !important;
             @include pointer;
           }
           .register-area,
           .login-area {
+            width: 100%;
             &:deep {
               .el-button {
                 margin: 0;

@@ -9,7 +9,8 @@
         @mouseenter="isBannerHover = true"
         @mouseleave="isBannerHover = false"
         :class="['article-banner-description', !isBannerHover ? 'spinner-border' : '']"
-        @click="openDetail">
+        @click="openDetail"
+      >
         阅读全文
       </div>
       <!-- <div class="article-no-banner" v-if="!article.banner">
@@ -23,7 +24,12 @@
       </span>
     </div>
     <div class="article-ct-container">
-      <category-panel :size="12" :category="category" v-for="category in article.categories" :key="category.id"></category-panel>
+      <category-panel
+        :size="12"
+        :category="category"
+        v-for="category in article.categories"
+        :key="category.id"
+      ></category-panel>
       <tag-panel :size="12" :tag="tag" v-for="tag in article.tags" :key="tag.id"></tag-panel>
     </div>
     <div class="article-content-container" v-html="article.description"></div>
@@ -185,7 +191,7 @@ $descrip-mr: 12px;
   }
 
   .article-title-container {
-    @include layout(100%, 42px, 28px 0 0 0, 12px 0);
+    @include layout(100%, auto, 28px 0 0 0, 12px 16px);
     @include flex-box(row, center, center);
 
     .title-content {
@@ -213,6 +219,7 @@ $descrip-mr: 12px;
     line-height: 1.6;
     text-align: left;
     @include text-overflow(5);
+    text-indent: 1em;
   }
 
   .article-description-container {

@@ -24,6 +24,7 @@ module.exports = {
     host: '0.0.0.0',
     port: 80,
     open: true,
+    disableHostCheck: true,
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
         target: `${process.env.VUE_APP_BASE_API}`,
@@ -32,8 +33,7 @@ module.exports = {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
       }
-    },
-    disableHostCheck: true
+    }
   },
   configureWebpack: {
     name: 'coblog',
@@ -49,7 +49,10 @@ module.exports = {
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',
-      patterns: [path.resolve(__dirname, './src/assets/style/index.scss')]
+      patterns: [
+        path.resolve(__dirname, './src/assets/style/index.scss')
+        // path.resolve(__dirname, './src/assets/element/index.scss')
+      ]
     }
   },
   chainWebpack(config) {

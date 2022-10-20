@@ -1,8 +1,7 @@
 import ElementPlus from 'element-plus'
-import '../../node_modules/element-plus/'
-import '../element-variables.scss'
-import locale from 'element-plus/lib/locale/lang/zh-cn'
+import 'element-plus/dist/index.css'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 export default app => {
-  app.use(ElementPlus, { locale })
+  app.use(ElementPlus, { zhCn })
 }

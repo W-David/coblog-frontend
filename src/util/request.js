@@ -32,7 +32,7 @@ service.interceptors.response.use(
     const rowMsg = res.data.msg || '未知错误'
     const msg = Object.prototype.toString.call(rowMsg) === '[object Array]' ? rowMsg[0] : rowMsg
     if (!(res.status === 200 && code === 200)) {
-      ElMessage({ type: 'warning', message: msg })
+      ElMessage({ type: 'warning', message: msg, showClose: false })
     }
     return res.data
   },
@@ -46,7 +46,7 @@ service.interceptors.response.use(
     } else if (message.includes('Request failed with status code')) {
       message = '接口 ' + message.substr(message.length - 3) + ' 异常'
     }
-    ElMessage({ showClose: true, message: message, type: 'error' })
+    ElMessage({ showClose: false, message: message, type: 'error' })
     return Promise.reject(error)
   }
 )

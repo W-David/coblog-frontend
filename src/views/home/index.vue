@@ -1,15 +1,21 @@
 <template>
   <div class="home-page">
-    <el-row justify="center" v-for="article in articles" :key="article.id">
-      <el-col :xs="24" :sm="20" :md="18" :lg="12" :xl="12">
-        <article-card :article="article"></article-card>
-      </el-col>
-    </el-row>
-    <el-row justify="center">
-      <el-col :span="24">
-        <pagination v-show="totalRef > 0" :total="totalRef" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
-      </el-col>
-    </el-row>
+    <div class="article-row" v-for="article in articles" :key="article.id">
+      <el-row justify="center">
+        <el-col :xs="24" :sm="20" :md="18" :lg="12" :xl="12">
+          <article-card :article="article"></article-card>
+        </el-col>
+      </el-row>
+    </div>
+    <div class="pagination-row">
+      <pagination
+        v-show="totalRef > 0"
+        :total="totalRef"
+        v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize"
+        @pagination="getList"
+      />
+    </div>
   </div>
 </template>
 
@@ -51,8 +57,12 @@ export default {
 <style lang="scss" scoped>
 .home-page {
   @include layout(100%, 100%, 0, 16px);
-  .el-row {
-    margin-bottom: $row-gutter;
+  .article-row {
+    @include layout(100%, auto, 0 0 $row-gutter 0, 0);
+  }
+  .pagination-row {
+    @include layout(100%, auto, 0, 0);
+    @include flex-box(row, center, center);
   }
 }
 </style>

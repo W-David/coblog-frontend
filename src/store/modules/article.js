@@ -19,7 +19,7 @@ const article = {
     getArticleMap: state => () => cloneLoop(state.articleMap),
     getArticleArchive: state => cloneLoop(state.articleArchive),
     getArticleById: state => id => state.articleMap.get(id),
-    getArticleList: state => () => state.articleMap.values()
+    getArticleList: state => () => [...state.articleMap.values()]
   },
   mutations: {
     SET_ARTICLES: (state, articles) => {
