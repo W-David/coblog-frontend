@@ -75,8 +75,10 @@ export default {
     const needRegister = ref(false)
     const formRef = ref(null)
     const form = reactive({
-      email: 'admin@root.com',
-      password: 'admin@root',
+      // email: 'admin@root.com',
+      // password: 'admin@root',
+      email: '',
+      password: '',
       rPassword: '',
       nickName: ''
     })

@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+const webpack = require('webpack')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -9,7 +10,7 @@ const isProd = process.env.NODE_ENV === 'production'
 const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
-  publicPath: isProd ? './' : '/',
+  publicPath: isProd ? '/' : '/',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: isDev,
@@ -44,6 +45,9 @@ module.exports = {
         components: resolve('src/components'),
         public: resolve('public')
       }
+    },
+    externals: {
+      '@waline/client': 'Waline'
     }
   },
   pluginOptions: {

@@ -43,15 +43,18 @@
             <div class="article-content-container">
               <div id="article-content" class="article-content" v-html="article.content"></div>
             </div>
+            <div class="article-edit-container" v-if="isAdminLogin && isCurAdmin">
+              <el-button type="danger" round @click="handleDel">删除 • 需输入文章标题</el-button>
+              <el-button type="success" round @click="handleEdit">修改文章</el-button>
+            </div>
           </div>
-          <div class="article-edit-area" v-if="isAdminLogin && isCurAdmin">
-            <el-button type="danger" plain round size="small" @click="handleDel">【删除 • 需输入文章标题】</el-button>
-            <el-button type="success" plain round size="small" @click="handleEdit">【修改文章】</el-button>
+          <div class="article-comments-area">
+            <div id="waline"></div>
           </div>
         </div>
       </el-col>
     </el-row>
-    <el-backtop :bottom="100"> </el-backtop>
+    <el-backtop :bottom="25"> </el-backtop>
   </div>
 </template>
 
@@ -61,6 +64,8 @@ import { deleteArticle } from '@/api/article'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { init } from '@waline/client'
+// import '@waline/client/dist/waline.css'
 // import tocbot from 'tocbot'
 
 import CategoryPanel from '@/components/CategoryPanel'
@@ -81,6 +86,14 @@ export default {
     const isAdminLogin = computed(() => store.getters.isAdminLogin)
     const article = computed(() => store.getters['article/getArticleById'](articleId))
     const isCurAdmin = computed(() => article.value?.admin?.id === loginInfo.value?.id)
+
+    const mountWaline = () => {
+      init({
+        el: '#waline',
+        serverURL: 'http://localhost:8360',
+        reaction: true
+      })
+    }
 
     const getArticle = async articleId => await store.dispatch('article/GetArticle', articleId)
     const handleDel = async () => {
@@ -107,6 +120,7 @@ export default {
       router.back()
     }
     onMounted(async () => {
+      mountWaline()
       await getArticle(articleId)
       // nextTick(() => {
       //   tocbot.init({
@@ -161,6 +175,7 @@ export default {
       justify-content: center;
       align-items: center;
       color: $primary-color;
+      background-color: #fff;
       z-index: 1000;
       box-shadow: 0 0 6px rgb(0 0 0 / 12%);
       cursor: pointer;
@@ -171,10 +186,10 @@ export default {
     .article-main-area {
       @include layout(100%, 100%, 0, 16px);
       @include border(none, 8px);
-      @include box-shadow;
-      background-color: white;
+      @include box-shadow(4px 4px 16px rgba(0, 0, 0, 0.1));
+      background-color: #f5f5f5;
       .article-banner-container {
-        @include layout(100%, 320px, 0, 0);
+        @include layout(100%, 320px, 0 0 12px 0, 0);
         position: relative;
         img {
           object-fit: cover;
@@ -208,8 +223,8 @@ export default {
         }
       }
       .article-title-container {
-        @include layout(100%, auto, 8px 0, 8px);
-        @include border(1px solid #f1f1f1, 4px);
+        @include layout(100%, auto, 0 0 12px 0, 8px);
+        @include border(1px solid #ddd, 4px);
         .row-container {
           @include layout(100%, auto, 4px 0, 4px 8px);
           @include flex-box(row, space-between, flex-start, wrap);
@@ -250,10 +265,10 @@ export default {
         }
       }
       .article-content-container {
-        @include layout(100%, auto, 0, 16px 24px);
-        @include border(none, 4px);
+        @include layout(100%, auto, 0 0 12px 0, 16px 24px);
+        @include border(1px solid #e5e5e5, 4px);
         // background-color: rgba(245, 236, 211, 0.2);
-        background-color: #f5f6f7;
+        background-color: #eee;
         .article-content {
           @include font-hei;
           &:deep {
@@ -261,12 +276,20 @@ export default {
           }
         }
       }
+
+      .article-edit-container {
+        @include layout(100%, auto, 0, 8px 0);
+        @include flex-box(row, flex-end, center);
+        @include border(none, 8px);
+        // @include box-shadow(4px 4px 16px rgba(0, 0, 0, 0.1));
+      }
     }
-    .article-edit-area {
-      @include layout(100%, auto, 8px 0, 8px);
-      @include flex-box(row, flex-end, center);
-      @include border(none, 8px);
-      @include box-shadow;
+
+    .article-comments-area {
+      @include layout(100%, auto, 16px 0 0 0, 8px 12px);
+      @include border(nont, 8px);
+      @include box-shadow(4px 4px 16px rgba(0, 0, 0, 0.1));
+      background-color: #f5f5f5;
     }
   }
 }
