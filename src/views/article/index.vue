@@ -90,7 +90,7 @@ export default {
     const mountWaline = () => {
       init({
         el: '#waline',
-        serverURL: 'http://localhost:8360',
+        serverURL: process.env.VUE_APP_WALINE_API,
         reaction: true
       })
     }
