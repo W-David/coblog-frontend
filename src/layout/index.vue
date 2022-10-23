@@ -1,45 +1,38 @@
 <template>
   <div class="app-container">
-    <div class="header-container">
+    <header class="header-container">
       <nav-bar :activePage="activePage" :menuList="menuList"></nav-bar>
-    </div>
+    </header>
     <div class="content-container">
-      <div class="main-container">
-        <div id="particles-js"></div>
-        <router-view :key="route.path"></router-view>
-        <!-- <router-view v-slot="{ Component, route }">
-          <transition :name="route.meta.transition">
-            <component :is="Component" :key="route.path" />
-          </transition>
-        </router-view> -->
-      </div>
-      <div class="footer-container">
+      <section class="main-container">
+        <app-main />
+      </section>
+      <footer class="footer-container">
         <h-footer></h-footer>
-      </div>
+      </footer>
     </div>
   </div>
 </template>
 
 <script>
-import NavBar from './components/NavBar.vue'
-import HFooter from './components/HFooter.vue'
-import { ElMessage } from 'element-plus'
+import NavBar from './components/NavBar'
+import HFooter from './components/HFooter'
+import AppMain from './components/Main'
 import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { reactive, ref, computed, onMounted, watch } from 'vue'
-import { setToken, encodeToken } from '@/util/auth'
-import particlesJs from '@/util/particles'
-import { isMobile } from '@/util/device'
+import useWindowResize from '@/hooks/useWindowResize'
 
 export default {
   name: 'index',
   components: {
     NavBar,
-    HFooter
+    HFooter,
+    AppMain
   },
   setup(props, { attrs, slots, emit, expose }) {
+    useWindowResize()
     const store = useStore()
-    const router = useRouter()
     const route = useRoute()
     const activePage = ref('')
 
@@ -49,12 +42,6 @@ export default {
       { immediate: true }
     )
 
-    onMounted(async () => {
-      store.commit('app/TOGGLE_DEVICE', isMobile() ? 'mobile' : 'desktop')
-      particlesJs.load('particles-js', 'static/particles.json')
-    })
-
-    const currentPath = computed(() => route.path)
     const menuList = ref([
       { id: 0, name: '首页', path: '/home' },
       { id: 1, name: '归档', path: '/archive' },
@@ -64,7 +51,6 @@ export default {
     ])
 
     return {
-      currentPath,
       activePage,
       menuList,
       route
@@ -86,18 +72,9 @@ export default {
     @include flex-box(column);
     @include layout;
 
-    // @include fade();
-    // @include slide-fade-left();
-    // @include slide-fade-right();
     .main-container {
       position: relative;
       margin-top: $header-height;
-
-      #particles-js {
-        position: fixed;
-        @include layout;
-        z-index: -1;
-      }
     }
 
     .footer-container {

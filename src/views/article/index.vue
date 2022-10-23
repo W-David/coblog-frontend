@@ -185,9 +185,9 @@ export default {
     }
     .article-main-area {
       @include layout(100%, 100%, 0, 16px);
-      @include border(none, 8px);
-      @include box-shadow(4px 4px 16px rgba(0, 0, 0, 0.1));
-      background-color: #f5f5f5;
+      @include border(1px solid #eee, 8px);
+      @include box-shadow(2px 4px 16px rgba(0, 0, 0, 0.1));
+      background-color: #fafafa;
       .article-banner-container {
         @include layout(100%, 320px, 0 0 12px 0, 0);
         position: relative;
@@ -287,9 +287,9 @@ export default {
 
     .article-comments-area {
       @include layout(100%, auto, 16px 0 0 0, 8px 12px);
-      @include border(nont, 8px);
+      @include border(1px solid #eee, 8px);
       @include box-shadow(4px 4px 16px rgba(0, 0, 0, 0.1));
-      background-color: #f5f5f5;
+      background-color: #fafafa;
     }
   }
 }

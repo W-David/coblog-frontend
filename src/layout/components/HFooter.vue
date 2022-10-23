@@ -1,6 +1,6 @@
 <template>
   <div class="h-footer-container">
-    <span>© 2021 coody's blog</span>
+    <span>© 2022 coody's blog</span>
   </div>
 </template>
 

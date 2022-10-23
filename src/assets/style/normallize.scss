@@ -21,11 +21,11 @@ body {
 
     .collapse-container {
       @include flex-box(column, space-between, center);
-      .el-menu {
+			.drawer-user-info {
+				margin: 36px 0 20px 0;
+			}
+      .drawer-menu {
         border-right: none !important;
-      }
-      .mb {
-        margin-bottom: 36px;
       }
     }
   }
@@ -70,6 +70,8 @@ figcaption {
   display: block;
 }
 
+
+//waline CSS变量
 :root {
   /* 字体大小 */
   --waline-font-size: 16px;
@@ -85,7 +87,7 @@ figcaption {
 
   /* 布局颜色 */
   --waline-color: $font-color;
-  --waline-bgcolor: #f5f5f5;
+  --waline-bgcolor: #fafafa;
   --waline-bgcolor-light: #f8f8f8;
   --waline-bgcolor-hover: #f0f0f0;
   --waline-border-color: #ddd;

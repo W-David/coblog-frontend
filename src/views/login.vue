@@ -11,7 +11,7 @@
       }"
     ></div>
     <el-row justify="center" class="login-row-container">
-      <el-col class="login-col-container" :xs="24" :sm="20" :md="10" :lg="7" :xl="7">
+      <el-col class="login-col-container" :xs="22" :sm="12" :md="8" :lg="6" :xl="6">
         <div class="login-card">
           <div class="login-card-header">
             <span :class="[needRegister ? 'regis-header-hint' : 'login-header-hint']">欢迎来到Coody's Blog</span>
@@ -158,8 +158,10 @@ export default {
 <style lang="scss" scoped>
 @include bg-fade;
 .login-page {
-  @include layout(100%, calc(100vh - (#{$header-height} + #{$footer-height})), 0, 0);
-  position: relative;
+  @include layout(100vw, 100vh, 0, 0);
+  position: absolute;
+  top: 0;
+  left: 0;
   overflow: hidden;
   .bg-slide {
     opacity: 0;
@@ -169,9 +171,9 @@ export default {
   .login-row-container {
     height: 100%;
     .login-col-container {
-      @include layout(100%, auto, 0, 0);
+      @include layout(100%, auto, 0, 24vh 0 0 0);
       .login-card {
-        @include layout(80%, auto, 33.3% auto, 12px);
+        @include layout(80%, auto, 0 auto, 12px);
         @include border(1px solid #ececec, 8px);
         background-color: white;
         .login-card-header {

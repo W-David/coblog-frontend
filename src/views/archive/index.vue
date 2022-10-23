@@ -3,36 +3,64 @@
     <div class="archive-timeline-container">
       <el-row justify="center">
         <el-col :xs="24" :sm="20" :md="18" :lg="16" :xl="16">
-          <el-timeline>
-            <el-timeline-item :timestamp="a.time" type="primary" :hollow="true" placement="top" v-for="a in archive" :key="a.time">
-              <el-collapse>
-                <el-collapse-item :name="a.time">
-                  <template #title>
-                    <div class="display-title-container">
-                      <div class="display-title" v-for="(title, index) in generateArchiveTitles(a.articles)" :key="index">
-                        <div class="display-title-content">{{ title }}</div>
+          <div class="timeline-container">
+            <el-timeline>
+              <el-timeline-item
+                :timestamp="a.time"
+                type="primary"
+                :hollow="true"
+                placement="top"
+                v-for="a in archive"
+                :key="a.time"
+              >
+                <el-collapse>
+                  <el-collapse-item :name="a.time">
+                    <template #title>
+                      <div class="display-title-container">
+                        <div
+                          class="display-title"
+                          v-for="(title, index) in generateArchiveTitles(a.articles)"
+                          :key="index"
+                        >
+                          <div class="display-title-content">{{ title }}</div>
+                        </div>
+                      </div>
+                    </template>
+                    <div
+                      class="article-card"
+                      v-for="article in a.articles"
+                      :key="article.id"
+                      @click="toArticle(article.id)"
+                    >
+                      <div class="article-title">
+                        <span class="title-content">{{ article.title }}</span>
+                        <span class="time-content hidden-sm-and-down">{{ article.createdAt }}</span>
+                      </div>
+                      <div
+                        class="article-info"
+                        v-if="
+                          (article.categories && article.categories.length) || (article.tags && article.tags.length)
+                        "
+                      >
+                        <category-panel
+                          :size="12"
+                          :category="category"
+                          v-for="category in article.categories"
+                          :key="category.id"
+                        ></category-panel>
+                        <tag-panel :size="12" :tag="tag" v-for="tag in article.tags" :key="tag.id"></tag-panel>
+                      </div>
+                      <div class="m-article-time hidden-md-and-up">
+                        <span class="time-content">
+                          {{ article.createdAt }}
+                        </span>
                       </div>
                     </div>
-                  </template>
-                  <div class="article-card" v-for="article in a.articles" :key="article.id" @click="toArticle(article.id)">
-                    <div class="article-title">
-                      <span class="title-content">{{ article.title }}</span>
-                      <span class="time-content hidden-sm-and-down">{{ article.createdAt }}</span>
-                    </div>
-                    <div class="article-info" v-if="(article.categories && article.categories.length) || (article.tags && article.tags.length)">
-                      <category-panel :size="12" :category="category" v-for="category in article.categories" :key="category.id"></category-panel>
-                      <tag-panel :size="12" :tag="tag" v-for="tag in article.tags" :key="tag.id"></tag-panel>
-                    </div>
-                    <div class="m-article-time hidden-md-and-up">
-                      <span class="time-content">
-                        {{ article.createdAt }}
-                      </span>
-                    </div>
-                  </div>
-                </el-collapse-item>
-              </el-collapse>
-            </el-timeline-item>
-          </el-timeline>
+                  </el-collapse-item>
+                </el-collapse>
+              </el-timeline-item>
+            </el-timeline>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -108,90 +136,97 @@ export default {
 
 <style lang="scss" scoped>
 .archive-page {
-  @include layout(100%, 100%, 24px 0, 16px);
+  @include layout(100%, 100%, 0, 16px 8px);
   .archive-timeline-container {
-    ul {
-      padding-inline-start: 0;
-    }
-    &:deep {
-      // .el-timeline-item__node {
-      //   background-color: $primary-color;
-      // }
-      .el-timeline-item__timestamp {
-        @include font-fang-song;
-        text-align: left;
-        font-weight: bolder;
-        color: $font-color;
+    .timeline-container {
+      @include layout(100%, 100%, 0, 32px);
+      @include border(none, 8px);
+      @include box-shadow(4px 4px 16px rgba(0, 0, 0, 0.1));
+      background-color: #fff;
+      ul {
+        padding-inline-start: 0;
       }
-      .el-timeline-item__content {
-        .display-title-container {
-          @include layout(100%, auto, 0, 8px);
-          @include flex-box(row, flex-start, center, nowrap);
-          overflow: hidden;
-          .display-title {
-            display: inline-block;
-            margin-right: 16px;
-            padding: 0 8px;
-            max-width: calc(100vw - 120px);
-            .display-title-content {
-              @include text-overflow(1);
-              @include font-fang-song;
-              font-style: italic;
-              font-weight: bolder;
-              color: $primary-color-a;
-              &:hover {
-                color: $primary-color;
+      &:deep {
+        // .el-timeline-item__node {
+        //   background-color: $primary-color;
+        // }
+        .el-timeline-item__timestamp {
+          @include font-fang-song;
+          text-align: left;
+          font-weight: bolder;
+          color: $font-color;
+        }
+        .el-timeline-item__content {
+          .display-title-container {
+            @include layout(100%, auto, 0, 8px);
+            @include flex-box(row, flex-start, center, nowrap);
+            overflow: hidden;
+            .display-title {
+              display: inline-block;
+              margin-right: 16px;
+              padding: 0 8px;
+              max-width: calc(100vw - 152px);
+              .display-title-content {
+                @include text-overflow(1);
+                @include font-fang-song;
+                font-style: italic;
+                font-weight: bolder;
+                color: $primary-color-a;
+                &:hover {
+                  color: $primary-color;
+                }
               }
             }
           }
-        }
-        .article-card {
-          @include layout(95%, 100%, 20px auto, 16px);
-          @include border(1px solid $success-color-a, 4px);
-          @include transition(all 120ms ease-in-out);
-          background-color: white;
-          @include pointer;
+          .article-card {
+            @include layout(95%, 100%, 16px auto, 12px 16px);
+            @include border(1px solid $success-color-a, 4px);
+            @include transition(all 120ms ease-in-out);
+            background-color: white;
+            @include pointer;
 
-          .article-title {
-            @include layout(100%, auto, 0, 0);
-            @include flex-box(row, space-between, center, wrap);
+            .article-title {
+              @include layout(100%, auto, 0, 0);
+              @include flex-box(row, space-between, center, wrap);
 
-            .title-content {
-              @include font-kai;
-              color: $primary-color;
-              font-size: 24px;
-              font-weight: bold;
-              @include pointer;
-              text-align: left;
+              .title-content {
+                @include font-kai;
+                color: $primary-color;
+                font-size: 22px;
+                font-weight: bold;
+                @include pointer;
+                text-align: left;
+              }
+
+              .time-content {
+                @include font-hei;
+                color: $font-color-c;
+              }
+            }
+            .article-info {
+              @include layout(100%, auto, 0, 12px 0);
+              @include flex-box(row, flex-start, center, wrap);
+            }
+            .m-article-time {
+              @include clearfix;
+              .time-content {
+                @include font-hei;
+                @include float-left;
+                color: $font-color-c;
+              }
             }
 
-            .time-content {
-              @include font-hei;
-              color: $font-color-c;
+            &:hover {
+              @include box-shadow;
+              transform: scale(1.02);
             }
-          }
-          .article-info {
-            @include layout(100%, auto, 0, 12px 0);
-            @include flex-box(row, flex-start, center, wrap);
-          }
-          .m-article-time {
-            @include clearfix;
-            .time-content {
-              @include font-hei;
-              @include float-left;
-              color: $font-color-c;
-            }
-          }
-
-          &:hover {
-            @include box-shadow;
-            transform: scale(1.02);
           }
         }
       }
     }
   }
   .archive-load-more-container {
+    @include layout(100%, auto, 16px 0 0 0, 0);
     @include flex-box(row, center, center);
   }
 }

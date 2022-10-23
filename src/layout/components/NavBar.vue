@@ -20,11 +20,11 @@
         </template>
       </el-input>
     </div>
-    <div class="nav-user-info">
+    <div class="nav-user-info hidden-sm-and-down">
       <user v-if="isUserLogin"></user>
       <admin v-else-if="isAdminLogin"></admin>
-      <span v-else>
-        <el-button size="large" link @click="toLogin"> 请先登录 </el-button>
+      <span v-else @click="toLogin">
+        <span class="to-login">登录</span>
       </span>
     </div>
   </div>
@@ -34,10 +34,20 @@
         <el-icon class="mb m-collapse" :size="20" @click.stop.prevent="handleCollapse">
           <i-fold />
         </el-icon>
-        <el-avatar class="mb m-avatar" :src="userAvatar || adminAvatar" fit="cover" @click.stop.prevent="handleInfo">
-          <span>空</span>
-        </el-avatar>
-        <el-menu class="mb m-menu" :default-active="activePage" :router="true" mode="veritical" @select="handleChange">
+        <div class="drawer-user-info">
+          <user v-if="isUserLogin"></user>
+          <admin v-else-if="isAdminLogin"></admin>
+          <span v-else @click="toLogin">
+            <span class="to-login">登录</span>
+          </span>
+        </div>
+        <el-menu
+          class="drawer-menu"
+          :default-active="activePage"
+          :router="true"
+          mode="veritical"
+          @select="handleChange"
+        >
           <el-menu-item v-for="menu in menuList" :key="menu.id" :index="menu.path">
             {{ menu.name }}
           </el-menu-item>
@@ -52,12 +62,12 @@
 import { reactive, ref, toRef, toRefs, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-import User from './User.vue'
-import Admin from './Admin.vue'
+import User from '@/components/User'
+import Admin from '@/components/Admin'
 import { getUserType } from '@/util/auth'
 
 export default {
-  name: 'navBar',
+  name: 'HNavBar',
   components: {
     User,
     Admin
@@ -79,7 +89,8 @@ export default {
     const route = useRoute()
     const userAvatar = computed(() => store.getters.userAvatar)
     const adminAvatar = computed(() => store.getters.adminAvatar)
-    const isMobile = computed(() => store.getters.device === 'mobile')
+    const device = computed(() => store.getters.device)
+    const loginInfo = computed(() => store.getters.loginInfo)
     const queryText = ref('')
     const showDrawer = ref(false)
     const menuRef = ref()
@@ -114,8 +125,9 @@ export default {
       adminAvatar,
       isUserLogin,
       isAdminLogin,
+      loginInfo,
       menuRef,
-      isMobile,
+      device,
       queryText,
       query,
       showDrawer,
@@ -180,5 +192,15 @@ export default {
       }
     }
   }
+
+  .nav-user-info {
+    .to-login {
+      font-weight: bolder;
+      color: $font-color-a;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+  }
 }
-</style>>
+</style>
+>
