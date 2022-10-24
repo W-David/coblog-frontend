@@ -7,6 +7,7 @@ const getters = {
   adminInfo: state => state.admin.adminInfo,
   loginInfo: state => (state.user.isLogin ? state.user.userInfo : state.admin.isLogin ? state.admin.adminInfo : {}),
   device: state => state.app.device,
+  sidebarOpen: state => state.app.sidebarOpen,
   sts: state => state.alioss.sts
 }
 

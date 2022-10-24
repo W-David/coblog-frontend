@@ -36,7 +36,7 @@ const controller = router => {
         if (userType === 'admin') {
           const res = await store.dispatch('admin/GetInfo')
           if (res.code === 200) {
-            ElMessage({ type: 'success', message: `欢迎回来，管理员${res.data.email}` })
+            ElMessage({ type: 'success', message: `欢迎回来，管理员${res.data.email}`, showClose: false })
             return { path: '/' }
           } else {
             return { path: '/login' }
@@ -44,13 +44,13 @@ const controller = router => {
         } else if (userType === 'user') {
           const res = await store.dispatch('user/GetInfo')
           if (res.code === 200) {
-            ElMessage({ type: 'success', message: `欢迎回来，用户${res.data.email}` })
+            ElMessage({ type: 'success', message: `欢迎回来，用户${res.data.email}`, showClose: false })
             return { path: '/' }
           } else {
             return { path: '/login' }
           }
         } else {
-          ElMessage({ type: 'error', message: '未知用户,无法登录' })
+          ElMessage({ type: 'error', message: '未知用户,无法登录', showClose: false })
           removeToken()
           removeUserType()
           return { path: '/login' }
@@ -59,7 +59,7 @@ const controller = router => {
     } else {
       // 没有登录信息
       if (!isWhiteList) {
-        ElMessage({ showClose: true, type: 'warning', message: `请先登录` })
+        ElMessage({ showClose: false, type: 'warning', message: `请先登录` })
         return { path: '/login' }
       } else {
         return

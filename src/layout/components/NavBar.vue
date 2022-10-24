@@ -29,7 +29,7 @@
     </div>
   </div>
   <div class="drawer-container hidden-md-and-up">
-    <el-drawer v-model="showDrawer" :with-header="false" direction="ltr" append-to-body :z-index="10000">
+    <el-drawer v-model="sidebarOpen" :with-header="false" direction="ltr" append-to-body :z-index="10000">
       <div class="collapse-container">
         <el-icon class="mb m-collapse" :size="20" @click.stop.prevent="handleCollapse">
           <i-fold />
@@ -92,15 +92,16 @@ export default {
     const device = computed(() => store.getters.device)
     const loginInfo = computed(() => store.getters.loginInfo)
     const queryText = ref('')
-    const showDrawer = ref(false)
+    const sidebarOpen = computed(() => store.getters.sidebarOpen)
+    const setSidebarOpen = open => store.dispatch('app/ToggleSidebar', open)
     const menuRef = ref()
 
     const isUserLogin = computed(() => store.getters.isUserLogin)
     const isAdminLogin = computed(() => store.getters.isAdminLogin)
 
-    const handleChange = () => (showDrawer.value = false)
-    const handleExpand = e => (showDrawer.value = true)
-    const handleCollapse = () => (showDrawer.value = false)
+    const handleChange = () => setSidebarOpen(false)
+    const handleExpand = e => setSidebarOpen(true)
+    const handleCollapse = () => setSidebarOpen(false)
 
     const handleInfo = () => {}
     const handleLogout = async () => {
@@ -130,7 +131,7 @@ export default {
       device,
       queryText,
       query,
-      showDrawer,
+      sidebarOpen,
       handleChange,
       handleExpand,
       handleCollapse,

@@ -3,7 +3,12 @@
     <el-row justify="center">
       <el-col :xs="24" :sm="20" :md="20" :lg="20" :xl="20">
         <div class="tag-list-container">
-          <span v-for="tag in tags" :key="tag.id" :class="['article-tag', isChecked(tag.id) ? 'is-active' : '']" @click="handleChecked(tag)">
+          <span
+            v-for="tag in tags"
+            :key="tag.id"
+            :class="['article-tag', isChecked(tag.id) ? 'is-active' : '']"
+            @click="handleChecked(tag)"
+          >
             {{ tag.name }}
           </span>
           <span class="article-tag ctrl-btn" @click="handleAdd">
@@ -48,6 +53,7 @@ export default {
     const route = useRoute()
     const tags = computed(() => store.getters['tag/getTagList']())
     const tagArticles = computed(() => store.getters['tag/getTagArticles']())
+    const totalRef = ref(0)
     const checkedIds = ref([])
     const isChecked = id => checkedIds.value.includes(id)
     const handleChecked = item => {

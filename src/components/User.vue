@@ -1,6 +1,6 @@
 <template>
   <div class="user-container">
-    <el-avatar :size="36" shape="circle" :src="avatar" fit="cover">
+    <el-avatar :size="36" shape="circle" :src="avatar" fit="cover" @click.stop="tapAvatar">
       <span>{{ userInfo.username.substr(0, 1) }}</span>
     </el-avatar>
     <el-dropdown class="hidden-sm-and-down">
@@ -99,6 +99,12 @@ export default {
     const toUserInfo = () => {
       openUserInfo.value = true
     }
+    const tapAvatar = () => {
+      const isSM = device.value === 'xs' || device.value === 'sm'
+      if (!isSM) return
+      store.dispatch('app/ToggleSidebar', false)
+      openUserInfo.value = true
+    }
     const logout = async () => {
       await store.dispatch('user/Logout')
       router.push({ name: 'login' })
@@ -135,6 +141,7 @@ export default {
       dialogWidth,
       openUserInfo,
       toUserInfo,
+      tapAvatar,
       avatar,
       userInfo,
       userForm,

@@ -35,6 +35,8 @@ export default {
     const store = useStore()
     const route = useRoute()
     const activePage = ref('')
+    const isAdminLogin = computed(() => store.getters.isAdminLogin)
+    const isUserLogin = computed(() => store.getters.isUserLogin)
 
     watch(
       () => route.path,
@@ -42,13 +44,22 @@ export default {
       { immediate: true }
     )
 
-    const menuList = ref([
+    const adminMenu = [
       { id: 0, name: '首页', path: '/home' },
       { id: 1, name: '归档', path: '/archive' },
       { id: 2, name: '标签', path: '/tag' },
       { id: 3, name: '分类', path: '/category' },
       { id: 4, name: '关于', path: '/about' }
-    ])
+    ]
+
+    const userMenu = [
+      { id: 0, name: '首页', path: '/home' },
+      { id: 1, name: '标签', path: '/tag' },
+      { id: 2, name: '分类', path: '/category' },
+      { id: 3, name: '关于', path: '/about' }
+    ]
+
+    const menuList = isAdminLogin.value ? adminMenu : isUserLogin.value ? userMenu : []
 
     return {
       activePage,

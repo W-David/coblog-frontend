@@ -19,13 +19,14 @@ export default {
   @include layout;
   .about-card {
     @include flex-box(row, center, center);
-    @include layout(100%, 100%, 20px 0, 20px);
+    @include layout(80%, auto, 20px auto, 20px);
     @include border(1px solid #eee, 12px);
-    @include font-hei;
+    @include font-fang-song;
     @include transition(all 200ms ease-out);
     @include pointer;
     font-size: 18px;
     font-weight: bold;
+    background-color: #fcfcfc;
     &:hover {
       @include box-shadow;
     }

@@ -1,6 +1,6 @@
 <template>
   <div class="admin-container">
-    <el-avatar :size="36" shape="circle" :src="avatar" fit="cover">
+    <el-avatar :size="36" shape="circle" :src="avatar" fit="cover" @click.stop="tapAvatar">
       <span>{{ adminInfo.nickname.substr(0, 1) }}</span>
     </el-avatar>
     <el-dropdown class="hidden-sm-and-down">
@@ -15,7 +15,7 @@
           <el-dropdown-item>
             <span @click="toAdminInfo">管理员信息</span>
           </el-dropdown-item>
-          <el-dropdown-item class="hidden-md-and-down">
+          <el-dropdown-item>
             <span @click="toBlog">写个博文</span>
           </el-dropdown-item>
           <el-dropdown-item>
@@ -105,6 +105,12 @@ export default {
     const toAdminInfo = () => {
       openAdminInfo.value = true
     }
+    const tapAvatar = () => {
+      const isSM = device.value === 'xs' || device.value === 'sm'
+      if (!isSM) return
+      store.dispatch('app/ToggleSidebar', false)
+      openAdminInfo.value = true
+    }
     const logout = async () => {
       await store.dispatch('admin/Logout')
       router.push({ name: 'login' })
@@ -146,6 +152,7 @@ export default {
       logout,
       openAdminInfo,
       toAdminInfo,
+      tapAvatar,
       handleCancel,
       handleUpdate,
       handleUpload,
