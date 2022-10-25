@@ -29,7 +29,14 @@
     </div>
   </div>
   <div class="drawer-container hidden-md-and-up">
-    <el-drawer v-model="sidebarOpen" :with-header="false" direction="ltr" append-to-body :z-index="10000">
+    <el-drawer
+      :model-value="sidebarOpen"
+      :with-header="false"
+      direction="ltr"
+      append-to-body
+      :z-index="10000"
+      @close="onCloseDrawer"
+    >
       <div class="collapse-container">
         <el-icon class="mb m-collapse" :size="20" @click.stop.prevent="handleCollapse">
           <i-fold />
@@ -102,9 +109,11 @@ export default {
     const handleChange = () => setSidebarOpen(false)
     const handleExpand = e => setSidebarOpen(true)
     const handleCollapse = () => setSidebarOpen(false)
+    const onCloseDrawer = () => setSidebarOpen(false)
 
     const handleInfo = () => {}
     const handleLogout = async () => {
+      handleChange()
       if (userType === 'user') {
         store.commit('user/LOGOUT')
         router.push({ name: 'login' })
@@ -136,6 +145,7 @@ export default {
       handleExpand,
       handleCollapse,
       handleInfo,
+      onCloseDrawer,
       handleLogout,
       toLogin
     }

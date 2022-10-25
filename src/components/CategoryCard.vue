@@ -1,5 +1,5 @@
 <template>
-  <div :class="['category-card-container', isActive ? 'is-active' : '']">
+  <div :class="['category-card-container', isActive ? 'is-active' : '']" :id="`cate-${category.id}`">
     <div class="category-name">
       <span class="name-content">
         {{ category.name }}
@@ -51,11 +51,11 @@ export default {
 .category-card-container {
   @include position(relative);
   @include layout(100%, 100%, 0, 16px);
-  @include border(1px solid $success-color-a, 8px);
+  @include border(1px solid #eee, 8px);
   @include pointer;
   @include transition(all 120ms ease-in-out);
-  @include box-shadow(2px 2px 4px 0 rgba(0, 0, 0, 0.1));
-  background-color: white;
+  @include box-shadow(0 0 16px 0 rgba(0, 0, 0, 0.1));
+  background-color: #fcfcfc;
   z-index: 1000;
 
   .category-name {
@@ -80,42 +80,44 @@ export default {
     .category-article-card {
       @include layout(100%, 100%, 0, 0 6px);
       @include line-height(36px, 36px);
-      @include border(1px solid $success-color-a, 0, bottom);
+      @include border(1px solid #ddd, 0, bottom);
       @include pointer;
       @include transition(all 120ms linear);
       .category-article-title {
         @include flex-box(row, space-between, center);
         .title-content {
-          color: $font-color-b;
+          color: $info-color;
           @include font-kai;
           @include text-overflow(1, 60%);
-          font-size: 16px;
+          font-size: 15px;
           text-align: left;
-          font-weight: bold;
+          font-weight: bolder;
         }
         .time-content {
-          color: $font-color-b;
+          color: $info-color-a;
           font-size: 12px;
           font-style: italic;
+          font-weight: bold;
         }
       }
       &:hover {
         // transform: scaleX(1.02);
         .title-content {
-          color: $font-color;
+          color: $success-color;
         }
         .time-content {
-          color: $font-color;
+          color: $info-color;
         }
       }
     }
   }
   &:hover {
-    @include box-shadow(4px 4px 8px 0 rgba(0, 0, 0, 0.16));
+    @include box-shadow(10px 10px 24px 0 rgba(0, 0, 0, 0.1));
     // background-color: $success-color-b;
   }
   &.is-active {
     border-color: $success-color;
+    border-width: 2px;
     @include box-shadow;
   }
 }

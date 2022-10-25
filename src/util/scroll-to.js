@@ -33,6 +33,10 @@ function position() {
   return document.documentElement.scrollTop || document.body.parentNode.scrollTop || document.body.scrollTop
 }
 
+function getYPosition(element) {
+  return element.getBoundingClientRect().top + document.documentElement.scrollTop
+}
+
 /**
  * @param {number} to
  * @param {number} duration
@@ -62,4 +66,8 @@ export function scrollTo(to, duration, callback) {
     }
   }
   animateScroll()
+}
+
+export function scrollToByEle(element, duration, callback) {
+  scrollTo(getYPosition(element) - 80, duration, callback)
 }

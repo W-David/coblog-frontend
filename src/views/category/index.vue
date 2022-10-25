@@ -1,9 +1,14 @@
 <template>
   <div class="category-page">
     <el-row justify="center">
-      <el-col :xs="24" :sm="20" :md="20" :lg="20">
+      <el-col :xs="24" :sm="22" :md="20" :lg="20">
         <div class="category-list-container">
-          <span v-for="category in categories" :key="category.id" :class="['article-cate', isChecked(category.id) ? 'is-active' : '']" @click="handleChecked(category)">
+          <span
+            v-for="category in categories"
+            :key="category.id"
+            :class="['article-cate', isChecked(category.id) ? 'is-active' : '']"
+            @click="handleChecked(category)"
+          >
             {{ category.name }}
           </span>
           <span class="article-cate ctrl-btn" @click="handleAdd">
@@ -37,6 +42,7 @@ import usePrompt from '@/hooks/usePrompt'
 import { createCategory } from '@/api/category'
 
 import { cloneLoop, cloneForce } from '@jsmini/clone'
+import { scrollToByEle } from '@/util/scroll-to'
 
 export default {
   name: 'category',
@@ -55,7 +61,7 @@ export default {
         const index = checkedIds.value.indexOf(item.id)
         checkedIds.value.splice(index, 1)
       } else {
-        checkedIds.value.push(item.id)
+        scrollToByEle(document.getElementById(`cate-${item.id}`), 600, () => checkedIds.value.push(item.id))
       }
     }
     const getCategories = async () => {
@@ -99,9 +105,10 @@ export default {
   .category-list-container {
     @include flex-box(row, center, center, wrap);
     @include layout(100%, auto, 0, 20px);
-    @include border(1px solid $border-color, 6px);
+    @include border(1px solid #e5f5e5, 8px);
+    @include box-shadow(12px 12px 24px 0 rgba(0, 0, 0, 0.05));
     @include transition(all 120ms ease-in-out);
-    background-color: white;
+    background-color: #fff;
     z-index: 1000;
 
     @mixin panel-styl($mc, $bc) {
@@ -128,7 +135,7 @@ export default {
     .article-cate {
       @include panel-styl($success-color, $success-color-b);
       &.ctrl-btn {
-        @include panel-styl($font-color, $font-color-c);
+        @include panel-styl($info-color, $info-color-b);
       }
     }
   }

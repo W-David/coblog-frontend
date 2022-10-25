@@ -42,6 +42,7 @@ import TagCard from '@/components/TagCard'
 import { createTag } from '@/api/tag'
 
 import { cloneLoop, cloneForce } from '@jsmini/clone'
+import { scrollToByEle } from '@/util/scroll-to'
 
 export default {
   name: 'tag',
@@ -61,7 +62,7 @@ export default {
         const index = checkedIds.value.indexOf(item.id)
         checkedIds.value.splice(index, 1)
       } else {
-        checkedIds.value.push(item.id)
+        scrollToByEle(document.getElementById(`tag-${item.id}`), 600, () => checkedIds.value.push(item.id))
       }
     }
     const getTags = async () => {
@@ -101,12 +102,14 @@ export default {
 <style lang="scss" scoped>
 .tag-page {
   @include layout(100%, 100%, 0, 12px);
+
   .tag-list-container {
     @include flex-box(row, center, center, wrap);
     @include layout(100%, auto, 0, 20px);
-    @include border(1px solid $border-color, 6px);
+    @include border(1px solid #e5e5f5, 8px);
+    @include box-shadow(12px 12px 24px 0 rgba(0, 0, 0, 0.05));
     @include transition(all 120ms ease-in-out);
-    background-color: white;
+    background-color: #fff;
     z-index: 1000;
 
     @mixin panel-styl($mc, $bc) {
@@ -133,7 +136,7 @@ export default {
     .article-tag {
       @include panel-styl($primary-color, $primary-color-h);
       &.ctrl-btn {
-        @include panel-styl($font-color, $font-color-c);
+        @include panel-styl($info-color, $info-color-b);
       }
     }
   }

@@ -4,7 +4,14 @@
       <el-col :xs="24" :sm="20" :md="18" :lg="12" :xl="12">
         <div class="blog-edit-area">
           <div class="blog-img">
-            <banner-upload :isUploaded="!!blogBanner" :imgUrl="blogBanner" trigHint="上传头图" descripHint="头图" @on-upload="handleUpload" @on-delete="handleDelete">
+            <banner-upload
+              :isUploaded="!!blogBanner"
+              :imgUrl="blogBanner"
+              trigHint="上传头图"
+              descripHint="头图"
+              @on-upload="handleUpload"
+              @on-delete="handleDelete"
+            >
             </banner-upload>
           </div>
           <div class="blog-title">
@@ -13,10 +20,24 @@
           <div class="blog-toolbar" ref="toolbar"></div>
           <div class="blog-tc">
             <div class="tag-area">
-              <select-area styl="primary" @on-select="handleTagSelect" @on-add-item="handleTagAdd" selectText="选择标签" addText="添加标签" :items="tags"></select-area>
+              <select-area
+                styl="primary"
+                @on-select="handleTagSelect"
+                @on-add-item="handleTagAdd"
+                selectText="选择标签"
+                addText="添加标签"
+                :items="tags"
+              ></select-area>
             </div>
             <div class="cate-area">
-              <select-area styl="success" @on-select="handleCateSelect" @on-add-item="handleCateAdd" selectText="选择分类" addText="添加分类" :items="cates"></select-area>
+              <select-area
+                styl="success"
+                @on-select="handleCateSelect"
+                @on-add-item="handleCateAdd"
+                selectText="选择分类"
+                addText="添加分类"
+                :items="cates"
+              ></select-area>
             </div>
           </div>
           <div class="blog-desc">
@@ -29,7 +50,8 @@
           </div>
         </div>
         <el-dialog v-model="showAll" :title="title.text">
-          <selected-list :loading="isListLoading" :isShow="showAll" :list="list" v-model:checkedArr="checkedArr"> </selected-list>
+          <selected-list :loading="isListLoading" :isShow="showAll" :list="list" v-model:checkedArr="checkedArr">
+          </selected-list>
         </el-dialog>
       </el-col>
       <!-- <el-col class="hidden-md-and-down" :md="12" :lg="12" :xl="12">
@@ -106,7 +128,14 @@ export default {
       createContentInstance()
       if (isEditMode.value) {
         const article = computed(() => store.getters['article/getArticleById'](+props.id))
-        const { title = '', content = '', banner = {}, description = '', categories = [], tags: tgs = [] } = article.value
+        const {
+          title = '',
+          content = '',
+          banner = {},
+          description = '',
+          categories = [],
+          tags: tgs = []
+        } = article.value
 
         blogTitle.value = title
         blogBannerId.value = (banner && banner.id) || ''
@@ -298,12 +327,14 @@ export default {
 
 <style lang="scss" scoped>
 .blog-page {
-  @include layout(calc(100% - 32px), calc(100% - 32px), 16px, 8px);
-  @include border(1px solid #ccc, 8px);
-  background-color: white;
+  @include layout(100vw, auto, 0, 0);
   // z-index: 1000;
+
   .blog-edit-area {
-    @include layout(100%, 100%, 0, 0);
+    @include layout(auto, auto, 16px, 16px);
+    @include border(none, 8px);
+    @include box-shadow(8px 8px 20px rgba(0, 0, 0, 0.05), -4px -4px 20px rgba(0, 0, 0, 0.05));
+    background-color: white;
     .blog-img {
       @include layout(100%, 300px, 0 0 8px 0, 0);
     }
@@ -354,7 +385,7 @@ export default {
     .blog-ctrl {
       &:deep {
         .el-button {
-          @include layout(100%, auto, 8px 0, auto);
+          @include layout(100%, auto, 8px 0 0 0, auto);
           border-radius: 2px;
         }
       }
