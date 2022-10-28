@@ -2,6 +2,7 @@
   <div :class="['tag-card-container', isActive ? 'is-active' : '']" :id="`tag-${tag.id}`">
     <div class="tag-name">
       <span class="name-content">
+        <svg-icon icon-class="tag" class-name="tag-icon"></svg-icon>
         {{ tag.name }}
       </span>
       <span class="info-content hidden-sm-and-down">
@@ -9,16 +10,23 @@
       </span>
     </div>
     <div class="tag-article-list">
-      <div class="tag-article-card" v-for="article in tag.articles" :key="article.id">
-        <div class="tag-article-title" @click="toArticle(article.id)">
-          <span class="title-content">
-            {{ article.title }}
-          </span>
-          <span class="time-content">
-            {{ article.createdAt }}
-          </span>
+      <template v-if="tag.articles && tag.articles.length">
+        <div class="tag-article-card" v-for="article in tag.articles" :key="article.id">
+          <div class="tag-article-title" @click="toArticle(article.id)">
+            <span class="title-content">
+              {{ article.title }}
+            </span>
+            <span class="time-content">
+              {{ article.createdAt }}
+            </span>
+          </div>
         </div>
-      </div>
+      </template>
+      <template v-else>
+        <div class="tag-article-empty">
+          <svg-icon icon-class="empty-2" class-name="empty-icon"></svg-icon>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -50,7 +58,7 @@ export default {
 <style lang="scss" scoped>
 .tag-card-container {
   @include position(relative);
-  @include layout(100%, 100%, 0, 16px);
+  @include layout(100%, auto, 0, 16px);
   @include border(1px solid #eee, 8px);
   @include pointer;
   @include transition(all 120ms ease-in-out);
@@ -58,17 +66,28 @@ export default {
   background-color: #fcfcfc;
   z-index: 1000;
 
+  .tag-icon {
+    color: $primary-color;
+    font-size: 24px;
+    text-align: center;
+  }
+  .empty-icon {
+    color: $primary-color-b;
+    font-size: 42px;
+    text-align: center;
+  }
+
   .tag-name {
-    @include layout(100%, auto, 0 0 8px 0, 0);
+    @include layout(auto, auto, 0 8px 8px 8px, 0);
     @include flex-box(row, space-between, center, wrap);
     white-space: wrap;
     text-align: left;
 
     .name-content {
-      @include font-kai;
+      @include font-hei;
       color: $primary-color;
       font-size: 20px;
-      font-weight: bold;
+      font-weight: bolder;
     }
     .info-content {
       @include font-hei;
@@ -77,9 +96,11 @@ export default {
     }
   }
   .tag-article-list {
+    @include layout(100%, 180px, 0, 0);
+    @include scroll-bar(4px, auto, transparent, $primary-color-b, 2px);
+    overflow-y: auto;
     .tag-article-card {
-      @include layout(100%, 100%, 0, 0 6px);
-      @include line-height(36px, 36px);
+      @include layout(auto, auto, 0 8px, 8px);
       @include border(1px solid #ddd, 0, bottom);
       @include pointer;
       @include transition(all 120ms linear);
@@ -110,6 +131,11 @@ export default {
           }
         }
       }
+    }
+
+    .tag-article-empty {
+      @include layout(100%, 100%, 0, 0);
+      @include flex-box(row, center, center);
     }
   }
   &:hover {

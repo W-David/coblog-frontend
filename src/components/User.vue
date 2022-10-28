@@ -51,7 +51,7 @@
           <input v-model="userForm.email" @blur="isEE = false" v-else />
         </div>
       </div>
-      <template #title>
+      <template #header>
         <span class="user-info-title">用户信息</span>
       </template>
       <template #footer>

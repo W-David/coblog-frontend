@@ -99,17 +99,13 @@ export default {
     const handleDel = async () => {
       const { value: title } = await ElMessageBox.prompt('【请输入文章标题确认删除】', '删除确认', {
         confirmButtonText: '删除此文章',
-        cancelButtonText: '取消',
-        inputValidator: title => {
-          return title === article.value.title ? true : '输入有误'
-        }
+        cancelButtonText: '取消'
       })
       if (title !== article.value.title) {
         ElMessage({ message: '请输入正确的文章标题', type: 'warning' })
         return
       }
-      const res = await deleteArticle(article.value.id)
-      if (res.code !== 200) return
+      const res = await store.dispatch('article/DelArticle', article.value.id)
       router.push({ name: 'home' })
       ElMessage({ message: '已删除', type: 'success' })
     }

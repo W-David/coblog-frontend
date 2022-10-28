@@ -210,20 +210,22 @@ export default {
       const data = { name: tagName }
       const res = await createTag(data)
       if (res.code !== 200) return
-      tags.value.push({
+      const tag = {
         id: res.data.id,
         name: res.data.name
-      })
+      }
+      tags.value.push(tag)
       ElMessage({ type: 'success', message: res.msg })
     }
     const handleCateAdd = async cateName => {
       const data = { name: cateName }
       const res = await createCategory(data)
       if (res.code !== 200) return
-      cates.value.push({
+      const cate = {
         id: res.data.id,
         name: res.data.name
-      })
+      }
+      cates.value.push(cate)
       ElMessage({ type: 'success', message: res.msg })
     }
     watch(showAll, (nv, ov) => {
@@ -278,7 +280,6 @@ export default {
     const submitBlog = async () => {
       const title = blogTitle.value
       const content = contentInstance.txt.html()
-      // const adminId = adminInfo.value.id || ''
       const categoryIds = cates.value.map(cate => cate.id)
       const tagIds = tags.value.map(tag => tag.id)
       const description = blogDesc.value || '默认描述内容'
@@ -286,7 +287,6 @@ export default {
       const blog = {
         title,
         content,
-        // adminId,
         description,
         bannerId,
         categoryIds,
@@ -294,6 +294,7 @@ export default {
       }
       const articleRes = isEditMode.value ? await updateArticle({ ...blog, id: +props.id }) : await createArticle(blog)
       if (articleRes.code !== 200) return
+      store.commit('article/SET_ARTICLE', articleRes.data)
       router.push({ name: 'home' })
       ElMessage({ message: `已保存 • ${title}`, type: 'success' })
     }

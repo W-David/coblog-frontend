@@ -65,7 +65,7 @@ const routes = [
 const router = routeController(
   createRouter({
     history: createWebHistory(),
-    scrollBehavior: () => ({ top: 0, behavior: 'smooth' }),
+    // scrollBehavior: () => ({ top: 0, behavior: 'smooth' }),
     routes
   })
 )

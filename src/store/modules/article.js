@@ -31,7 +31,6 @@ const article = {
       state.articleMap.set(article.id, cloneLoop(article))
     },
     SET_ARTICLE_ARCHIVE: (state, articleArchive) => {
-      state.articleArchive.splice(0, articleArchive.length)
       articleArchive.forEach(item => {
         state.articleArchive.push(item)
       })
@@ -39,8 +38,8 @@ const article = {
     ADD_ARTICLE_ARCHIVE: (state, articleArchive) => {
       concatArchive(state.articleArchive, articleArchive)
     },
-    DEL_ARTICLE: (state, articleId) => {
-      state.articleMap.delete(articleId)
+    DEL_ARTICLE: (state, id) => {
+      state.articleMap.delete(id)
     },
     CLEAR_ARCHIVE: state => {
       state.articleArchive.splice(0, state.articleArchive.length)
@@ -54,7 +53,6 @@ const article = {
       const res = await listArticle(data)
       const articles = res.data.rows || []
       const total = res.data.count || 0
-      commit('CLEAR_ARTICLES')
       commit('SET_ARTICLES', articles)
       return [articles, total]
     },
@@ -66,11 +64,16 @@ const article = {
       if (state.articleArchive && state.articleArchive.length) {
         commit('ADD_ARTICLE_ARCHIVE', articleArchive)
       } else {
+        commit('CLEAR_ARCHIVE')
         commit('SET_ARTICLE_ARCHIVE', articleArchive)
       }
       return [articleArchive, total]
     },
     async GetArticle({ state, commit }, articleId) {
+      const curArticle = state.articleMap.get(articleId)
+      if (curArticle && curArticle.content) {
+        return Promise.resolve(curArticle)
+      }
       const res = await detailArticle(articleId)
       const article = res.data || null
       commit('SET_ARTICLE', article)
@@ -79,7 +82,7 @@ const article = {
     async DelArticle({ state, commit }, articleId) {
       const res = await deleteArticle(articleId)
       const article = res.data || null
-      commit('DEL_ARTICLE', article)
+      commit('DEL_ARTICLE', article.id)
       return article
     }
   }

@@ -3,7 +3,6 @@ import { onMounted, onUnmounted, ref } from 'vue'
 const useClickOutside = elementRef => {
   const isClickOutside = ref(false)
   const handler = e => {
-    debugger
     const targetElement = elementRef.value
     if (!targetElement) {
       return

@@ -5,34 +5,42 @@ const category = {
   namespaced: true,
   state: () => ({
     categoryMap: new Map(),
-    categoryArticles: []
+    categoryArticlesMap: new Map()
   }),
   getters: {
     getCategoryById: state => id => state.categoryMap.get(id),
+    getCategoryArticleById: state => id => state.categoryArticlesMap.get(id),
     getCategoryList: state => () => [...state.categoryMap.values()],
-    getCategoryArticles: state => () => state.categoryArticles
+    getCategoryArticles: state => () => [...state.categoryArticlesMap.values()]
   },
   mutations: {
     SET_CATEGORIES: (state, categories) => {
-      state.categoryMap.clear()
-      categories.forEach(category => {
-        state.categoryMap.set(category.id, cloneLoop(category))
+      categories.forEach(item => {
+        state.categoryMap.set(item.id, cloneLoop(item))
       })
     },
     SET_CATEGORY_ARTICLES: (state, categoryArticles) => {
-      state.categoryArticles.splice(0, categoryArticles.length)
       categoryArticles.forEach(item => {
-        state.categoryArticles.push(item)
+        state.categoryArticlesMap.set(item.id, cloneLoop(item))
       })
     },
     SET_CATEGORY: (state, category) => {
       state.categoryMap.set(category.id, cloneLoop(category))
     },
-    DEL_CATEGORY: (state, categoryId) => {
-      state.categoryMap.delete(categoryId)
+    SET_CATEGORY_ARTICLE: (state, categoryArticle) => {
+      state.categoryArticlesMap.set(categoryArticle.id, cloneLoop(categoryArticle))
+    },
+    DEL_CATEGORY: (state, id) => {
+      state.categoryMap.delete(id)
+    },
+    DEL_CATEGORY_ARTICLE: (state, id) => {
+      state.categoryArticlesMap.delete(id)
     },
     CLEAR_CATEGORIES: state => {
       state.categoryMap.clear()
+    },
+    CLEAR_CATEGORY_ARTICLES: state => {
+      state.categoryArticlesMap.clear()
     }
   },
   actions: {
@@ -51,6 +59,10 @@ const category = {
       return [categories, total]
     },
     async GetCategory({ state, commit }, categoryId) {
+      const curCategory = state.categoryMap.get(categoryId)
+      if (curCategory && curCategory.name) {
+        return Promise.resolve(curCategory)
+      }
       const res = await detailCategory(categoryId)
       const category = res.data || null
       commit('SET_CATEGORY', category)
@@ -59,7 +71,8 @@ const category = {
     async DelCategory({ state, commit }, categoryId) {
       const res = await deleteCategory(categoryId)
       const category = res.data || null
-      commit('DEL_CATEGORY', category)
+      commit('DEL_CATEGORY', category.id)
+      commit('DEL_CATEGORY_ARTICLE', category.id)
       return category
     }
   }

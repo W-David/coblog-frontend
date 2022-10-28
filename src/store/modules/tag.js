@@ -5,34 +5,42 @@ const tag = {
   namespaced: true,
   state: () => ({
     tagMap: new Map(),
-    tagArticles: []
+    tagArticlesMap: new Map()
   }),
   getters: {
     getTagById: state => id => state.tagMap.get(id),
+    getTagArticleById: state => id => state.tagArticlesMap.get(id),
     getTagList: state => () => [...state.tagMap.values()],
-    getTagArticles: state => () => state.tagArticles
+    getTagArticles: state => () => [...state.tagArticlesMap.values()]
   },
   mutations: {
     SET_TAGS: (state, tags) => {
-      state.tagMap.clear()
-      tags.forEach(tag => {
-        state.tagMap.set(tag.id, cloneLoop(tag))
+      tags.forEach(item => {
+        state.tagMap.set(item.id, cloneLoop(item))
       })
     },
     SET_TAG_ARTICLES: (state, tagArticles) => {
-      state.tagArticles.splice(0, tagArticles.length)
       tagArticles.forEach(item => {
-        state.tagArticles.push(item)
+        state.tagArticlesMap.set(item.id, cloneLoop(item))
       })
     },
     SET_TAG: (state, tag) => {
       state.tagMap.set(tag.id, cloneLoop(tag))
     },
-    DEL_TAG: (state, tagId) => {
-      state.tagMap.delete(tagId)
+    SET_TAG_ARTICLE: (state, tagArticle) => {
+      state.tagArticlesMap.set(tagArticle.id, cloneLoop(tagArticle))
+    },
+    DEL_TAG: (state, id) => {
+      state.tagMap.delete(id)
+    },
+    DEL_TAG_ARTICLE: (state, id) => {
+      state.tagArticlesMap.delete(id)
     },
     CLEAR_TAGS: state => {
       state.tagMap.clear()
+    },
+    CLEAR_TAG_ARTICLES: state => {
+      state.tagArticlesMap.clear()
     }
   },
   actions: {
@@ -51,6 +59,10 @@ const tag = {
       return [tags, total]
     },
     async GetTag({ state, commit }, tagId) {
+      const curTag = state.tagMap.get(tagId)
+      if (curTag && curTag.name) {
+        return Promise.resolve(curTag)
+      }
       const res = await detailTag(tagId)
       const tag = res.data || null
       commit('SET_TAG', tag)
@@ -59,7 +71,8 @@ const tag = {
     async DelTag({ state, commit }, tagId) {
       const res = await deleteTag(tagId)
       const tag = res.data || null
-      commit('DEL_TAG', tag)
+      commit('DEL_TAG', tag.id)
+      commit('DEL_TAG_ARTICLE', tag.id)
       return tag
     }
   }

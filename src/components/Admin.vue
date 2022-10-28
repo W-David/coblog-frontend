@@ -54,7 +54,7 @@
           <input v-model="adminForm.email" @blur="isEE = false" v-else />
         </div>
       </div>
-      <template #title>
+      <template #header>
         <span class="admin-info-title">管理员信息</span>
       </template>
       <template #footer>

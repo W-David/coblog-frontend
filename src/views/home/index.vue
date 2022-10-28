@@ -1,6 +1,6 @@
 <template>
   <div class="home-page">
-    <div class="article-row" v-for="article in articles" :key="article.id">
+    <div class="article-row" v-for="article in articlesRef" :key="article.id">
       <el-row justify="center">
         <el-col :xs="24" :sm="20" :md="18" :lg="12" :xl="12">
           <article-card :article="article"></article-card>
@@ -29,7 +29,7 @@ export default {
   components: { ArticleCard },
   setup() {
     const store = useStore()
-    const articles = computed(() => store.getters['article/getArticleList']())
+    const articlesRef = ref([])
     const totalRef = ref(0)
     const queryParams = reactive({
       title: '',
@@ -38,14 +38,16 @@ export default {
     })
 
     const getList = async () => {
-      const [_, total] = await store.dispatch('article/GetArticles', queryParams)
+      const [articles, total] = await store.dispatch('article/GetArticles', queryParams)
+      articlesRef.value = articles || []
       totalRef.value = total || 0
     }
     onMounted(() => {
+      store.commit('article/CLEAR_ARTICLES')
       getList()
     })
     return {
-      articles,
+      articlesRef,
       totalRef,
       getList,
       queryParams

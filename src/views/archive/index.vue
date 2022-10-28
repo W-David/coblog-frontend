@@ -13,7 +13,7 @@
                 v-for="a in archive"
                 :key="a.time"
               >
-                <el-collapse>
+                <el-collapse :model-value="[a.time]">
                   <el-collapse-item :name="a.time">
                     <template #title>
                       <div class="display-title-container">
@@ -64,9 +64,11 @@
         </el-col>
       </el-row>
     </div>
-    <div class="archive-load-more-container">
-      <load-more v-show="hasArchive" @on-load-more="handleLoadMore"></load-more>
-    </div>
+    <!-- <div class="archive-load-more-container">
+      <load-more v-show="hasMore" @on-load-more="onLoadMore"></load-more>
+    </div> -->
+
+    <page-load :isLoadingMore="isLoadingMore" :hasMore="hasMore"></page-load>
   </div>
 </template>
 
@@ -76,16 +78,19 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
 import LoadMore from '@/components/LoadMore'
+import useReachBottom from '@/hooks/useReachBottom'
 
 import CategoryPanel from '@/components/CategoryPanel'
 import TagPanel from '@/components/TagPanel'
+import PageLoad from '@/components/PageLoad'
 
 export default {
   name: 'archive',
   components: {
-    LoadMore,
+    // LoadMore,
     CategoryPanel,
-    TagPanel
+    TagPanel,
+    PageLoad
   },
   setup() {
     const store = useStore()
@@ -99,10 +104,12 @@ export default {
     })
 
     const archive = computed(() => store.getters['article/getArticleArchive'])
-    const hasArchive = ref(true)
-    const getArchive = async () => {
-      const [articleArchive, total] = await store.dispatch('article/GetArticleArchive', form)
-      hasArchive.value = articleArchive && articleArchive.length && form.pageNum * form.pageSize < total
+    const hasMore = ref(true)
+    const isLoadingMore = ref(false)
+    const getArchive = async form => {
+      if (!hasMore.value) return
+      const [list, total] = await store.dispatch('article/GetArticleArchive', form)
+      hasMore.value = list && list.length && form.pageNum * form.pageSize < total
     }
     const generateArchiveTitles = articles => {
       if (articles && articles.length) {
@@ -115,20 +122,24 @@ export default {
     const toArticle = id => {
       router.push({ name: 'article', params: { id } })
     }
-    const handleLoadMore = () => {
-      form.pageNum = form.pageNum + 1
-      getArchive()
+    const onLoadMore = async () => {
+      isLoadingMore.value = true
+      await getArchive({ ...form, pageNum: form.pageNum + 1 })
+      form.pageNum += 1
+      isLoadingMore.value = false
     }
+    useReachBottom(onLoadMore)
     onMounted(() => {
       store.commit('article/CLEAR_ARCHIVE')
-      getArchive()
+      getArchive(form)
     })
     return {
       archive,
-      hasArchive,
+      hasMore,
+      isLoadingMore,
       generateArchiveTitles,
       toArticle,
-      handleLoadMore
+      onLoadMore
     }
   }
 }
@@ -180,7 +191,8 @@ export default {
           }
           .article-card {
             @include layout(95%, 100%, 16px auto, 12px 16px);
-            @include border(1px solid $success-color-a, 4px);
+            @include border(none, 4px);
+            @include box-shadow(4px 4px 12px rgba(0, 0, 0, 0.05), -1px -1px 4px rgba(0, 0, 0, 0.02));
             @include transition(all 120ms ease-in-out);
             background-color: white;
             @include pointer;
@@ -217,7 +229,7 @@ export default {
             }
 
             &:hover {
-              @include box-shadow;
+              @include box-shadow(4px 4px 20px rgba(0, 0, 0, 0.1));
               transform: scale(1.02);
             }
           }
