@@ -15,6 +15,12 @@
         <div class="login-card">
           <div class="login-card-header">
             <span :class="[needRegister ? 'regis-header-hint' : 'login-header-hint']">欢迎来到Coody's Blog</span>
+            <svg width="0">
+              <filter id="filter">
+                <feTurbulence id="turbulence" type="fractalNoise" baseFrequency=".03" numOctaves="20" />
+                <feDisplacementMap in="SourceGraphic" scale="30" />
+              </filter>
+            </svg>
           </div>
           <el-form
             class="login-card-content"
@@ -31,17 +37,20 @@
             <el-form-item prop="password">
               <el-input v-model="form.password" placeholder="密码"></el-input>
             </el-form-item>
-            <el-form-item prop="rPassword" v-if="needRegister">
+            <el-form-item prop="rPassword" v-show="needRegister">
               <el-input v-model="form.rPassword" placeholder="再次输入密码"></el-input>
             </el-form-item>
-            <el-form-item prop="nickName" v-if="needRegister">
+            <el-form-item prop="nickName" v-show="needRegister">
               <el-input v-model="form.nickName" placeholder="昵称"></el-input>
             </el-form-item>
             <el-form-item>
-              <div class="register-hint" :class="[needRegister ? 'regis-hint' : 'login-hint']">
-                <span @click="handleSwitch">
+              <div class="hint-area">
+                <div class="register-hint" :class="[needRegister ? 'regis-hint' : 'login-hint']" @click="handleSwitch">
                   {{ !needRegister ? '还没有账号？注册一个吧' : '已有账号，去登陆' }}
-                </span>
+                </div>
+                <div class="remember-hint">
+                  <el-checkbox v-model="rememberMe" label="保存密码" size="small" border />
+                </div>
               </div>
             </el-form-item>
             <el-form-item>
@@ -62,10 +71,11 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { local } from '@/util/cache'
 
 export default {
   name: 'login',
@@ -82,17 +92,45 @@ export default {
       rPassword: '',
       nickName: ''
     })
+    const rememberMe = ref(false)
+    watch(
+      rememberMe,
+      (nv, ov) => {
+        if (!nv && ov) {
+          // debugger
+          local.remove('login-form')
+          local.set('remember-me', false)
+        }
+      },
+      { immediate: true }
+    )
     const initForm = () => {
-      form.email = ''
-      form.password = ''
-      form.rPassword = ''
-      form.nickName = ''
+      const rememberMeCache = !!local.get('remember-me')
+      rememberMe.value = rememberMeCache || false
+      if (rememberMe.value) {
+        // debugger
+        const formCache = local.getJSON('login-form')
+        form.email = formCache?.email || ''
+        form.password = formCache?.password || ''
+        form.rPassword = formCache?.rPassword || ''
+        form.nickName = formCache?.nickName || ''
+      } else {
+        // debugger
+        form.email = ''
+        form.password = ''
+        form.rPassword = ''
+        form.nickName = ''
+      }
     }
     const rules = reactive({
       email: [],
       password: [],
       rPassword: [],
       nickName: []
+    })
+
+    onMounted(() => {
+      initForm()
     })
     const handleLogin = async param => {
       const isAdmin = param === 'admin'
@@ -104,6 +142,10 @@ export default {
         ? await store.dispatch('admin/Login', submitForm)
         : await store.dispatch('user/Login', submitForm)
       if (res.code !== 200) return
+      if (rememberMe.value) {
+        local.set('remeber-me', true)
+        local.setJSON('login-form', form)
+      }
       router.push({ name: 'home' })
       ElMessage({ type: 'success', message: res.msg })
     }
@@ -126,11 +168,18 @@ export default {
         ? await store.dispatch('admin/Register', submitForm)
         : await store.dispatch('user/Register', submitForm)
       if (res.code !== 200) return
+      if (rememberMe.value) {
+        local.set('remeber-me', true)
+        local.setJSON('login-form', form)
+      }
       router.push({ name: 'home' })
       ElMessage({ type: 'success', message: res.msg })
     }
     const handleSwitch = () => {
-      initForm()
+      form.email = ''
+      form.password = ''
+      form.rPassword = ''
+      form.nickName = ''
       needRegister.value = !needRegister.value
     }
     const animationDuration = ref(48)
@@ -144,6 +193,7 @@ export default {
       form,
       formRef,
       rules,
+      rememberMe,
       needRegister,
       animationDuration,
       bgImgs,
@@ -185,6 +235,7 @@ export default {
           color: $font-color-a;
           font-size: 20px;
           font-weight: bold;
+
           .login-header-hint {
             color: $primary-color;
           }
@@ -198,9 +249,16 @@ export default {
               margin-bottom: 10px;
             }
           }
-          .register-hint {
-            user-select: none !important;
-            @include pointer;
+
+          .hint-area {
+            @include layout(100%, auto, 0, 0 2px);
+            @include flex-box(row, space-between, center);
+            .register-hint {
+              user-select: none !important;
+              @include pointer;
+            }
+            .remember-hint {
+            }
           }
           .register-area,
           .login-area {
