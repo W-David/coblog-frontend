@@ -72,7 +72,7 @@ export default {
     const listStyle = computed(() => {
       const device = store.getters.device
       const wMap = { xs: 24, sm: 24, md: 20, lg: 20, xl: 20 }
-      const mhMap = { xs: 198, sm: 198, md: 146, lg: 146, xl: 146 }
+      const mhMap = { xs: 232, sm: 232, md: 180, lg: 128, xl: 128 }
       return {
         width: `calc(${((wMap[device] || 20) / 24) * 100}vw - 24px)`,
         maxHeight: `${mhMap[device] || 94}px`
@@ -178,7 +178,7 @@ export default {
     z-index: 9999;
     overflow-y: auto;
     .tag-list-container {
-      @include layout(auto, auto, 0, 20px);
+      @include layout(auto, auto, 0, 16px);
       @include flex-box(row, center, center, wrap);
 
       @mixin panel-styl($mc, $bc) {

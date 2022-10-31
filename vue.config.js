@@ -1,10 +1,19 @@
 'use strict'
 const path = require('path')
-const webpack = require('webpack')
+// const AutoImport = require('unplugin-auto-import/webpack')
+// const Components = require('unplugin-vue-components/webpack')
+// const ElementPlus = require('unplugin-element-plus/webpack')
+// const Icons = require('unplugin-icons/webpack')
+
+// const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
+// const IconsResolver = require('unplugin-icons/resolver')
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
+
+const pathSrc = path.resolve(__dirname, 'src')
 
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = process.env.NODE_ENV === 'development'
@@ -18,7 +27,11 @@ module.exports = {
   css: {
     extract: isProd,
     sourceMap: false,
-    loaderOptions: {}
+    loaderOptions: {
+      scss: {
+        additionalData: `@import "./src/assets/element/index.scss";`
+      }
+    }
   },
   // webpack-dev-server 相关配置
   devServer: {
@@ -48,13 +61,40 @@ module.exports = {
     },
     externals: {
       '@waline/client': 'Waline'
-    }
+    },
+    plugins: [
+      // AutoImport({
+      //   resolvers: [
+      //     ElementPlusResolver(),
+      //     IconsResolver({
+      //       prefix: 'I'
+      //     })
+      //   ],
+      //   dts: path.resolve(pathSrc, 'auto-imports.d.ts')
+      // }),
+      // Components({
+      //   resolvers: [
+      //     IconsResolver({
+      //       enabledCollections: ['ep']
+      //     }),
+      //     ElementPlusResolver()
+      //   ],
+      //   dts: path.resolve(pathSrc, 'components.d.ts')
+      // }),
+      // ElementPlus({
+      //   useSource: true
+      // }),
+      // Icons({
+      //   autoInstanll: true
+      // }),
+      // new BundleAnalyzerPlugin()
+    ]
   },
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',
       patterns: [
-        path.resolve(__dirname, './src/assets/element/index.scss'),
+        // path.resolve(__dirname, './src/assets/element/index.scss'),
         path.resolve(__dirname, './src/assets/style/index.scss')
       ]
     }

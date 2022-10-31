@@ -15,12 +15,6 @@
         <div class="login-card">
           <div class="login-card-header">
             <span :class="[needRegister ? 'regis-header-hint' : 'login-header-hint']">欢迎来到Coody's Blog</span>
-            <svg width="0">
-              <filter id="filter">
-                <feTurbulence id="turbulence" type="fractalNoise" baseFrequency=".03" numOctaves="20" />
-                <feDisplacementMap in="SourceGraphic" scale="30" />
-              </filter>
-            </svg>
           </div>
           <el-form
             class="login-card-content"

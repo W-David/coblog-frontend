@@ -20,7 +20,7 @@ export function delayUnit(delay) {
   }
 }
 /**
- * @description 功能同delayUnit,返回延迟返回的包装函数
+ * @description 功能同delayUnit,直接返回延迟后的包装函数
  */
 
 export function delayDescorator(fn, delay) {
