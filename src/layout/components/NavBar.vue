@@ -14,11 +14,27 @@
       </el-menu>
     </div>
     <div v-if="isUserLogin || isAdminLogin" class="nav-search hidden-md-and-down">
-      <el-input v-model="queryText" @keyup.enter="query" placeholder="标题 / 标签 / 类别">
+      <el-autocomplete
+        v-model="queryText"
+        :fetch-suggestions="querySearch"
+        clearable
+        placeholder="标题 / 标签 / 类别"
+        @select="handleQuery"
+      >
         <template #prefix>
-          <el-icon><i-search /></el-icon>
+          <el-icon @click="handleQuery"><i-search /></el-icon>
         </template>
-      </el-input>
+      </el-autocomplete>
+    </div>
+    <div class="nav-switch">
+      <el-switch
+        size="large"
+        v-model="isDark"
+        inline-prompt
+        :active-icon="'i-moon'"
+        :inactive-icon="'i-sunny'"
+        style="--el-switch-on-color: #1d1d1d; --el-switch-off-color: #d1d1d1"
+      />
     </div>
     <div class="nav-user-info hidden-sm-and-down">
       <user v-if="isUserLogin"></user>
@@ -72,6 +88,7 @@ import { useRouter, useRoute } from 'vue-router'
 import User from '@/components/User'
 import Admin from '@/components/Admin'
 import { getUserType } from '@/util/auth'
+import { useDark } from '@vueuse/core'
 
 export default {
   name: 'HNavBar',
@@ -99,9 +116,12 @@ export default {
     const device = computed(() => store.getters.device)
     const loginInfo = computed(() => store.getters.loginInfo)
     const queryText = ref('')
+    const queryResList = ref([])
     const sidebarOpen = computed(() => store.getters.sidebarOpen)
     const setSidebarOpen = open => store.dispatch('app/ToggleSidebar', open)
     const menuRef = ref()
+
+    const isDark = useDark()
 
     const isUserLogin = computed(() => store.getters.isUserLogin)
     const isAdminLogin = computed(() => store.getters.isAdminLogin)
@@ -125,7 +145,22 @@ export default {
       }
     }
 
-    const query = e => {}
+    const handleQuery = ({ type, id }) => router.push({ name: type, params: { id } })
+    const createFilter = qs => restaurant => restaurant.value.toLowerCase().indexOf(qs.toLowerCase()) === 0
+    const getQueryResList = async qs => {
+      await new Promise(rs => setTimeout(rs, 1500))
+      queryResList.value = [
+        { value: 'NavelAI Surfure', type: 'article', id: '976' },
+        { value: '测试中文标题', type: 'article', id: '594' },
+        { value: 'Linux', type: 'category', id: '4' },
+        { value: '学习', type: 'tag', id: '8' }
+      ]
+    }
+    const querySearch = async (qs, callback) => {
+      await getQueryResList(qs)
+      const results = qs ? queryResList.value.filter(createFilter(qs)) : queryResList.value
+      callback(results)
+    }
     const toLogin = () => {
       router.push({ name: 'login' })
     }
@@ -139,7 +174,9 @@ export default {
       menuRef,
       device,
       queryText,
-      query,
+      handleQuery,
+      querySearch,
+      isDark,
       sidebarOpen,
       handleChange,
       handleExpand,
@@ -156,10 +193,10 @@ export default {
 <style lang="scss" scoped>
 .nav-bar-container {
   @include flex-box(row, space-between, center);
+  @include bg-color(#f4f4f4, #050505);
+  @include box-shadow(0 0 4px $border-color);
   height: $header-height;
   padding: 5px 16px;
-  background-color: $header-bg;
-  box-shadow: 0 0 4px $border-color;
   z-index: 5000;
   .nav-icon {
     @include flex-box(row, space-between, center);
@@ -177,18 +214,18 @@ export default {
     margin-left: 36px;
     &:deep {
       .el-menu {
+        @include bg-color(#f4f4f4, #050505);
         border-color: transparent;
-        background-color: $header-bg;
         .el-menu-item {
           padding: 0 16px;
           &.is-active {
+            @include bg-color(#f4f4f4, #050505);
             color: $primary-color;
-            background-color: $header-bg;
           }
           &:hover {
+            @include bg-color(#f4f4f4, #050505);
             color: $primary-color;
             outline: none;
-            background-color: $header-bg;
           }
         }
       }
@@ -196,12 +233,16 @@ export default {
   }
   .nav-search {
     margin-left: auto;
-    margin-right: 24px;
+    margin-right: 16px;
     &:deep {
       .el-input {
         width: 320px;
       }
     }
+  }
+
+  .nav-switch {
+    margin-right: 16px;
   }
 
   .nav-user-info {

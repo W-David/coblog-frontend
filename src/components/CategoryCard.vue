@@ -63,7 +63,7 @@ export default {
   @include pointer;
   @include transition(all 120ms ease-in-out);
   @include box-shadow(0 0 16px 0 rgba(0, 0, 0, 0.1));
-  background-color: #fcfcfc;
+  @include bg-color(#fcfcfc, #1f1f1f);
   z-index: 1000;
 
   .category-icon {
@@ -108,6 +108,11 @@ export default {
         @include flex-box(row, space-between, center);
         .title-content {
           color: $info-color;
+
+          html.dark & {
+            color: $info-color-b;
+          }
+
           @include font-kai;
           @include text-overflow(1, 60%);
           font-size: 15px;
@@ -121,13 +126,14 @@ export default {
           font-weight: bold;
         }
       }
-      &:hover {
+      &:hover,
+      html.dark &:hover {
         // transform: scaleX(1.02);
         .title-content {
           color: $success-color;
         }
         .time-content {
-          color: $info-color;
+          color: $success-color-a;
         }
       }
     }
@@ -145,6 +151,10 @@ export default {
     border-color: $success-color;
     border-width: 2px;
     @include box-shadow;
+
+    html.dark & {
+      border-color: $success-color;
+    }
   }
 }
 </style>

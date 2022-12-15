@@ -76,6 +76,7 @@ export default {
 
   .header-container {
     @include position(fixed, 0, 0, 0);
+    width: 100%;
     z-index: 1005;
   }
 

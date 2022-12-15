@@ -44,7 +44,6 @@
             <textarea v-model="blogDesc" placeholder="请输入文章描述(^///^)"></textarea>
           </div>
           <div class="blog-text" ref="text"></div>
-          <div class="blog-edit"></div>
           <div class="blog-ctrl">
             <el-button type="success" @click="submitBlog">提交博文</el-button>
           </div>
@@ -335,9 +334,10 @@ export default {
     @include layout(auto, auto, 16px, 16px);
     @include border(none, 8px);
     @include box-shadow(8px 8px 20px rgba(0, 0, 0, 0.05), -4px -4px 20px rgba(0, 0, 0, 0.05));
-    background-color: white;
+    @include bg-color(#fff, #1a1a1a);
     .blog-img {
       @include layout(100%, 300px, 0 0 8px 0, 0);
+      @include bg-color(#fff, #2a2a2a);
     }
     .blog-title {
       @include layout(100%, auto, 0 0 8px 0, 0);
@@ -354,6 +354,13 @@ export default {
     }
     .blog-toolbar {
       @include border(1px solid #ccc);
+      ::v-deep .w-e-toolbar {
+        background-color: #fdfdfd;
+        html.dark & {
+          background-color: #222;
+          color: #eee;
+        }
+      }
     }
     .blog-tc {
       @include layout(100%, auto, 8px 0, 6px);
@@ -366,11 +373,13 @@ export default {
       }
     }
     .blog-desc {
-      @include layout(100%, auto, 8px 0, 6px);
+      @include layout(100%, auto, 8px 0, 0);
       @include border(1px solid #ccc);
       textarea {
         width: 100%;
         height: 120px;
+        margin: 0;
+        padding: 6px;
         resize: none;
         border: none;
         outline: none;
@@ -381,7 +390,14 @@ export default {
     }
     .blog-text {
       @include border(1px solid #ccc);
-      min-height: 360px;
+      ::v-deep .w-e-text-container {
+        min-height: 360px;
+        background-color: #fdfdfd;
+        html.dark & {
+          background-color: #222;
+          color: #eee;
+        }
+      }
     }
     .blog-ctrl {
       &:deep {

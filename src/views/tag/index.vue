@@ -170,7 +170,7 @@ export default {
     @include box-shadow(12px 12px 24px 0 rgba(0, 0, 0, 0.05));
     @include scroll-bar(6px, auto, transparent, $info-color-b, 3px);
     @include border(1px solid #e5f5e5, 8px);
-    background-color: #fff;
+    @include bg-color(#fff);
     position: fixed;
     top: 76px;
     left: 50%;

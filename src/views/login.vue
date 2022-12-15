@@ -1,7 +1,7 @@
 <template>
   <div class="login-page">
     <div
-      class="bg-slide"
+      class="bg-fade-animation"
       v-for="(bgImg, index) in bgImgs"
       :key="index"
       :style="{
@@ -200,18 +200,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@include bg-fade;
 .login-page {
   @include layout(100vw, 100vh, 0, 0);
   position: absolute;
   top: 0;
   left: 0;
   overflow: hidden;
-  .bg-slide {
-    opacity: 0;
-    @include bg-cover;
-    @include use-animation(bg-fade linear infinite);
-  }
   .login-row-container {
     height: 100%;
     .login-col-container {
@@ -219,7 +213,7 @@ export default {
       .login-card {
         @include layout(80%, auto, 0 auto, 12px);
         @include border(1px solid #ececec, 8px);
-        background-color: white;
+        @include bg-color(#fff, #1d1d1d);
         .login-card-header {
           @include layout(100%, 120px, 0 0 16px 0, 4px);
           @include flex-box(row, center, center);

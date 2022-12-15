@@ -13,6 +13,7 @@
 		"@babel/plugin-transform-modules-umd": "^7.18.6",
 		"@element-plus/icons": "^0.0.11",
 		"@jsmini/clone": "^0.4.2",
+		"@vueuse/core": "^9.6.0",
 		"ali-oss": "^6.16.0",
 		"axios": "^0.24.0",
 		"core-js": "^3.6.5",

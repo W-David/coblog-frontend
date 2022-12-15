@@ -91,7 +91,8 @@ export default {
       init({
         el: '#waline',
         serverURL: process.env.VUE_APP_WALINE_API,
-        reaction: true
+        reaction: true,
+        dark: '.dark'
       })
     }
 
@@ -171,7 +172,7 @@ export default {
       justify-content: center;
       align-items: center;
       color: $primary-color;
-      background-color: #fff;
+      @include bg-color(#fff, #1d1d1d);
       z-index: 1000;
       box-shadow: 0 0 6px rgb(0 0 0 / 12%);
       cursor: pointer;
@@ -183,7 +184,7 @@ export default {
       @include layout(100%, 100%, 0, 16px);
       @include border(1px solid #eee, 8px);
       @include box-shadow(2px 4px 16px rgba(0, 0, 0, 0.1));
-      background-color: #fafafa;
+      @include bg-color(#fafafa, #2f2f2f);
       .article-banner-container {
         @include layout(100%, 320px, 0 0 12px 0, 0);
         position: relative;
@@ -264,7 +265,7 @@ export default {
         @include layout(100%, auto, 0 0 12px 0, 16px 24px);
         @include border(1px solid #e5e5e5, 4px);
         // background-color: rgba(245, 236, 211, 0.2);
-        background-color: #eee;
+        @include bg-color(#eee, #1f1f1f);
         .article-content {
           @include font-hei;
           &:deep {
@@ -285,7 +286,7 @@ export default {
       @include layout(100%, auto, 16px 0 0 0, 8px 12px);
       @include border(1px solid #eee, 8px);
       @include box-shadow(4px 4px 16px rgba(0, 0, 0, 0.1));
-      background-color: #fafafa;
+      @include bg-color(#fafafa, #1f1f1f);
     }
   }
 }

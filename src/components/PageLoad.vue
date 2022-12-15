@@ -14,9 +14,9 @@
         <span class="shadow" style="--i: 5"></span>
       </div>
     </div>
-    <el-divider border-style="none" v-show="!hasMore">
+    <div class="bottom-divide" v-show="!hasMore">
       <span class="bottom-hint">已经到底啦(❁´◡`❁)`</span>
-    </el-divider>
+    </div>
   </div>
 </template>
 
@@ -71,13 +71,21 @@ export default {
       }
     }
   }
-  .bottom-hint {
-    color: $font-color;
-    font-size: 18px;
-    font-weight: border;
-    margin-bottom: 16px;
-    letter-spacing: 2px;
-    text-indent: 2px;
+  .bottom-divide {
+    @include layout(100%, auto, 12px 0, 0);
+    @include flex-box(row, center, center);
+    .bottom-hint {
+      color: $font-color;
+      html.dark & {
+        color: $font-color-b;
+      }
+
+      font-size: 18px;
+      font-weight: border;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+      text-indent: 2px;
+    }
   }
 
   @keyframes jump {

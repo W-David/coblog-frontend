@@ -123,21 +123,40 @@
   @if ($border-radius != '' and $border-radius != null) {
     border-radius: $border-radius;
   }
-  border-radius: $border-radius;
   @if ($position == all) {
     border: $border;
+		html.dark & {
+			border: $border;
+			border-color:rgba(0, 0, 0, 0.2);
+		}
   }
   @if ($position == left) {
     border-left: $border;
+		html.dark & {
+			border-left: $border;
+			border-left-color:rgba(0, 0, 0, 0.2);
+		}
   }
   @if ($position == top) {
     border-top: $border;
+		html.dark & {
+			border-top: $border;
+			border-top-color:rgba(0, 0, 0, 0.2);
+		}
   }
   @if ($position == right) {
     border-right: $border;
+		html.dark & {
+			border-right: $border;
+			border-right-color:rgba(0, 0, 0, 0.2);
+		}
   }
   @if ($position == bottom) {
     border-bottom: $border;
+		html.dark & {
+			border-bottom: $border;
+			border-bottom-color:rgba(0, 0, 0, 0.2);
+		}
   }
 }
 /* 阴影效果 */
@@ -147,6 +166,9 @@
   } @else {
     box-shadow: #{$params1}, #{$params2};
   }
+	html.dark & {
+		box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+	}
 }
 
 /*渐变(从上到下）*/
@@ -165,6 +187,17 @@
   @if ($line-height!=null) {
     line-height: $line-height;
   }
+}
+
+@mixin bg-color($light-color: #fdfdfd, $dark-color: #1a1a1a) {
+	@if ($light-color != null) {
+		background-color: $light-color;
+	}
+	@if($dark-color!= null) {
+		html.dark & {
+			background-color: $dark-color;
+		}
+	}
 }
 
 @mixin bg-cover() {

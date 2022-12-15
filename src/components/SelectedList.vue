@@ -71,7 +71,7 @@ export default {
       .el-card__body {
         padding: 16px;
         .el-check-tag {
-          margin-right: 12px;
+          margin: 8px 12px 0 0;
         }
       }
     }

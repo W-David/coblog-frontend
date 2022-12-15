@@ -30,10 +30,10 @@ export default {
     @include font-hei;
     @include transition(all 200ms ease-out);
     @include pointer;
+    @include bg-color(#fcfcfc);
     font-weight: bolder;
     text-align: start;
     line-height: 1.8;
-    background-color: #fcfcfc;
     &:hover {
       @include box-shadow;
     }

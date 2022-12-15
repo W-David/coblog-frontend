@@ -153,7 +153,7 @@ export default {
       @include layout(100%, 100%, 0, 32px);
       @include border(none, 8px);
       @include box-shadow(4px 4px 16px rgba(0, 0, 0, 0.1));
-      background-color: #fff;
+      @include bg-color(#fff, #1d1d1d);
       ul {
         padding-inline-start: 0;
       }
@@ -162,10 +162,15 @@ export default {
         //   background-color: $primary-color;
         // }
         .el-timeline-item__timestamp {
-          @include font-fang-song;
+          font-family: monospace;
+          font-size: 18px;
           text-align: left;
-          font-weight: bolder;
+          font-weight: 900;
           color: $font-color;
+
+          html.dark & {
+            color: #fcfcfc;
+          }
         }
         .el-timeline-item__content {
           .display-title-container {
@@ -194,7 +199,7 @@ export default {
             @include border(none, 4px);
             @include box-shadow(4px 4px 12px rgba(0, 0, 0, 0.05), -1px -1px 4px rgba(0, 0, 0, 0.02));
             @include transition(all 120ms ease-in-out);
-            background-color: white;
+            @include bg-color(#fff, #1d1d1d);
             @include pointer;
 
             .article-title {

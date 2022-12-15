@@ -8,7 +8,7 @@
       <div
         @mouseenter="isBannerHover = true"
         @mouseleave="isBannerHover = false"
-        :class="['article-banner-description', !isBannerHover ? 'spinner-border' : '']"
+        :class="['article-banner-description', !isBannerHover ? 'spinner-border-animation' : '']"
         @click="openDetail"
       >
         阅读全文
@@ -19,7 +19,7 @@
       </div> -->
     </div>
     <div class="article-title-container">
-      <span class="title-content">
+      <span class="title-content" @click="openDetail">
         {{ article.title }}
       </span>
     </div>
@@ -94,7 +94,7 @@ $descrip-mr: 12px;
   @include border(1px solid $border-color-a, 6px);
   @include transition(all 120ms ease-in-out);
   @include box-shadow;
-  background-color: white;
+  @include bg-color;
   z-index: 1000;
 
   .article-banner-container {

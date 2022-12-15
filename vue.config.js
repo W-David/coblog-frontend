@@ -29,7 +29,10 @@ module.exports = {
     sourceMap: false,
     loaderOptions: {
       scss: {
-        additionalData: `@import "./src/assets/element/index.scss";`
+        additionalData: `
+					@import "./src/assets/element/index.scss";
+				  @import "./src/assets/style/index.scss";
+				`
       }
     }
   },
@@ -93,15 +96,10 @@ module.exports = {
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',
-      patterns: [
-        // path.resolve(__dirname, './src/assets/element/index.scss'),
-        path.resolve(__dirname, './src/assets/style/index.scss')
-      ]
+      patterns: ['']
     }
   },
   chainWebpack(config) {
-    config.plugins.delete('preload') // TODO: need test
-    config.plugins.delete('prefetch') // TODO: need test
     // set svg-sprite-loader
     config.module.rule('svg').exclude.add(resolve('src/assets/icons')).end()
     config.module

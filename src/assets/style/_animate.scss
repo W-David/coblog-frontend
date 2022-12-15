@@ -1,4 +1,4 @@
-.spinner-border {
+.spinner-border-animation {
   /** 边框环绕效果 */
   @include define-animation(spinner-border) {
     0%,
@@ -33,33 +33,36 @@
   }
 }
 
-@mixin bg-fade() {
-	@include define-animation(bg-fade)	{
- 		0% {
-    	opacity: 0;
-    	transform: scale(1.25);
-    	animation-timing-function: ease-out;
-  	}
-  	12.5% {
-    	opacity: 1;
-    	transform: scale(1);
-    	animation-timing-function: ease-out;
-  	}
-		19.25% {
-			transform: scale(1.05);
-    	animation-timing-function: ease-in;
-		}
-  	25% {
-    	opacity: 1;
-    	transform: scale(1);
-    	animation-timing-function: ease-in;
-  	}
-  	37.5% {
-    	opacity: 0;
-    	transform: scale(1.25);
-  	}
-  	100% {
-    	opacity: 0;
-  	}
-	}
+.bg-fade-animation {
+  opacity: 0;
+  @include define-animation(bg-fade) {
+    0% {
+      opacity: 0;
+      transform: scale(1.25);
+      animation-timing-function: ease-out;
+    }
+    12.5% {
+      opacity: 1;
+      transform: scale(1);
+      animation-timing-function: ease-out;
+    }
+    19.25% {
+      transform: scale(1.05);
+      animation-timing-function: ease-in;
+    }
+    25% {
+      opacity: 1;
+      transform: scale(1);
+      animation-timing-function: ease-in;
+    }
+    37.5% {
+      opacity: 0;
+      transform: scale(1.25);
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @include bg-cover;
+  @include use-animation(bg-fade linear infinite);
 }

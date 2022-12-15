@@ -181,6 +181,10 @@ export default {
   .info-email {
     @include layout(100%, auto, 12px 0, 12px);
     @include box-shadow(inset 2px 2px 4px $info-color-b, inset -1px -1px 2px $info-color-b);
+    html.dark & {
+      @include box-shadow(inset 2px 2px 4px rgba(0, 0, 0, 0.2), inset -1px -1px 2px rgba(0, 0, 0, 0.2));
+    }
+
     @include border(1px solid transparent, 8px);
     @include pointer;
     .info-hint {
@@ -192,10 +196,22 @@ export default {
       &:hover {
         color: $font-color;
       }
+      html.dark & {
+        color: #dedede;
+        &:hover {
+          color: #eee;
+        }
+      }
     }
     input {
+      font-size: 15px;
+      margin: 0;
+      padding: 0;
       border: none !important;
       outline: none !important;
+      html.dark & {
+        background-color: #141414;
+      }
     }
   }
 }
