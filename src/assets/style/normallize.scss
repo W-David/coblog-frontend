@@ -19,18 +19,48 @@ body {
     @include layout(100%, 100%, 0, 28px 0 18px 0);
     @include flex-box(column, space-between, center);
 
-    .collapse-container {
+    .collapse-top {
       @include flex-box(column, space-between, center);
+			.drawer-icon {
+				margin-bottom: 36px;
+			}
 			.drawer-user-info {
-				margin: 36px 0 20px 0;
+				margin-bottom: 20px;
 			}
       .drawer-menu {
         border-right: none !important;
       }
     }
+		.collapse-bottom {
+			.drawer-logout {}
+			.drawer-switch {
+				margin-top: 16px;
+			}
+		}
   }
   .el-popper {
     z-index: 500000 !important;
+		.ac-content {
+			@include flex-box(row, space-between, center, nowrap);
+			.ac-type {
+				width: 36px;
+				.svg-article {
+					color: $danger-color;
+				}
+				.svg-tag {
+					color: $primary-color;
+				}
+				.svg-category {
+					color: $success-color;
+				}
+			}
+			.ac-val {
+				width: calc(100% - 42px);
+				text-align: start;
+				color: $info-color-a;
+				@include text-overflow;
+			}
+		}
   }
 }
 
