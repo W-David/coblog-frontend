@@ -40,7 +40,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { reactive, computed, onMounted, ref, nextTick, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
@@ -58,107 +58,86 @@ import { createTag } from '@/api/tag'
 import { cloneLoop, cloneForce } from '@jsmini/clone'
 import { scrollToByEle } from '@/util/scroll-to'
 
-export default {
-  name: 'tag',
-  components: {
-    TagCard,
-    PageLoad
-  },
-  setup() {
-    const store = useStore()
-    const route = useRoute()
-    const tagArticles = computed(() => store.getters['tag/getTagArticles']())
-    const checkedIds = ref([])
-    const listStyle = computed(() => {
-      const device = store.getters.device
-      const wMap = { xs: 24, sm: 24, md: 20, lg: 20, xl: 20 }
-      const mhMap = { xs: 232, sm: 232, md: 180, lg: 128, xl: 128 }
-      return {
-        width: `calc(${((wMap[device] || 20) / 24) * 100}vw - 24px)`,
-        maxHeight: `${mhMap[device] || 94}px`
-      }
-    })
-    const listHeight = ref(0)
-    const hasMore = ref(true)
-    const isLoadingMore = ref(false)
-    const isChecked = id => checkedIds.value.includes(id)
-    const handleChecked = item => {
-      if (isChecked(item.id)) {
-        const index = checkedIds.value.indexOf(item.id)
-        checkedIds.value.splice(index, 1)
-      } else {
-        scrollToByEle(document.getElementById(`tag-${item.id}`), 600, () => checkedIds.value.push(item.id))
-      }
-    }
-    const queryParams = reactive({ pageNum: 1, pageSize: 10 })
-    const getTagArticles = async queryParams => {
-      if (!hasMore.value) return
-      const [list, total] = await store.dispatch('tag/GetTagArticles', queryParams)
-      hasMore.value = list && list.length && queryParams.pageNum * queryParams.pageSize < total
-    }
-    const onReachBottom = async () => {
-      isLoadingMore.value = true
-      await getTagArticles({ ...queryParams, pageNum: queryParams.pageNum + 1 })
-      queryParams.pageNum += 1
-      isLoadingMore.value = false
-    }
-    useReachBottom(onReachBottom)
-
-    const isTagShow = ref(false)
-    watch(
-      isTagShow,
-      (nv, ov) => {
-        if (!nv && ov) return
-        nextTick(() => {
-          const listDom = document.querySelector('.tag-list')
-          listHeight.value = listDom.offsetHeight
-        })
-      },
-      { immediate: true }
-    )
-    const onScrollUp = offset => {
-      isTagShow.value = true
-    }
-    const onScrollDown = offset => {
-      isTagShow.value = false
-    }
-    useScroll({ onScrollUp, onScrollDown })
-
-    const handleAdd = async () => {
-      const { setIsFinish, showPrompt, setHint } = usePrompt()
-      setHint('已添加')
-      const { value } = await showPrompt('请输入添加的标签名称', '添加标签', '添加')
-      if (!value) return
-      const res = await createTag({ name: value })
-      if (res.code !== 200) return
-      store.dispatch('tag/GetTagArticles', { ids: [res.data.id] })
-      setIsFinish(true)
-    }
-    const handleDelete = async tag => {
-      const res = await store.dispatch('tag/DelTag', tag.id)
-    }
-    onMounted(async () => {
-      if (route.params.id) {
-        checkedIds.value.push(+route.params.id)
-      }
-      store.commit('tag/CLEAR_TAG_ARTICLES')
-      await Promise.all([getTagArticles(queryParams)])
-      isTagShow.value = true
-    })
-    return {
-      listStyle,
-      listHeight,
-      hasMore,
-      isLoadingMore,
-      tagArticles,
-      isTagShow,
-      isChecked,
-      handleAdd,
-      handleDelete,
-      handleChecked
-    }
+const store = useStore()
+const route = useRoute()
+const tagArticles = computed(() => store.getters['tag/getTagArticles']())
+const checkedIds = ref([])
+const listStyle = computed(() => {
+  const device = store.getters.device
+  const wMap = { xs: 24, sm: 24, md: 20, lg: 20, xl: 20 }
+  const mhMap = { xs: 232, sm: 232, md: 180, lg: 128, xl: 128 }
+  return {
+    width: `calc(${((wMap[device] || 20) / 24) * 100}vw - 24px)`,
+    maxHeight: `${mhMap[device] || 94}px`
+  }
+})
+const listHeight = ref(0)
+const hasMore = ref(true)
+const isLoadingMore = ref(false)
+const isChecked = id => checkedIds.value.includes(id)
+const handleChecked = item => {
+  if (isChecked(item.id)) {
+    const index = checkedIds.value.indexOf(item.id)
+    checkedIds.value.splice(index, 1)
+  } else {
+    scrollToByEle(document.getElementById(`tag-${item.id}`), 600, () => checkedIds.value.push(item.id))
   }
 }
+const queryParams = reactive({ pageNum: 1, pageSize: 10 })
+const getTagArticles = async queryParams => {
+  if (!hasMore.value) return
+  const [list, total] = await store.dispatch('tag/GetTagArticles', queryParams)
+  hasMore.value = list && list.length && queryParams.pageNum * queryParams.pageSize < total
+}
+const onReachBottom = async () => {
+  isLoadingMore.value = true
+  await getTagArticles({ ...queryParams, pageNum: queryParams.pageNum + 1 })
+  queryParams.pageNum += 1
+  isLoadingMore.value = false
+}
+useReachBottom(onReachBottom)
+
+const isTagShow = ref(false)
+watch(
+  isTagShow,
+  (nv, ov) => {
+    if (!nv && ov) return
+    nextTick(() => {
+      const listDom = document.querySelector('.tag-list')
+      listHeight.value = listDom.offsetHeight
+    })
+  },
+  { immediate: true }
+)
+const onScrollUp = offset => {
+  isTagShow.value = true
+}
+const onScrollDown = offset => {
+  isTagShow.value = false
+}
+useScroll({ onScrollUp, onScrollDown })
+
+const handleAdd = async () => {
+  const { setIsFinish, showPrompt, setHint } = usePrompt()
+  setHint('已添加')
+  const { value } = await showPrompt('请输入添加的标签名称', '添加标签', '添加')
+  if (!value) return
+  const res = await createTag({ name: value })
+  if (res.code !== 200) return
+  store.dispatch('tag/GetTagArticles', { ids: [res.data.id] })
+  setIsFinish(true)
+}
+const handleDelete = async tag => {
+  const res = await store.dispatch('tag/DelTag', tag.id)
+}
+onMounted(async () => {
+  if (route.params.id) {
+    checkedIds.value.push(+route.params.id)
+  }
+  store.commit('tag/CLEAR_TAG_ARTICLES')
+  await Promise.all([getTagArticles(queryParams)])
+  isTagShow.value = true
+})
 </script>
 
 <style lang="scss" scoped>

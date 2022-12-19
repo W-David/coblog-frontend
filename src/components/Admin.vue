@@ -67,7 +67,7 @@
   </teleport>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -75,90 +75,64 @@ import { ElMessage } from 'element-plus'
 import AvatarUpload from '@/components/FileUpload.vue'
 import useDOMCreate from '@/hooks/useDOMCreate'
 
-export default {
-  name: 'admin',
-  components: {
-    AvatarUpload
-  },
-  setup(props, { attrs, slots, emit, expose }) {
-    useDOMCreate('rootAdminInfo')
-    const router = useRouter()
-    const store = useStore()
-    const avatar = computed(() => store.getters.adminAvatar)
-    const adminInfo = computed(() => store.getters.adminInfo)
-    const adminForm = reactive({
-      nickname: adminInfo.value.nickname,
-      email: adminInfo.value.email
-    })
-    const device = computed(() => store.getters.device)
-    const dialogWidth = computed(() => {
-      const dv = device.value
-      return dv === 'xl' || dv === 'lg' ? '30%' : dv === 'md' ? '40%' : dv === 'sm' ? '60%' : '90%'
-    })
-    const openAdminInfo = ref(false)
-    const isEN = ref(false)
-    const isEE = ref(false)
+useDOMCreate('rootAdminInfo')
+const router = useRouter()
+const store = useStore()
+const avatar = computed(() => store.getters.adminAvatar)
+const adminInfo = computed(() => store.getters.adminInfo)
+const adminForm = reactive({
+  nickname: adminInfo.value.nickname,
+  email: adminInfo.value.email
+})
+const device = computed(() => store.getters.device)
+const dialogWidth = computed(() => {
+  const dv = device.value
+  return dv === 'xl' || dv === 'lg' ? '30%' : dv === 'md' ? '40%' : dv === 'sm' ? '60%' : '90%'
+})
+const openAdminInfo = ref(false)
+const isEN = ref(false)
+const isEE = ref(false)
 
-    const toBlog = () => {
-      router.push({ name: 'blog' })
-    }
-    const toAdminInfo = () => {
-      openAdminInfo.value = true
-    }
-    const tapAvatar = () => {
-      const isSM = device.value === 'xs' || device.value === 'sm'
-      if (!isSM) return
-      store.dispatch('app/ToggleSidebar', false)
-      openAdminInfo.value = true
-    }
-    const logout = async () => {
-      await store.dispatch('admin/Logout')
-      router.push({ name: 'login' })
-    }
-    const handleCancel = () => {
-      openAdminInfo.value = false
-    }
-    const handleUpdate = async () => {
-      const isSuccess = await store.dispatch('admin/SetAdminInfo', adminForm)
-      openAdminInfo.value = false
-      ElMessage({
-        message: isSuccess ? '更新成功' : '更新失败',
-        type: isSuccess ? 'success' : 'error'
-      })
-    }
-    const handleUpload = async file => {
-      const isSuccess = await store.dispatch('admin/SetAvatar', { store, file })
-      ElMessage({
-        message: isSuccess ? '头像上传成功' : '上传失败',
-        type: isSuccess ? 'success' : 'error'
-      })
-    }
-    const handleDelete = async () => {
-      const isSuccess = await store.dispatch('admin/DeleteAvatar')
-      ElMessage({
-        message: isSuccess ? '已删除' : '删除失败',
-        type: isSuccess ? 'success' : 'error'
-      })
-    }
-    return {
-      isEN,
-      isEE,
-      device,
-      dialogWidth,
-      adminInfo,
-      adminForm,
-      toBlog,
-      avatar,
-      logout,
-      openAdminInfo,
-      toAdminInfo,
-      tapAvatar,
-      handleCancel,
-      handleUpdate,
-      handleUpload,
-      handleDelete
-    }
-  }
+const toBlog = () => {
+  router.push({ name: 'blog' })
+}
+const toAdminInfo = () => {
+  openAdminInfo.value = true
+}
+const tapAvatar = () => {
+  const isSM = device.value === 'xs' || device.value === 'sm'
+  if (!isSM) return
+  store.dispatch('app/ToggleSidebar', false)
+  openAdminInfo.value = true
+}
+const logout = async () => {
+  await store.dispatch('admin/Logout')
+  router.push({ name: 'login' })
+}
+const handleCancel = () => {
+  openAdminInfo.value = false
+}
+const handleUpdate = async () => {
+  const isSuccess = await store.dispatch('admin/SetAdminInfo', adminForm)
+  openAdminInfo.value = false
+  ElMessage({
+    message: isSuccess ? '更新成功' : '更新失败',
+    type: isSuccess ? 'success' : 'error'
+  })
+}
+const handleUpload = async file => {
+  const isSuccess = await store.dispatch('admin/SetAvatar', { store, file })
+  ElMessage({
+    message: isSuccess ? '头像上传成功' : '上传失败',
+    type: isSuccess ? 'success' : 'error'
+  })
+}
+const handleDelete = async () => {
+  const isSuccess = await store.dispatch('admin/DeleteAvatar')
+  ElMessage({
+    message: isSuccess ? '已删除' : '删除失败',
+    type: isSuccess ? 'success' : 'error'
+  })
 }
 </script>
 

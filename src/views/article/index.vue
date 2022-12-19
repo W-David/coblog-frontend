@@ -58,7 +58,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, onMounted, onUnmounted, computed, nextTick, onActivated } from 'vue'
 import { deleteArticle } from '@/api/article'
 import { useStore } from 'vuex'
@@ -71,80 +71,61 @@ import { init } from '@waline/client'
 import CategoryPanel from '@/components/CategoryPanel'
 import TagPanel from '@/components/TagPanel'
 
-export default {
-  name: 'h-article',
-  components: {
-    CategoryPanel,
-    TagPanel
-  },
-  setup() {
-    const store = useStore()
-    const route = useRoute()
-    const router = useRouter()
-    const articleId = +route.params.id
-    const loginInfo = computed(() => store.getters.loginInfo)
-    const isAdminLogin = computed(() => store.getters.isAdminLogin)
-    const article = computed(() => store.getters['article/getArticleById'](articleId))
-    const isCurAdmin = computed(() => article.value?.admin?.id === loginInfo.value?.id)
+const store = useStore()
+const route = useRoute()
+const router = useRouter()
+const articleId = +route.params.id
+const loginInfo = computed(() => store.getters.loginInfo)
+const isAdminLogin = computed(() => store.getters.isAdminLogin)
+const article = computed(() => store.getters['article/getArticleById'](articleId))
+const isCurAdmin = computed(() => article.value?.admin?.id === loginInfo.value?.id)
 
-    const mountWaline = () => {
-      init({
-        el: '#waline',
-        serverURL: process.env.VUE_APP_WALINE_API,
-        reaction: true,
-        dark: '.dark'
-      })
-    }
-
-    const getArticle = async articleId => await store.dispatch('article/GetArticle', articleId)
-    const handleDel = async () => {
-      const { value: title } = await ElMessageBox.prompt('【请输入文章标题确认删除】', '删除确认', {
-        confirmButtonText: '删除此文章',
-        cancelButtonText: '取消'
-      })
-      if (title !== article.value.title) {
-        ElMessage({ message: '请输入正确的文章标题', type: 'warning' })
-        return
-      }
-      const res = await store.dispatch('article/DelArticle', article.value.id)
-      router.push({ name: 'home' })
-      ElMessage({ message: '已删除', type: 'success' })
-    }
-    const handleEdit = () => {
-      router.push({ name: 'blog', params: { id: article.value.id } })
-    }
-    const toBack = () => {
-      router.back()
-    }
-    onMounted(async () => {
-      mountWaline()
-      await getArticle(articleId)
-      // nextTick(() => {
-      //   tocbot.init({
-      //     tocSelector: '#article-toc',
-      //     contentSelector: '#article-content',
-      //     headingSelector: 'h1, h2, h3',
-      //     hasInnerContainers: true,
-      //     headingsOffset: 20,
-      //     scrollSmoothOffset: -90
-      //   })
-      // })
-    })
-    onUnmounted(() => {
-      // tocbot.destroy()
-    })
-    return {
-      handleDel,
-      handleEdit,
-      toBack,
-      getArticle,
-      article,
-      articleId,
-      isAdminLogin,
-      isCurAdmin
-    }
-  }
+const mountWaline = () => {
+  init({
+    el: '#waline',
+    serverURL: process.env.VUE_APP_WALINE_API,
+    reaction: true,
+    dark: '.dark'
+  })
 }
+
+const getArticle = async articleId => await store.dispatch('article/GetArticle', articleId)
+const handleDel = async () => {
+  const { value: title } = await ElMessageBox.prompt('【请输入文章标题确认删除】', '删除确认', {
+    confirmButtonText: '删除此文章',
+    cancelButtonText: '取消'
+  })
+  if (title !== article.value.title) {
+    ElMessage({ message: '请输入正确的文章标题', type: 'warning' })
+    return
+  }
+  const res = await store.dispatch('article/DelArticle', article.value.id)
+  router.push({ name: 'home' })
+  ElMessage({ message: '已删除', type: 'success' })
+}
+const handleEdit = () => {
+  router.push({ name: 'blog', params: { id: article.value.id } })
+}
+const toBack = () => {
+  router.back()
+}
+onMounted(async () => {
+  mountWaline()
+  await getArticle(articleId)
+  // nextTick(() => {
+  //   tocbot.init({
+  //     tocSelector: '#article-toc',
+  //     contentSelector: '#article-content',
+  //     headingSelector: 'h1, h2, h3',
+  //     hasInnerContainers: true,
+  //     headingsOffset: 20,
+  //     scrollSmoothOffset: -90
+  //   })
+  // })
+})
+onUnmounted(() => {
+  // tocbot.destroy()
+})
 </script>
 
 <style lang="scss" scoped>

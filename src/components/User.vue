@@ -64,7 +64,7 @@
   </teleport>
 </template>
 
-<script>
+<script setup>
 import { computed, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -72,86 +72,61 @@ import { ElMessage } from 'element-plus'
 import AvatarUpload from '@/components/FileUpload.vue'
 import useDOMCreate from '@/hooks/useDOMCreate'
 
-export default {
-  name: 'user',
-  components: {
-    AvatarUpload
-  },
-  setup(props, { attrs, slots, emit, expose }) {
-    useDOMCreate('rootUserInfo')
-    const store = useStore()
-    const router = useRouter()
-    const avatar = computed(() => store.getters.userAvatar)
-    const userInfo = computed(() => store.getters.userInfo)
-    const userForm = reactive({
-      username: userInfo.value.username,
-      email: userInfo.value.email
-    })
-    const device = computed(() => store.getters.device)
-    const dialogWidth = computed(() => {
-      const dv = device.value
-      return dv === 'xl' || dv === 'lg' ? '30%' : dv === 'md' ? '40%' : dv === 'sm' ? '60%' : '90%'
-    })
-    const openUserInfo = ref(false)
-    const isEN = ref(false)
-    const isEE = ref(false)
+useDOMCreate('rootUserInfo')
+const store = useStore()
+const router = useRouter()
+const avatar = computed(() => store.getters.userAvatar)
+const userInfo = computed(() => store.getters.userInfo)
+const userForm = reactive({
+  username: userInfo.value.username,
+  email: userInfo.value.email
+})
+const device = computed(() => store.getters.device)
+const dialogWidth = computed(() => {
+  const dv = device.value
+  return dv === 'xl' || dv === 'lg' ? '30%' : dv === 'md' ? '40%' : dv === 'sm' ? '60%' : '90%'
+})
+const openUserInfo = ref(false)
+const isEN = ref(false)
+const isEE = ref(false)
 
-    const toUserInfo = () => {
-      openUserInfo.value = true
-    }
-    const tapAvatar = () => {
-      const isSM = device.value === 'xs' || device.value === 'sm'
-      if (!isSM) return
-      store.dispatch('app/ToggleSidebar', false)
-      openUserInfo.value = true
-    }
-    const logout = async () => {
-      await store.dispatch('user/Logout')
-      router.push({ name: 'login' })
-    }
-    const handleCancel = () => {
-      openUserInfo.value = false
-    }
-    const handleUpdate = async () => {
-      const isSuccess = await store.dispatch('user/SetUserInfo', userForm)
-      openUserInfo.value = false
-      ElMessage({
-        message: isSuccess ? '更新成功' : '更新失败',
-        type: isSuccess ? 'success' : 'error'
-      })
-    }
-    const handleUpload = async file => {
-      const isSuccess = await store.dispatch('user/SetAvatar', { store, file })
-      ElMessage({
-        message: isSuccess ? '头像上传成功' : '上传失败',
-        type: isSuccess ? 'success' : 'error'
-      })
-    }
-    const handleDelete = async () => {
-      const isSuccess = await store.dispatch('user/DeleteAvatar')
-      ElMessage({
-        message: isSuccess ? '已删除' : '删除失败',
-        type: isSuccess ? 'success' : 'error'
-      })
-    }
-    return {
-      isEE,
-      isEN,
-      device,
-      dialogWidth,
-      openUserInfo,
-      toUserInfo,
-      tapAvatar,
-      avatar,
-      userInfo,
-      userForm,
-      logout,
-      handleCancel,
-      handleUpdate,
-      handleUpload,
-      handleDelete
-    }
-  }
+const toUserInfo = () => {
+  openUserInfo.value = true
+}
+const tapAvatar = () => {
+  const isSM = device.value === 'xs' || device.value === 'sm'
+  if (!isSM) return
+  store.dispatch('app/ToggleSidebar', false)
+  openUserInfo.value = true
+}
+const logout = async () => {
+  await store.dispatch('user/Logout')
+  router.push({ name: 'login' })
+}
+const handleCancel = () => {
+  openUserInfo.value = false
+}
+const handleUpdate = async () => {
+  const isSuccess = await store.dispatch('user/SetUserInfo', userForm)
+  openUserInfo.value = false
+  ElMessage({
+    message: isSuccess ? '更新成功' : '更新失败',
+    type: isSuccess ? 'success' : 'error'
+  })
+}
+const handleUpload = async file => {
+  const isSuccess = await store.dispatch('user/SetAvatar', { store, file })
+  ElMessage({
+    message: isSuccess ? '头像上传成功' : '上传失败',
+    type: isSuccess ? 'success' : 'error'
+  })
+}
+const handleDelete = async () => {
+  const isSuccess = await store.dispatch('user/DeleteAvatar')
+  ElMessage({
+    message: isSuccess ? '已删除' : '删除失败',
+    type: isSuccess ? 'success' : 'error'
+  })
 }
 </script>
 

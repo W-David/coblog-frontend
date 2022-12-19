@@ -5,39 +5,28 @@
   </svg>
 </template>
 
-<script>
+<script setup>
 import { isExternal as validIsExternal } from '@/util/validate'
-import { toRefs, computed } from 'vue'
+import { toRefs, computed, defineProps } from 'vue'
 
-export default {
-  name: 'SvgIcon',
-  props: {
-    iconClass: {
-      type: String,
-      required: true
-    },
-    className: {
-      type: String,
-      default: ''
-    }
+const props = defineProps({
+  iconClass: {
+    type: String,
+    required: true
   },
-  setup(props) {
-    const { iconClass, className } = toRefs(props)
-    const isExternal = computed(() => validIsExternal(iconClass.value))
-    const iconName = computed(() => `#icon-${iconClass.value}`)
-    const svgClass = computed(() => (className.value ? `svg-icon ${className.value}` : 'svg-icon'))
-    const styleExternalIcon = computed(() => ({
-      mask: `url(${iconClass.value}) no-repeat 50% 50%`,
-      '-webkit-mask': `url(${iconClass.value}) no-repeat 50% 50%`
-    }))
-    return {
-      isExternal,
-      iconName,
-      svgClass,
-      styleExternalIcon
-    }
+  className: {
+    type: String,
+    default: ''
   }
-}
+})
+const { iconClass, className } = toRefs(props)
+const isExternal = computed(() => validIsExternal(iconClass.value))
+const iconName = computed(() => `#icon-${iconClass.value}`)
+const svgClass = computed(() => (className.value ? `svg-icon ${className.value}` : 'svg-icon'))
+const styleExternalIcon = computed(() => ({
+  mask: `url(${iconClass.value}) no-repeat 50% 50%`,
+  '-webkit-mask': `url(${iconClass.value}) no-repeat 50% 50%`
+}))
 </script>
 
 <style scoped>

@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import NavBar from './components/NavBar'
 import HFooter from './components/HFooter'
 import AppMain from './components/Main'
@@ -23,51 +23,35 @@ import { useRoute } from 'vue-router'
 import { reactive, ref, computed, onMounted, watch } from 'vue'
 import useWindowResize from '@/hooks/useWindowResize'
 
-export default {
-  name: 'index',
-  components: {
-    NavBar,
-    HFooter,
-    AppMain
-  },
-  setup(props, { attrs, slots, emit, expose }) {
-    useWindowResize()
-    const store = useStore()
-    const route = useRoute()
-    const activePage = ref('')
-    const isAdminLogin = computed(() => store.getters.isAdminLogin)
-    const isUserLogin = computed(() => store.getters.isUserLogin)
+useWindowResize()
+const store = useStore()
+const route = useRoute()
+const activePage = ref('')
+const isAdminLogin = computed(() => store.getters.isAdminLogin)
+const isUserLogin = computed(() => store.getters.isUserLogin)
 
-    watch(
-      () => route.path,
-      val => (activePage.value = val),
-      { immediate: true }
-    )
+watch(
+  () => route.path,
+  val => (activePage.value = val),
+  { immediate: true }
+)
 
-    const adminMenu = [
-      { id: 0, name: '首页', path: '/home' },
-      { id: 1, name: '归档', path: '/archive' },
-      { id: 2, name: '标签', path: '/tag' },
-      { id: 3, name: '分类', path: '/category' },
-      { id: 4, name: '关于', path: '/about' }
-    ]
+const adminMenu = [
+  { id: 0, name: '首页', path: '/home' },
+  { id: 1, name: '归档', path: '/archive' },
+  { id: 2, name: '标签', path: '/tag' },
+  { id: 3, name: '分类', path: '/category' },
+  { id: 4, name: '关于', path: '/about' }
+]
 
-    const userMenu = [
-      { id: 0, name: '首页', path: '/home' },
-      { id: 1, name: '标签', path: '/tag' },
-      { id: 2, name: '分类', path: '/category' },
-      { id: 3, name: '关于', path: '/about' }
-    ]
+const userMenu = [
+  { id: 0, name: '首页', path: '/home' },
+  { id: 1, name: '标签', path: '/tag' },
+  { id: 2, name: '分类', path: '/category' },
+  { id: 3, name: '关于', path: '/about' }
+]
 
-    const menuList = isAdminLogin.value ? adminMenu : isUserLogin.value ? userMenu : []
-
-    return {
-      activePage,
-      menuList,
-      route
-    }
-  }
-}
+const menuList = isAdminLogin.value ? adminMenu : isUserLogin.value ? userMenu : []
 </script>
 
 <style lang="scss" scoped>

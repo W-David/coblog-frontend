@@ -60,7 +60,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import WangEditor from 'wangeditor'
 import hljs from 'highlight.js'
 import { onMounted, onBeforeUnmount, ref, reactive, watch, computed, toRaw } from 'vue'
@@ -68,7 +68,7 @@ import BannerUpload from '@/components/FileUpload.vue'
 import SelectArea from '@/components/SelectArea.vue'
 import SelectedList from '@/components/SelectedList.vue'
 import getOssClient from '@/util/alioss'
-import { useStore } from 'vuex'
+import { useStore, defineProps } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
@@ -77,251 +77,210 @@ import { addFile, deleteFile } from '@/api/file'
 import { createTag, listTag } from '@/api/tag'
 import { createCategory, listCategory } from '@/api/category'
 
-export default {
-  name: 'blog',
-  props: ['id'],
-  components: {
-    BannerUpload,
-    SelectArea,
-    SelectedList
-  },
-  setup(props) {
-    const store = useStore()
-    const router = useRouter()
+const props = defineProps(['id'])
+const store = useStore()
+const router = useRouter()
 
-    const toolbar = ref()
-    const text = ref()
+const toolbar = ref()
+const text = ref()
 
-    const title = ref('')
-    const list = ref([])
-    const type = ref('')
-    const showAll = ref(false)
-    const isListLoading = ref(false)
-    const checkedArr = ref([])
+const title = ref('')
+const list = ref([])
+const type = ref('')
+const showAll = ref(false)
+const isListLoading = ref(false)
+const checkedArr = ref([])
 
-    const blogBanner = ref('')
-    const blogBannerId = ref('')
-    const blogTitle = ref('')
-    const blogDesc = ref('')
-    const previewHtml = ref('')
-    const tags = ref([])
-    const cates = ref([])
+const blogBanner = ref('')
+const blogBannerId = ref('')
+const blogTitle = ref('')
+const blogDesc = ref('')
+const previewHtml = ref('')
+const tags = ref([])
+const cates = ref([])
 
-    const isEditMode = computed(() => !!props.id)
+const isEditMode = computed(() => !!props.id)
 
-    let contentInstance = null
-    const createContentInstance = () => {
-      contentInstance = new WangEditor(toolbar.value, text.value)
-      Object.assign(contentInstance.config, {
-        highlight: hljs,
-        zIndex: 1000,
-        showFullScreen: false,
-        customUploadImg,
-        onchange,
-        onchangeTimeout: 1500
-      })
-      contentInstance.create()
+let contentInstance = null
+const createContentInstance = () => {
+  contentInstance = new WangEditor(toolbar.value, text.value)
+  Object.assign(contentInstance.config, {
+    highlight: hljs,
+    zIndex: 1000,
+    showFullScreen: false,
+    customUploadImg,
+    onchange,
+    onchangeTimeout: 1500
+  })
+  contentInstance.create()
+}
+
+onMounted(() => {
+  createContentInstance()
+  if (isEditMode.value) {
+    const article = computed(() => store.getters['article/getArticleById'](+props.id))
+    const { title = '', content = '', banner = {}, description = '', categories = [], tags: tgs = [] } = article.value
+
+    blogTitle.value = title
+    blogBannerId.value = (banner && banner.id) || ''
+    blogBanner.value = (banner && banner.path) || ''
+    blogDesc.value = description
+    cates.value = categories
+    tags.value = tgs
+    contentInstance.txt.html(content)
+  }
+})
+
+onBeforeUnmount(() => {
+  contentInstance.destroy()
+  contentInstance = null
+})
+
+const onchange = newHtml => {
+  previewHtml.value = newHtml
+}
+
+const customUploadImg = async (resultFiles, insertImgFn) => {
+  const client = getOssClient(store)
+  const file = resultFiles[0]
+  const res = await client.put(file.name, file)
+  if (res.res.status === 200 && res.res.statusCode === 200) {
+    ElMessage({ message: '上传成功', type: 'success' })
+    const url = res.url
+    insertImgFn(url)
+  } else {
+    ElMessage({ message: '图片上传失败', type: 'error' })
+    return
+  }
+}
+
+const handleTagSelect = async () => {
+  title.value = {
+    type: 'tag',
+    text: '选择标签'
+  }
+  type.value = 'primary'
+  showAll.value = true
+  isListLoading.value = true
+  const res = await listTag()
+  isListLoading.value = false
+  if (res.code !== 200) return
+  const rawList = res.data.rows.map(item => ({
+    id: item.id,
+    name: item.name
+  }))
+  const inTags = item => tags.value.some(tag => tag.id === item.id)
+  list.value = rawList.filter(item => !inTags(item))
+}
+const handleCateSelect = async () => {
+  title.value = {
+    type: 'cate',
+    text: '选择分类'
+  }
+  type.value = 'success'
+  showAll.value = true
+  isListLoading.value = true
+  const res = await listCategory()
+  isListLoading.value = false
+  if (res.code !== 200) return
+  const rawList = res.data.rows.map(item => ({
+    id: item.id,
+    name: item.name
+  }))
+  const inCates = item => cates.value.some(cate => cate.id === item.id)
+  list.value = rawList.filter(item => !inCates(item))
+}
+const handleTagAdd = async tagName => {
+  const data = { name: tagName }
+  const res = await createTag(data)
+  if (res.code !== 200) return
+  const tag = {
+    id: res.data.id,
+    name: res.data.name
+  }
+  tags.value.push(tag)
+  ElMessage({ type: 'success', message: res.msg })
+}
+const handleCateAdd = async cateName => {
+  const data = { name: cateName }
+  const res = await createCategory(data)
+  if (res.code !== 200) return
+  const cate = {
+    id: res.data.id,
+    name: res.data.name
+  }
+  cates.value.push(cate)
+  ElMessage({ type: 'success', message: res.msg })
+}
+watch(showAll, (nv, ov) => {
+  if (!nv && ov) {
+    if (!checkedArr.value || !checkedArr.value.length) {
+      return
     }
-
-    onMounted(() => {
-      createContentInstance()
-      if (isEditMode.value) {
-        const article = computed(() => store.getters['article/getArticleById'](+props.id))
-        const {
-          title = '',
-          content = '',
-          banner = {},
-          description = '',
-          categories = [],
-          tags: tgs = []
-        } = article.value
-
-        blogTitle.value = title
-        blogBannerId.value = (banner && banner.id) || ''
-        blogBanner.value = (banner && banner.path) || ''
-        blogDesc.value = description
-        cates.value = categories
-        tags.value = tgs
-        contentInstance.txt.html(content)
-      }
-    })
-
-    onBeforeUnmount(() => {
-      contentInstance.destroy()
-      contentInstance = null
-    })
-
-    const onchange = newHtml => {
-      previewHtml.value = newHtml
-    }
-
-    const customUploadImg = async (resultFiles, insertImgFn) => {
-      const client = getOssClient(store)
-      const file = resultFiles[0]
-      const res = await client.put(file.name, file)
-      if (res.res.status === 200 && res.res.statusCode === 200) {
-        ElMessage({ message: '上传成功', type: 'success' })
-        const url = res.url
-        insertImgFn(url)
-      } else {
-        ElMessage({ message: '图片上传失败', type: 'error' })
-        return
-      }
-    }
-
-    const handleTagSelect = async () => {
-      title.value = {
-        type: 'tag',
-        text: '选择标签'
-      }
-      type.value = 'primary'
-      showAll.value = true
-      isListLoading.value = true
-      const res = await listTag()
-      isListLoading.value = false
-      if (res.code !== 200) return
-      const rawList = res.data.rows.map(item => ({
-        id: item.id,
-        name: item.name
-      }))
-      const inTags = item => tags.value.some(tag => tag.id === item.id)
-      list.value = rawList.filter(item => !inTags(item))
-    }
-    const handleCateSelect = async () => {
-      title.value = {
-        type: 'cate',
-        text: '选择分类'
-      }
-      type.value = 'success'
-      showAll.value = true
-      isListLoading.value = true
-      const res = await listCategory()
-      isListLoading.value = false
-      if (res.code !== 200) return
-      const rawList = res.data.rows.map(item => ({
-        id: item.id,
-        name: item.name
-      }))
-      const inCates = item => cates.value.some(cate => cate.id === item.id)
-      list.value = rawList.filter(item => !inCates(item))
-    }
-    const handleTagAdd = async tagName => {
-      const data = { name: tagName }
-      const res = await createTag(data)
-      if (res.code !== 200) return
-      const tag = {
-        id: res.data.id,
-        name: res.data.name
-      }
-      tags.value.push(tag)
-      ElMessage({ type: 'success', message: res.msg })
-    }
-    const handleCateAdd = async cateName => {
-      const data = { name: cateName }
-      const res = await createCategory(data)
-      if (res.code !== 200) return
-      const cate = {
-        id: res.data.id,
-        name: res.data.name
-      }
-      cates.value.push(cate)
-      ElMessage({ type: 'success', message: res.msg })
-    }
-    watch(showAll, (nv, ov) => {
-      if (!nv && ov) {
-        if (!checkedArr.value || !checkedArr.value.length) {
-          return
-        }
-        if (title.value.type === 'tag') {
-          tags.value.push(...checkedArr.value)
-        } else if (title.value.type === 'cate') {
-          cates.value.push(...checkedArr.value)
-          // eslint-disable-next-line
-        } else {
-        }
-      }
-    })
-
-    const handleUpload = async file => {
-      const { name, size, type } = file
-      const client = getOssClient(store)
-      const res = await client.put(file.name, file)
-      if (res.res.status === 200 && res.res.statusCode === 200) {
-        const url = res.url
-        blogBanner.value = url
-        const fileData = {
-          name,
-          size,
-          extension: type,
-          path: url
-        }
-        const addRes = await addFile({ ...fileData })
-        if (addRes.code !== 200) return
-        blogBannerId.value = addRes.data.id || ''
-        ElMessage({ message: '头图已成功上传', type: 'success' })
-      } else {
-        ElMessage({ message: '头图上传失败', type: 'error' })
-        blogBanner.value = ''
-        return
-      }
-    }
-
-    const handleDelete = async () => {
-      const bannerId = blogBannerId.value || ''
-      if (!bannerId) return
-      blogBanner.value = ''
-      blogBannerId.value = ''
-      const deleteRes = await deleteFile(bannerId)
-      if (deleteRes.code !== 200) return
-      ElMessage({ message: '头图已删除', type: 'success' })
-    }
-
-    const submitBlog = async () => {
-      const title = blogTitle.value
-      const content = contentInstance.txt.html()
-      const categoryIds = cates.value.map(cate => cate.id)
-      const tagIds = tags.value.map(tag => tag.id)
-      const description = blogDesc.value || '默认描述内容'
-      const bannerId = blogBannerId.value || ''
-      const blog = {
-        title,
-        content,
-        description,
-        bannerId,
-        categoryIds,
-        tagIds
-      }
-      const articleRes = isEditMode.value ? await updateArticle({ ...blog, id: +props.id }) : await createArticle(blog)
-      if (articleRes.code !== 200) return
-      store.commit('article/SET_ARTICLE', articleRes.data)
-      router.push({ name: 'home' })
-      ElMessage({ message: `已保存 • ${title}`, type: 'success' })
-    }
-
-    return {
-      toolbar,
-      text,
-      showAll,
-      list,
-      tags,
-      cates,
-      checkedArr,
-      title,
-      type,
-      blogBanner,
-      blogTitle,
-      blogDesc,
-      previewHtml,
-      isListLoading,
-      handleTagSelect,
-      handleCateSelect,
-      handleTagAdd,
-      handleCateAdd,
-      handleUpload,
-      handleDelete,
-      submitBlog
+    if (title.value.type === 'tag') {
+      tags.value.push(...checkedArr.value)
+    } else if (title.value.type === 'cate') {
+      cates.value.push(...checkedArr.value)
+      // eslint-disable-next-line
+    } else {
     }
   }
+})
+
+const handleUpload = async file => {
+  const { name, size, type } = file
+  const client = getOssClient(store)
+  const res = await client.put(file.name, file)
+  if (res.res.status === 200 && res.res.statusCode === 200) {
+    const url = res.url
+    blogBanner.value = url
+    const fileData = {
+      name,
+      size,
+      extension: type,
+      path: url
+    }
+    const addRes = await addFile({ ...fileData })
+    if (addRes.code !== 200) return
+    blogBannerId.value = addRes.data.id || ''
+    ElMessage({ message: '头图已成功上传', type: 'success' })
+  } else {
+    ElMessage({ message: '头图上传失败', type: 'error' })
+    blogBanner.value = ''
+    return
+  }
+}
+
+const handleDelete = async () => {
+  const bannerId = blogBannerId.value || ''
+  if (!bannerId) return
+  blogBanner.value = ''
+  blogBannerId.value = ''
+  const deleteRes = await deleteFile(bannerId)
+  if (deleteRes.code !== 200) return
+  ElMessage({ message: '头图已删除', type: 'success' })
+}
+
+const submitBlog = async () => {
+  const title = blogTitle.value
+  const content = contentInstance.txt.html()
+  const categoryIds = cates.value.map(cate => cate.id)
+  const tagIds = tags.value.map(tag => tag.id)
+  const description = blogDesc.value || '默认描述内容'
+  const bannerId = blogBannerId.value || ''
+  const blog = {
+    title,
+    content,
+    description,
+    bannerId,
+    categoryIds,
+    tagIds
+  }
+  const articleRes = isEditMode.value ? await updateArticle({ ...blog, id: +props.id }) : await createArticle(blog)
+  if (articleRes.code !== 200) return
+  store.commit('article/SET_ARTICLE', articleRes.data)
+  router.push({ name: 'home' })
+  ElMessage({ message: `已保存 • ${title}`, type: 'success' })
 }
 </script>
 

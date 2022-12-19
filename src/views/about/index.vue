@@ -14,11 +14,7 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'about'
-}
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 .about-page {

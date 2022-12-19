@@ -20,19 +20,19 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    isLoadingMore: {
-      type: Boolean,
-      default: false
-    },
-    hasMore: {
-      type: Boolean,
-      default: true
-    }
+<script setup>
+import { defineProps, toRefs } from 'vue'
+const props = defineProps({
+  isLoadingMore: {
+    type: Boolean,
+    default: false
+  },
+  hasMore: {
+    type: Boolean,
+    default: true
   }
-}
+})
+const { isLoadingMore, hasMore } = toRefs(props)
 </script>
 
 <style lang="scss" scoped>

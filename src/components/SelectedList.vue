@@ -13,53 +13,43 @@
   </div>
 </template>
 
-<script>
-import { ref, toRefs, watch } from 'vue'
-export default {
-  name: 'SelectedList',
-  props: {
-    loading: {
-      type: Boolean,
-      default: false
-    },
-    isShow: Boolean,
-    list: {
-      type: Array,
-      required: true
-    },
-    checkedArr: {
-      type: Array,
-      required: true
-    }
+<script setup>
+import { ref, toRefs, watch, defineEmits, defineProps } from 'vue'
+const props = defineProps({
+  loading: {
+    type: Boolean,
+    default: false
   },
-  emits: ['update:checkedArr'],
-  setup(props, { emit }) {
-    const { isShow } = toRefs(props)
-    const checkedList = ref([])
-
-    watch(isShow, (nv, ov) => {
-      if (!nv && ov) {
-        checkedList.value = []
-        emit('update:checkedArr', [])
-      }
-    })
-
-    const isChecked = item => checkedList.value.some(it => it.id === item.id)
-
-    const handleCheckChange = item => {
-      if (isChecked(item)) {
-        checkedList.value = checkedList.value.filter(it => it.id !== item.id)
-      } else {
-        checkedList.value.push(item)
-      }
-      emit('update:checkedArr', [...checkedList.value])
-    }
-    return {
-      isChecked,
-      checkedList,
-      handleCheckChange
-    }
+  isShow: Boolean,
+  list: {
+    type: Array,
+    required: true
+  },
+  checkedArr: {
+    type: Array,
+    required: true
   }
+})
+const { loading, isShow, list, checkedArr } = toRefs(props)
+const emit = defineEmits(['update:checkedArr'])
+const checkedList = ref([])
+
+watch(isShow, (nv, ov) => {
+  if (!nv && ov) {
+    checkedList.value = []
+    emit('update:checkedArr', [])
+  }
+})
+
+const isChecked = item => checkedList.value.some(it => it.id === item.id)
+
+const handleCheckChange = item => {
+  if (isChecked(item)) {
+    checkedList.value = checkedList.value.filter(it => it.id !== item.id)
+  } else {
+    checkedList.value.push(item)
+  }
+  emit('update:checkedArr', [...checkedList.value])
 }
 </script>
 

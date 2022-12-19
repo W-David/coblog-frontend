@@ -64,139 +64,120 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { local } from '@/util/cache'
 
-export default {
-  name: 'login',
-  setup() {
-    const store = useStore()
-    const router = useRouter()
-    const needRegister = ref(false)
-    const formRef = ref(null)
-    const form = reactive({
-      // email: 'admin@root.com',
-      // password: 'admin@root',
-      email: '',
-      password: '',
-      rPassword: '',
-      nickName: ''
-    })
-    const rememberMe = ref(false)
-    watch(
-      rememberMe,
-      (nv, ov) => {
-        if (!nv && ov) {
-          // debugger
-          local.remove('login-form')
-          local.set('remember-me', false)
-        }
-      },
-      { immediate: true }
-    )
-    const initForm = () => {
-      const rememberMeCache = !!local.get('remember-me')
-      rememberMe.value = rememberMeCache || false
-      if (rememberMe.value) {
-        // debugger
-        const formCache = local.getJSON('login-form')
-        form.email = formCache?.email || ''
-        form.password = formCache?.password || ''
-        form.rPassword = formCache?.rPassword || ''
-        form.nickName = formCache?.nickName || ''
-      } else {
-        // debugger
-        form.email = ''
-        form.password = ''
-        form.rPassword = ''
-        form.nickName = ''
-      }
+const store = useStore()
+const router = useRouter()
+const needRegister = ref(false)
+const formRef = ref(null)
+const form = reactive({
+  // email: 'admin@root.com',
+  // password: 'admin@root',
+  email: '',
+  password: '',
+  rPassword: '',
+  nickName: ''
+})
+const rememberMe = ref(false)
+watch(
+  rememberMe,
+  (nv, ov) => {
+    if (!nv && ov) {
+      // debugger
+      local.remove('login-form')
+      local.set('remember-me', false)
     }
-    const rules = reactive({
-      email: [],
-      password: [],
-      rPassword: [],
-      nickName: []
-    })
-
-    onMounted(() => {
-      initForm()
-    })
-    const handleLogin = async param => {
-      const isAdmin = param === 'admin'
-      const submitForm = {
-        email: form.email,
-        password: form.password
-      }
-      const res = isAdmin
-        ? await store.dispatch('admin/Login', submitForm)
-        : await store.dispatch('user/Login', submitForm)
-      if (res.code !== 200) return
-      if (rememberMe.value) {
-        local.set('remeber-me', true)
-        local.setJSON('login-form', form)
-      }
-      router.push({ name: 'home' })
-      ElMessage({ type: 'success', message: res.msg })
-    }
-    const handleRegister = async param => {
-      const isAdmin = param === 'admin'
-      const submitForm = isAdmin
-        ? {
-            email: form.email,
-            password: form.password,
-            rPassword: form.rPassword,
-            nickname: form.nickName
-          }
-        : {
-            email: form.email,
-            password: form.password,
-            rPassword: form.rPassword,
-            username: form.nickName
-          }
-      const res = isAdmin
-        ? await store.dispatch('admin/Register', submitForm)
-        : await store.dispatch('user/Register', submitForm)
-      if (res.code !== 200) return
-      if (rememberMe.value) {
-        local.set('remeber-me', true)
-        local.setJSON('login-form', form)
-      }
-      router.push({ name: 'home' })
-      ElMessage({ type: 'success', message: res.msg })
-    }
-    const handleSwitch = () => {
-      form.email = ''
-      form.password = ''
-      form.rPassword = ''
-      form.nickName = ''
-      needRegister.value = !needRegister.value
-    }
-    const animationDuration = ref(48)
-    const bgImgs = reactive([
-      require('../assets/image/bg-01.jpg'),
-      require('../assets/image/bg-02.jpg'),
-      require('../assets/image/bg-03.jpg'),
-      require('../assets/image/bg-04.jpg')
-    ])
-    return {
-      form,
-      formRef,
-      rules,
-      rememberMe,
-      needRegister,
-      animationDuration,
-      bgImgs,
-      handleSwitch,
-      handleLogin,
-      handleRegister
-    }
+  },
+  { immediate: true }
+)
+const initForm = () => {
+  const rememberMeCache = !!local.get('remember-me')
+  rememberMe.value = rememberMeCache || false
+  if (rememberMe.value) {
+    // debugger
+    const formCache = local.getJSON('login-form')
+    form.email = formCache?.email || ''
+    form.password = formCache?.password || ''
+    form.rPassword = formCache?.rPassword || ''
+    form.nickName = formCache?.nickName || ''
+  } else {
+    // debugger
+    form.email = ''
+    form.password = ''
+    form.rPassword = ''
+    form.nickName = ''
   }
 }
+const rules = reactive({
+  email: [],
+  password: [],
+  rPassword: [],
+  nickName: []
+})
+
+onMounted(() => {
+  initForm()
+})
+const handleLogin = async param => {
+  const isAdmin = param === 'admin'
+  const submitForm = {
+    email: form.email,
+    password: form.password
+  }
+  const res = isAdmin ? await store.dispatch('admin/Login', submitForm) : await store.dispatch('user/Login', submitForm)
+  if (res.code !== 200) return
+  if (rememberMe.value) {
+    local.set('remeber-me', true)
+    local.setJSON('login-form', form)
+  }
+  router.push({ name: 'home' })
+  ElMessage({ type: 'success', message: res.msg })
+}
+const handleRegister = async param => {
+  const isAdmin = param === 'admin'
+  const submitForm = isAdmin
+    ? {
+        email: form.email,
+        password: form.password,
+        rPassword: form.rPassword,
+        nickname: form.nickName
+      }
+    : {
+        email: form.email,
+        password: form.password,
+        rPassword: form.rPassword,
+        username: form.nickName
+      }
+  const res = isAdmin
+    ? await store.dispatch('admin/Register', submitForm)
+    : await store.dispatch('user/Register', submitForm)
+  if (res.code !== 200) return
+  if (rememberMe.value) {
+    local.set('remeber-me', true)
+    local.setJSON('login-form', form)
+  }
+  router.push({ name: 'home' })
+  ElMessage({ type: 'success', message: res.msg })
+}
+const handleSwitch = () => {
+  form.email = ''
+  form.password = ''
+  form.rPassword = ''
+  form.nickName = ''
+  needRegister.value = !needRegister.value
+}
+const animationDuration = ref(48)
+const bgImgs = reactive([
+  require('../assets/image/bg-01.jpg'),
+  require('../assets/image/bg-02.jpg'),
+  require('../assets/image/bg-03.jpg'),
+  require('../assets/image/bg-04.jpg')
+])
 </script>
 
 <style lang="scss" scoped>

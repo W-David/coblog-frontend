@@ -72,7 +72,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
@@ -84,65 +84,46 @@ import CategoryPanel from '@/components/CategoryPanel'
 import TagPanel from '@/components/TagPanel'
 import PageLoad from '@/components/PageLoad'
 
-export default {
-  name: 'archive',
-  components: {
-    // LoadMore,
-    CategoryPanel,
-    TagPanel,
-    PageLoad
-  },
-  setup() {
-    const store = useStore()
-    const router = useRouter()
+const store = useStore()
+const router = useRouter()
 
-    const form = reactive({
-      pageNum: 1,
-      pageSize: 20,
-      beginTime: undefined,
-      endTime: undefined
-    })
+const form = reactive({
+  pageNum: 1,
+  pageSize: 20,
+  beginTime: undefined,
+  endTime: undefined
+})
 
-    const archive = computed(() => store.getters['article/getArticleArchive'])
-    const hasMore = ref(true)
-    const isLoadingMore = ref(false)
-    const getArchive = async form => {
-      if (!hasMore.value) return
-      const [list, total] = await store.dispatch('article/GetArticleArchive', form)
-      hasMore.value = list && list.length && form.pageNum * form.pageSize < total
-    }
-    const generateArchiveTitles = articles => {
-      if (articles && articles.length) {
-        const len = Math.min(articles.length, 3)
-        return articles.slice(0, len).map(article => article.title)
-      } else {
-        return ['暂无文章']
-      }
-    }
-    const toArticle = id => {
-      router.push({ name: 'article', params: { id } })
-    }
-    const onLoadMore = async () => {
-      isLoadingMore.value = true
-      await getArchive({ ...form, pageNum: form.pageNum + 1 })
-      form.pageNum += 1
-      isLoadingMore.value = false
-    }
-    useReachBottom(onLoadMore)
-    onMounted(() => {
-      store.commit('article/CLEAR_ARCHIVE')
-      getArchive(form)
-    })
-    return {
-      archive,
-      hasMore,
-      isLoadingMore,
-      generateArchiveTitles,
-      toArticle,
-      onLoadMore
-    }
+const archive = computed(() => store.getters['article/getArticleArchive'])
+const hasMore = ref(true)
+const isLoadingMore = ref(false)
+const getArchive = async form => {
+  if (!hasMore.value) return
+  const [list, total] = await store.dispatch('article/GetArticleArchive', form)
+  hasMore.value = list && list.length && form.pageNum * form.pageSize < total
+}
+const generateArchiveTitles = articles => {
+  if (articles && articles.length) {
+    const len = Math.min(articles.length, 3)
+    return articles.slice(0, len).map(article => article.title)
+  } else {
+    return ['暂无文章']
   }
 }
+const toArticle = id => {
+  router.push({ name: 'article', params: { id } })
+}
+const onLoadMore = async () => {
+  isLoadingMore.value = true
+  await getArchive({ ...form, pageNum: form.pageNum + 1 })
+  form.pageNum += 1
+  isLoadingMore.value = false
+}
+useReachBottom(onLoadMore)
+onMounted(() => {
+  store.commit('article/CLEAR_ARCHIVE')
+  getArchive(form)
+})
 </script>
 
 <style lang="scss" scoped>

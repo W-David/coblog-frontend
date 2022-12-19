@@ -1,6 +1,15 @@
 <template>
   <div class="file-uploader-container">
-    <el-upload v-show="!isUploaded" ref="uploadRef" class="file-uploader" action="#" :multiple="false" :limit="1" :show-file-list="false" :before-upload="beforeFileUpload">
+    <el-upload
+      v-show="!isUploaded"
+      ref="uploadRef"
+      class="file-uploader"
+      action="#"
+      :multiple="false"
+      :limit="1"
+      :show-file-list="false"
+      :before-upload="beforeFileUpload"
+    >
       <template #default>
         <div id="trigger" class="trigger-area">
           <el-icon :size="18"><i-plus /></el-icon>
@@ -20,7 +29,13 @@
             <el-icon><i-upload /></el-icon>
             <span> 重新上传</span>
           </span>
-          <el-popconfirm confirm-button-text="是的" cancel-button-text="按错了" @confirm="handleDelete" icon-color="red" title="确定删除?">
+          <el-popconfirm
+            confirm-button-text="是的"
+            cancel-button-text="按错了"
+            @confirm="handleDelete"
+            icon-color="red"
+            title="确定删除?"
+          >
             <template #reference>
               <span class="file-ctrl">
                 <el-icon><i-delete /></el-icon>
@@ -37,56 +52,44 @@
   </el-dialog>
 </template>
 
-<script>
-import { ref, computed, onMounted } from 'vue'
+<script setup>
+import { ref, computed, onMounted, defineProps, toRefs, defineEmits } from 'vue'
 import { useStore } from 'vuex'
 
-export default {
-  name: 'FileUpload',
-  props: {
-    isUploaded: {
-      type: Boolean,
-      default: false
-    },
-    imgUrl: {
-      type: String,
-      default: ''
-    },
-    trigHint: {
-      type: String,
-      default: '上传文件'
-    },
-    descripHint: {
-      type: String,
-      default: '文件'
-    }
+const props = defineProps({
+  isUploaded: {
+    type: Boolean,
+    default: false
   },
-  emits: ['on-upload', 'on-delete'],
-  setup(props, { attrs, slots, emit, expose }) {
-    const store = useStore()
-    const uploadRef = ref(null)
-    const isShow = ref(false)
-    onMounted(() => {
-      store.dispatch('alioss/FetchSTS')
-    })
-    const beforeFileUpload = file => {
-      emit('on-upload', file)
-      return false
-    }
-    const handleView = () => (isShow.value = true)
-    const handleDelete = () => emit('on-delete')
-    const handleUpload = () => {
-      document.body.getElementsByClassName('file-uploader')[0].getElementsByClassName('el-upload__input')[0].click()
-    }
-    return {
-      isShow,
-      uploadRef,
-      beforeFileUpload,
-      handleView,
-      handleDelete,
-      handleUpload
-    }
+  imgUrl: {
+    type: String,
+    default: ''
+  },
+  trigHint: {
+    type: String,
+    default: '上传文件'
+  },
+  descripHint: {
+    type: String,
+    default: '文件'
   }
+})
+const { isUploaded, imgUrl, trigHint, descripHint } = toRefs(props)
+const emit = defineEmits(['on-upload', 'on-delete'])
+const store = useStore()
+const uploadRef = ref(null)
+const isShow = ref(false)
+onMounted(() => {
+  store.dispatch('alioss/FetchSTS')
+})
+const beforeFileUpload = file => {
+  emit('on-upload', file)
+  return false
+}
+const handleView = () => (isShow.value = true)
+const handleDelete = () => emit('on-delete')
+const handleUpload = () => {
+  document.body.getElementsByClassName('file-uploader')[0].getElementsByClassName('el-upload__input')[0].click()
 }
 </script>
 

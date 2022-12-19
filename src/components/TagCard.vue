@@ -31,27 +31,20 @@
   </div>
 </template>
 
-<script>
-import { ref } from 'vue'
+<script setup>
+import { ref, defineProps, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
-export default {
-  name: 'tagCard',
-  props: {
-    tag: {
-      type: Object,
-      required: true
-    },
-    isActive: Boolean
+const router = useRouter()
+const props = defineProps({
+  tag: {
+    type: Object,
+    required: true
   },
-  setup() {
-    const router = useRouter()
-    const toArticle = id => {
-      router.push({ name: 'article', params: { id } })
-    }
-    return {
-      toArticle
-    }
-  }
+  isActive: Boolean
+})
+const { tag, isActive } = toRefs(props)
+const toArticle = id => {
+  router.push({ name: 'article', params: { id } })
 }
 </script>
 

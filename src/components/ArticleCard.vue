@@ -50,42 +50,28 @@
   </div>
 </template>
 
-<script>
-import { ref } from 'vue'
-import { useStore } from 'vuex'
+<script setup>
+import { ref, defineProps, toRefs } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 import CategoryPanel from '@/components/CategoryPanel'
 import TagPanel from '@/components/TagPanel'
 
-export default {
-  name: 'ArticleCard',
-  components: {
-    CategoryPanel,
-    TagPanel
-  },
-  props: {
-    article: {
-      type: Object,
-      required: true
-    }
-  },
-  setup(props, { emit }) {
-    const router = useRouter()
-    const openDetail = () => {
-      const {
-        article: { id }
-      } = props
-      router.push({ name: 'article', params: { id } })
-    }
-    const isBannerHover = ref(false)
-    return {
-      openDetail,
-      isBannerHover
-    }
+const router = useRouter()
+const props = defineProps({
+  article: {
+    type: Object,
+    required: true
   }
+})
+const { article } = toRefs(props)
+const openDetail = () => {
+  const { id } = article.value
+  router.push({ name: 'article', params: { id } })
 }
+const isBannerHover = ref(false)
 </script>
+
 <style lang="scss" scoped>
 $descrip-mr: 12px;
 

@@ -19,41 +19,29 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, reactive, ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import ArticleCard from '@/components/ArticleCard.vue'
 
-export default {
-  name: 'home',
-  components: { ArticleCard },
-  setup() {
-    const store = useStore()
-    const articlesRef = ref([])
-    const totalRef = ref(0)
-    const queryParams = reactive({
-      title: '',
-      pageNum: 1,
-      pageSize: 10
-    })
+const store = useStore()
+const articlesRef = ref([])
+const totalRef = ref(0)
+const queryParams = reactive({
+  title: '',
+  pageNum: 1,
+  pageSize: 10
+})
 
-    const getList = async () => {
-      const [articles, total] = await store.dispatch('article/GetArticles', queryParams)
-      articlesRef.value = articles || []
-      totalRef.value = total || 0
-    }
-    onMounted(() => {
-      store.commit('article/CLEAR_ARTICLES')
-      getList()
-    })
-    return {
-      articlesRef,
-      totalRef,
-      getList,
-      queryParams
-    }
-  }
+const getList = async () => {
+  const [articles, total] = await store.dispatch('article/GetArticles', queryParams)
+  articlesRef.value = articles || []
+  totalRef.value = total || 0
 }
+onMounted(() => {
+  store.commit('article/CLEAR_ARTICLES')
+  getList()
+})
 </script>
 
 <style lang="scss" scoped>

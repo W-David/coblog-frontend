@@ -8,81 +8,76 @@
         {{ item.name }}
       </el-tag>
     </span>
-    <el-input v-if="touchAdd" ref="inputRef" v-model="inputValue" class="input-new-item" size="small" @keyup.enter="handleAdd" @blur="handleCancel"> </el-input>
+    <el-input
+      v-if="touchAdd"
+      ref="inputRef"
+      v-model="inputValue"
+      class="input-new-item"
+      size="small"
+      @keyup.enter="handleAdd"
+      @blur="handleCancel"
+    >
+    </el-input>
     <el-button v-else plain size="small" class="btn-new-item" @click="showInput">
       {{ '+ ' + addText }}
     </el-button>
   </div>
 </template>
 
-<script>
-import { ref, nextTick, toRefs } from 'vue'
+<script setup>
+import { ref, nextTick, toRefs, defineProps, defineEmits } from 'vue'
 import { ElMessage } from 'element-plus'
 
-export default {
-  name: 'SelectArea',
-  props: {
-    styl: {
-      type: String,
-      default: 'primary'
-    },
-    selectText: {
-      type: String,
-      default: '选择项'
-    },
-    addText: {
-      type: String,
-      default: '添加项'
-    },
-    items: {
-      type: Array,
-      default: () => []
-    }
+const props = defineProps({
+  styl: {
+    type: String,
+    default: 'primary'
   },
-  emits: ['on-select', 'on-add-item'],
-  setup(props, { emit }) {
-    const { items } = toRefs(props)
-    const touchAdd = ref(false)
-    const inputValue = ref('')
-    const inputRef = ref()
-    const handleClose = item => {
-      items.value.splice(items.value.indexOf(item), 1)
-    }
-    const handleCancel = () => {
-      touchAdd.value = false
-      inputValue.value = ''
-    }
-    const handleAdd = () => {
-      if (!inputValue.value) {
-        ElMessage({ message: '内容不能为空', type: 'warning' })
-        touchAdd.value = false
-        inputValue.value = ''
-        return
-      }
-      const curContent = inputValue.value
-      emit('on-add-item', curContent)
-      touchAdd.value = false
-      inputValue.value = ''
-    }
-    const showInput = async () => {
-      touchAdd.value = true
-      await nextTick()
-      inputRef.value.$refs.input.focus()
-    }
-    const handleSelect = () => {
-      emit('on-select')
-    }
-    return {
-      touchAdd,
-      inputValue,
-      handleClose,
-      handleCancel,
-      handleAdd,
-      handleSelect,
-      showInput,
-      inputRef
-    }
+  selectText: {
+    type: String,
+    default: '选择项'
+  },
+  addText: {
+    type: String,
+    default: '添加项'
+  },
+  items: {
+    type: Array,
+    default: () => []
   }
+})
+const { items, styl, selectText, addText } = toRefs(props)
+const touchAdd = ref(false)
+const inputValue = ref('')
+const inputRef = ref()
+
+const emit = defineEmits(['on-select', 'on-add-item'])
+const handleClose = item => {
+  items.value.splice(items.value.indexOf(item), 1)
+}
+const handleCancel = () => {
+  touchAdd.value = false
+  inputValue.value = ''
+}
+const handleAdd = () => {
+  if (!inputValue.value) {
+    ElMessage({ message: '内容不能为空', type: 'warning' })
+    touchAdd.value = false
+    inputValue.value = ''
+    return
+  }
+  const curContent = inputValue.value
+  emit('on-add-item', curContent)
+  touchAdd.value = false
+  inputValue.value = ''
+}
+const showInput = async () => {
+  touchAdd.value = true
+  await nextTick()
+  inputRef.value.$refs.input.focus()
+}
+const handleSelect = () => {
+  emit('on-select')
 }
 </script>
 

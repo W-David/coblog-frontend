@@ -10,16 +10,14 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ColumnCard',
+<script setup>
+import { defineProps, toRefs } from 'vue'
+const props = defineProps({
   props: {
     column: Object
-  },
-  setup() {
-    return {}
   }
-}
+})
+const { column } = toRefs(props)
 </script>
 
 <style lang="scss" scoped>

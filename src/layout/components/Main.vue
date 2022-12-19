@@ -10,23 +10,15 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue'
 import particlesJs from '@/util/particles'
 
-export default {
-  name: 'AppMain',
-  setup() {
-    const route = useRoute()
-    onMounted(async () => {
-      particlesJs.load('particles-js', 'static/particles.json')
-    })
-    return {
-      route
-    }
-  }
-}
+const route = useRoute()
+onMounted(async () => {
+  particlesJs.load('particles-js', 'static/particles.json')
+})
 </script>
 
 <style lang="scss" scoped>
