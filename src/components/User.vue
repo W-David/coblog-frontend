@@ -148,7 +148,10 @@ const handleDelete = async () => {
   .info-name,
   .info-email {
     @include layout(100%, auto, 12px 0, 12px);
-    @include box-shadow(inset 2px 2px 4px $info-color-b, inset -1px -1px 2px $info-color-b);
+    @include box-shadow(
+      inset 2px 2px 4px var(--el-color-info-light-7),
+      inset -1px -1px 2px var(--el-color-info-light-7)
+    );
 
     html.dark & {
       @include box-shadow(inset 2px 2px 4px rgba(0, 0, 0, 0.2), inset -1px -1px 2px rgba(0, 0, 0, 0.2));
@@ -158,12 +161,12 @@ const handleDelete = async () => {
     @include pointer;
     .info-hint {
       font-weight: bold;
-      color: $danger-color;
+      color: var(--el-color-danger);
     }
     .info-content {
-      color: $font-color-b;
+      color: var(--el-text-color-secondary);
       &:hover {
-        color: $font-color;
+        color: var(--el-text-color-primary);
       }
 
       html.dark & {
@@ -187,7 +190,7 @@ const handleDelete = async () => {
   }
 }
 .user-info-title {
-  color: $danger-color;
+  color: var(--el-color-danger);
   font-size: 18px;
   font-weight: bold;
 }

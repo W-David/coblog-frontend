@@ -59,7 +59,7 @@ const querySearch = async (qs, callback) => {
             color: #ccc;
             cursor: pointer;
             &:hover {
-              color: $primary-color;
+              color: var(--el-color-primary);
             }
           }
         }

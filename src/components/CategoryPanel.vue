@@ -31,6 +31,6 @@ const toCategory = id => {
 
 <style lang="scss" scoped>
 .article-cate {
-  @include panel-styl($success-color, $success-color-b);
+  @include panel-styl(var(--el-color-success), var(--el-color-success-light-7));
 }
 </style>

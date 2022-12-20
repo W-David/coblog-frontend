@@ -140,14 +140,14 @@ onMounted(() => {
       }
       &:deep {
         // .el-timeline-item__node {
-        //   background-color: $primary-color;
+        //   background-color: var(--el-color-primary);
         // }
         .el-timeline-item__timestamp {
           font-family: monospace;
           font-size: 18px;
           text-align: left;
           font-weight: 900;
-          color: $font-color;
+          color: var(--el-text-color-primary);
 
           html.dark & {
             color: #fcfcfc;
@@ -168,9 +168,9 @@ onMounted(() => {
                 @include font-fang-song;
                 font-style: italic;
                 font-weight: bolder;
-                color: $primary-color-a;
+                color: var(--el-color-primary-light-3);
                 &:hover {
-                  color: $primary-color;
+                  color: var(--el-color-primary);
                 }
               }
             }
@@ -189,7 +189,7 @@ onMounted(() => {
 
               .title-content {
                 @include font-kai;
-                color: $primary-color;
+                color: var(--el-color-primary);
                 font-size: 22px;
                 font-weight: bold;
                 @include pointer;
@@ -198,7 +198,7 @@ onMounted(() => {
 
               .time-content {
                 @include font-hei;
-                color: $font-color-c;
+                color: var(--el-text-color-placeholder);
               }
             }
             .article-info {
@@ -210,7 +210,7 @@ onMounted(() => {
               .time-content {
                 @include font-hei;
                 @include float-left;
-                color: $font-color-c;
+                color: var(--el-text-color-placeholder);
               }
             }
 

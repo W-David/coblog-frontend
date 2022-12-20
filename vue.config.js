@@ -1,11 +1,11 @@
 'use strict'
 const path = require('path')
-// const AutoImport = require('unplugin-auto-import/webpack')
-// const Components = require('unplugin-vue-components/webpack')
-// const ElementPlus = require('unplugin-element-plus/webpack')
+const AutoImport = require('unplugin-auto-import/webpack')
+const Components = require('unplugin-vue-components/webpack')
+const ElementPlus = require('unplugin-element-plus/webpack')
 // const Icons = require('unplugin-icons/webpack')
 
-// const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
+const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 // const IconsResolver = require('unplugin-icons/resolver')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
@@ -30,8 +30,8 @@ module.exports = {
     loaderOptions: {
       scss: {
         additionalData: `
-					@import "./src/assets/element/index.scss";
-				  @import "./src/assets/style/index.scss";
+					@use "./src/assets/element/index.scss" as *;
+				  @use "./src/assets/style/index.scss" as *;
 				`
       }
     }
@@ -67,26 +67,59 @@ module.exports = {
     },
     plugins: [
       // AutoImport({
+      //   include: [
+      //     /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+      //     /\.vue$/,
+      //     /\.vue\?vue/ // .vue
+      //   ],
+      //   imports: [
+      //     // presets
+      //     'vue',
+      //     'vuex',
+      //     'vue-router',
+      //     // custom
+      //     {
+      //       '@vueuse/core': ['useDark'],
+      //       axios: [
+      //         // default imports
+      //         ['default', 'axios'] // import { default as axios } from 'axios',
+      //       ],
+      //       '@/store': [
+      //         // alias
+      //         ['default', 'store']
+      //       ]
+      //     }
+      //   ],
       //   resolvers: [
-      //     ElementPlusResolver(),
-      //     IconsResolver({
-      //       prefix: 'I'
-      //     })
+      //     ElementPlusResolver()
+      //     // IconsResolver({
+      //     //   prefix: 'I'
+      //     // })
+      //   ],
+      //   // Auto import for module exports under directories
+      //   // by default it only scan one level of modules under the directory
+      //   dirs: [
+      //     './hooks',
+      //     './plugins',
+      //     './util'
+      //     // './composables' // only root modules
+      //     // './composables/**', // all nested modules
+      //     // ...
       //   ],
       //   dts: path.resolve(pathSrc, 'auto-imports.d.ts')
       // }),
       // Components({
       //   resolvers: [
-      //     IconsResolver({
-      //       enabledCollections: ['ep']
-      //     }),
       //     ElementPlusResolver()
+      //     // IconsResolver({
+      //     //   enabledCollections: ['ep']
+      //     // })
       //   ],
       //   dts: path.resolve(pathSrc, 'components.d.ts')
       // }),
-      // ElementPlus({
-      //   useSource: true
-      // }),
+      ElementPlus({
+        useSource: true
+      })
       // Icons({
       //   autoInstanll: true
       // }),

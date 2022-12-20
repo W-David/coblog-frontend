@@ -147,7 +147,7 @@ onMounted(async () => {
 
   .tag-list {
     @include box-shadow(12px 12px 24px 0 rgba(0, 0, 0, 0.05));
-    @include scroll-bar(6px, auto, transparent, $info-color-b, 3px);
+    @include scroll-bar(6px, auto, transparent, var(--el-color-info-light-7), 3px);
     @include border(1px solid #e5f5e5, 8px);
     @include bg-color(#fff);
     position: fixed;
@@ -182,9 +182,9 @@ onMounted(async () => {
       }
 
       .article-tag {
-        @include panel-styl($primary-color, $primary-color-h);
+        @include panel-styl(var(--el-color-primary), var(--el-color-primary-light-9));
         &.ctrl-btn {
-          @include panel-styl($info-color, $info-color-b);
+          @include panel-styl(var(--el-color-info), var(--el-color-info-light-7));
         }
       }
     }

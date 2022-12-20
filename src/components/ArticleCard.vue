@@ -8,7 +8,7 @@
       <div
         @mouseenter="isBannerHover = true"
         @mouseleave="isBannerHover = false"
-        :class="['article-banner-description', !isBannerHover ? 'spinner-border-animation' : '']"
+        :class="['article-banner-description', !isBannerHover ? 'spinner-border' : '']"
         @click="openDetail"
       >
         阅读全文
@@ -77,7 +77,7 @@ $descrip-mr: 12px;
 
 .article-card-container {
   @include layout(100%, 100%, 0, 0 0 16px 0);
-  @include border(1px solid $border-color-a, 6px);
+  @include border(1px solid var(--el-border-color-light), 6px);
   @include transition(all 120ms ease-in-out);
   @include box-shadow;
   @include bg-color;
@@ -86,22 +86,27 @@ $descrip-mr: 12px;
   .article-banner-container {
     @include layout(100%, 280px, 0, 0);
     @include position(relative);
-    border-bottom-color: $border-color-a;
+    border-bottom-color: var(--el-border-color-light);
     @include pointer;
     .article-banner-description {
       @include position(absolute);
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: white;
       @include layout(auto, auto, 0, 6px 12px);
-      @include border(2px solid white, 6px);
+      @include border(2px solid var(--el-border-color), 6px);
       opacity: 0;
+      // color: white;
       transition: all 220ms ease-out;
       &:hover {
         @include layout(auto, auto, 0, 12px 18px);
       }
     }
+
+    .spinner-border {
+      @include spinner-border-animation;
+    }
+
     .article-banner-img {
       @include layout(100%, 100%, 0, 0);
       @include position(relative);
@@ -134,7 +139,7 @@ $descrip-mr: 12px;
       font-size: 24px;
       .article-no-banner-hint {
         transition: all 600ms ease-out;
-        color: $primary-color-a;
+        color: var(--el-color-primary-light-3);
       }
       .article-no-banner-link {
         padding: 6px 12px;
@@ -150,8 +155,8 @@ $descrip-mr: 12px;
     &:hover {
       .article-banner-description {
         opacity: 1;
-        color: $primary-color;
-        border-color: $primary-color;
+        color: var(--el-color-primary);
+        border-color: var(--el-color-primary);
       }
       .article-banner-img {
         img {
@@ -167,7 +172,7 @@ $descrip-mr: 12px;
           opacity: 0;
         }
         .article-no-banner-link {
-          background-color: $success-color;
+          background-color: var(--el-color-success);
           padding: 12px 24px;
           color: white;
           opacity: 1;
@@ -182,7 +187,7 @@ $descrip-mr: 12px;
 
     .title-content {
       @include font-kai;
-      color: $primary-color;
+      color: var(--el-color-primary);
       font-size: 24px;
       font-weight: bold;
       @include pointer;
@@ -196,7 +201,7 @@ $descrip-mr: 12px;
   .article-ct-container {
     @include layout(100%, auto, 0, 12px 0);
     @include flex-box(row, center, center, wrap);
-    @include border(1.2px solid $border-color-c, null, bottom);
+    @include border(1.2px solid var(--el-border-color-extra-light), null, bottom);
   }
 
   .article-content-container {
@@ -213,7 +218,7 @@ $descrip-mr: 12px;
     @include flex-box(row, space-between);
 
     .description-content {
-      color: $font-color-b;
+      color: var(--el-text-color-secondary);
       .article-time {
         margin-right: $descrip-mr;
         &:deep .el-icon {
@@ -229,13 +234,13 @@ $descrip-mr: 12px;
         vertical-align: middle;
       }
       &:hover {
-        color: $primary-color;
+        color: var(--el-color-primary);
       }
     }
   }
 
   &:hover {
-    border-color: $border-color;
+    border-color: var(--el-border-color);
     @include box-shadow(4px 4px 12px 0 rgba(0, 0, 0, 0.1));
   }
 }

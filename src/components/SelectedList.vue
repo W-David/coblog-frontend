@@ -67,7 +67,7 @@ const handleCheckChange = item => {
     }
     .empty-hint {
       @include font-hei;
-      color: $danger-color;
+      color: var(--el-color-danger);
       font-size: 18px;
       font-weight: bold;
     }

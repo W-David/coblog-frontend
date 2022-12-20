@@ -4,7 +4,7 @@
       <el-icon :size="20" class="hidden-md-and-up" @click.stop.prevent="handleExpand">
         <i-expand />
       </el-icon>
-      <span class="icon-text">Cody's blog</span>
+      <span data-text="Cody's Blog" class="icon-text">Cody's Blog</span>
     </div>
     <div v-if="isUserLogin || isAdminLogin" class="nav-menu hidden-sm-and-down">
       <el-menu :default-active="activePage" :router="true" mode="horizontal" ref="menuRef" :ellipsis="false">
@@ -128,22 +128,28 @@ const toLogin = () => {
 .nav-bar-container {
   @include flex-box(row, space-between, center);
   @include bg-color(#f4f4f4, #050505);
-  @include box-shadow(0 0 4px $border-color);
+  @include box-shadow(0 0 4px var(--el-border-color));
   height: $header-height;
   padding: 5px 16px;
   z-index: 5000;
   .nav-icon {
     @include flex-box(row, space-between, center);
     @include font-hei;
-    font-weight: bolder;
     .icon-text {
-      font-size: 18px;
+      @include font-fang-song;
+      font-weight: bold;
+      color: var(--el-color-primary);
+      position: relative;
+      font-size: 22px;
+      word-spacing: 1.2px;
+      line-height: 1.2;
+      white-space: nowrap;
     }
 
     .el-icon {
       margin-right: 6px;
       &:active {
-        color: $primary-color;
+        color: var(--el-color-primary);
       }
     }
   }
@@ -157,11 +163,11 @@ const toLogin = () => {
           padding: 0 16px;
           &.is-active {
             @include bg-color(#f4f4f4, #050505);
-            color: $primary-color;
+            color: var(--el-color-primary);
           }
           &:hover {
             @include bg-color(#f4f4f4, #050505);
-            color: $primary-color;
+            color: var(--el-color-primary);
             outline: none;
           }
         }
@@ -183,7 +189,7 @@ const toLogin = () => {
     margin-left: 16px;
     .to-login {
       font-weight: bolder;
-      color: $font-color-a;
+      color: var(--el-text-regular);
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
       cursor: pointer;
     }

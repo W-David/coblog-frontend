@@ -12,9 +12,6 @@ import './assets/icons'
 import './assets/style/normallize.scss'
 import 'highlight.js/styles/monokai-sublime.css'
 
-import 'element-plus/theme-chalk/dark/css-vars.css'
-import './assets/element/dark.css'
-
 const app = createApp(App)
 installElementPlus(app)
 registerIcon(app)

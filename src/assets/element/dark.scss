@@ -1,6 +1,6 @@
 @use '../style/color' as color;
 
-@forward '~element-plus/theme-chalk/src/common/var.scss' with (
+@forward '~element-plus/theme-chalk/src/dark/var.scss' with (
   $colors: (
 		'white': #ffffff,
     'black': #000000,
@@ -24,5 +24,3 @@
     ),
   )
 );
-
-@use './dark.scss'

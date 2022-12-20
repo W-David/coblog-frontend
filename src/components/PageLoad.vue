@@ -51,7 +51,7 @@ const { isLoadingMore, hasMore } = toRefs(props)
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background-color: $primary-color;
+          background-color: var(--el-color-primary);
           position: absolute;
           /* 通过var函数调用自定义属性--i，计算出每个小球的位置 */
           left: calc(var(--i) * 20px);
@@ -75,9 +75,9 @@ const { isLoadingMore, hasMore } = toRefs(props)
     @include layout(100%, auto, 12px 0, 0);
     @include flex-box(row, center, center);
     .bottom-hint {
-      color: $font-color;
+      color: var(--el-text-color-primary);
       html.dark & {
-        color: $font-color-b;
+        color: var(--el-text-color-secondary);
       }
 
       font-size: 18px;

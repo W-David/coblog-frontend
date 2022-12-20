@@ -1,7 +1,7 @@
 <template>
   <div class="login-page">
     <div
-      class="bg-fade-animation"
+      class="bg-fade"
       v-for="(bgImg, index) in bgImgs"
       :key="index"
       :style="{
@@ -14,7 +14,12 @@
       <el-col class="login-col-container" :xs="22" :sm="12" :md="8" :lg="6" :xl="6">
         <div class="login-card">
           <div class="login-card-header">
-            <span :class="[needRegister ? 'regis-header-hint' : 'login-header-hint']">欢迎来到Coody's Blog</span>
+            <!-- <span :class="[needRegister ? 'regis-header-hint' : 'login-header-hint']">欢迎来到Coody's Blog</span> -->
+            <div class="svg-header-text" :class="[needRegister ? 'regis-header-hint' : 'login-header-hint']">
+              <svg>
+                <text x="100" y="60">Coblog</text>
+              </svg>
+            </div>
           </div>
           <el-form
             class="login-card-content"
@@ -181,37 +186,66 @@ const bgImgs = reactive([
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Homemade+Apple&family=Sacramento&display=swap');
+
 .login-page {
   @include layout(100vw, 100vh, 0, 0);
   position: absolute;
   top: 0;
   left: 0;
   overflow: hidden;
+
+  .bg-fade {
+    opacity: 0;
+    @include bg-cover;
+    @include bg-fade-animation;
+  }
+
   .login-row-container {
     height: 100%;
+
     .login-col-container {
       @include layout(100%, auto, 0, 24vh 0 0 0);
+
       .login-card {
         @include layout(80%, auto, 0 auto, 12px);
         @include border(1px solid #ececec, 8px);
         @include bg-color(#fff, #1d1d1d);
+
         .login-card-header {
           @include layout(100%, 120px, 0 0 16px 0, 4px);
           @include flex-box(row, center, center);
           @include border(null, 4px);
           @include box-shadow(2px 2px 4px #ececec, -1px -1px 2px #ececec);
-          @include font-kai;
-          color: $font-color-a;
-          font-size: 20px;
+          // @include font-hei;
+          // color: var(--el-text-regular);
+          // font-size: 20px;
+          font-family: 'Bangers', cursive;
           font-weight: bold;
 
-          .login-header-hint {
-            color: $primary-color;
+          .svg-header-text {
+            svg {
+              @include layout(200px, 100px, 0, 0);
+              text {
+                @include svg-text-stroke-animation;
+                //文本居中
+                text-anchor: middle;
+                dominant-baseline: middle;
+                letter-spacing: 8px;
+                font-size: 50px;
+              }
+            }
           }
+
+          .login-header-hint {
+            color: var(--el-color-primary);
+          }
+
           .regis-header-hint {
-            color: $success-color;
+            color: var(--el-color-success);
           }
         }
+
         .login-card-content {
           &:deep {
             .el-form-item {
@@ -222,35 +256,43 @@ const bgImgs = reactive([
           .hint-area {
             @include layout(100%, auto, 0, 0 2px);
             @include flex-box(row, space-between, center);
+
             .register-hint {
               user-select: none !important;
               @include pointer;
             }
+
             .remember-hint {
             }
           }
+
           .register-area,
           .login-area {
             width: 100%;
+
             &:deep {
               .el-button {
                 margin: 0;
               }
+
               .el-button:last-child {
                 margin-top: 10px;
               }
             }
           }
+
           .login-hint {
             &:hover {
-              color: $primary-color;
+              color: var(--el-color-primary);
             }
           }
+
           .regis-hint {
             &:hover {
-              color: $success-color;
+              color: var(--el-color-success);
             }
           }
+
           &:deep {
             .el-form-item:last-child {
               margin-bottom: 0;

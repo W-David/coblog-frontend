@@ -125,38 +125,38 @@
   }
   @if ($position == all) {
     border: $border;
-		html.dark & {
-			border: $border;
-			border-color:rgba(0, 0, 0, 0.2);
-		}
+    html.dark & {
+      border: $border;
+      border-color: rgba(0, 0, 0, 0.2);
+    }
   }
   @if ($position == left) {
     border-left: $border;
-		html.dark & {
-			border-left: $border;
-			border-left-color:rgba(0, 0, 0, 0.2);
-		}
+    html.dark & {
+      border-left: $border;
+      border-left-color: rgba(0, 0, 0, 0.2);
+    }
   }
   @if ($position == top) {
     border-top: $border;
-		html.dark & {
-			border-top: $border;
-			border-top-color:rgba(0, 0, 0, 0.2);
-		}
+    html.dark & {
+      border-top: $border;
+      border-top-color: rgba(0, 0, 0, 0.2);
+    }
   }
   @if ($position == right) {
     border-right: $border;
-		html.dark & {
-			border-right: $border;
-			border-right-color:rgba(0, 0, 0, 0.2);
-		}
+    html.dark & {
+      border-right: $border;
+      border-right-color: rgba(0, 0, 0, 0.2);
+    }
   }
   @if ($position == bottom) {
     border-bottom: $border;
-		html.dark & {
-			border-bottom: $border;
-			border-bottom-color:rgba(0, 0, 0, 0.2);
-		}
+    html.dark & {
+      border-bottom: $border;
+      border-bottom-color: rgba(0, 0, 0, 0.2);
+    }
   }
 }
 /* 阴影效果 */
@@ -166,9 +166,9 @@
   } @else {
     box-shadow: #{$params1}, #{$params2};
   }
-	html.dark & {
-		box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-	}
+  html.dark & {
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+  }
 }
 
 /*渐变(从上到下）*/
@@ -190,19 +190,19 @@
 }
 
 @mixin bg-color($light-color: #fdfdfd, $dark-color: #1a1a1a) {
-	@if ($light-color != null) {
-		background-color: $light-color;
-	}
-	@if($dark-color!= null) {
-		html.dark & {
-			background-color: $dark-color;
-		}
-	}
+  @if ($light-color != null) {
+    background-color: $light-color;
+  }
+  @if ($dark-color!= null) {
+    html.dark & {
+      background-color: $dark-color;
+    }
+  }
 }
 
 @mixin bg-cover() {
-	@include position(absolute, 0, 0);
-	@include layout(100%, 100%, 0, 0);
+  @include position(absolute, 0, 0);
+  @include layout(100%, 100%, 0, 0);
   background-position: center;
   background-repeat: none;
   background-size: cover;
@@ -211,8 +211,8 @@
   // 解决高斯模糊的白边问题
   // &:before {
   //   content: '';
-	// 	@include position(absolute, 0, 0);
-	// 	@include layout(100%, 100%, 0, 0);
+  // 	@include position(absolute, 0, 0);
+  // 	@include layout(100%, 100%, 0, 0);
   //   background: inherit;
   //   filter: blur(5px);
   // }
@@ -223,7 +223,7 @@
   $width: 8px,
   $height: 8px,
   $outColor: transparent,
-  $innerColor: $border-color,
+  $innerColor: var(--el-border-color),
   $radius: 5px,
   $shadow: null
 ) {
@@ -314,7 +314,7 @@
   color: $mc;
   @include layout(auto, auto, 4px, 0 12px);
   @include border(1px solid $mc, none);
-	display: inline-block;
+  display: inline-block;
   white-space: nowrap;
   background-color: $bc;
   @include transition(all 120ms ease-in-out);
@@ -326,49 +326,50 @@
 }
 
 @mixin article-styl() {
-	/* table 样式 */
-	table {
-  	border-top: 1px solid #ccc;
-  	border-left: 1px solid #ccc;
-	}
-	table td,
-	table th {
-  	border-bottom: 1px solid #ccc;
-  	border-right: 1px solid #ccc;
-  	padding: 3px 5px;
-		text-align: center;
-	}
-	table th {
-  	border-bottom: 2px solid #ccc;
-	}
+  /* table 样式 */
+  table {
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+  }
+  table td,
+  table th {
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding: 3px 5px;
+    text-align: center;
+  }
+  table th {
+    border-bottom: 2px solid #ccc;
+  }
 
-	/* blockquote 样式 */
-	blockquote {
-  	display: block;
-  	border-left: 8px solid #d0e5f2;
-  	padding: 5px 10px;
-  	margin: 10px 0;
-  	line-height: 1.4;
-  	font-size: 100%;
-  	background-color: #f1f1f1;
-	}
+  /* blockquote 样式 */
+  blockquote {
+    display: block;
+    border-left: 8px solid #d0e5f2;
+    padding: 5px 10px;
+    margin: 10px 0;
+    line-height: 1.4;
+    font-size: 100%;
+    background-color: #f1f1f1;
+  }
 
-	/* code 样式 */
-	code {
-  	display: inline-block;
-  	*display: inline;
-  	*zoom: 1;
-  	background-color: #f1f1f1;
-  	border-radius: 3px;
-  	padding: 3px 5px;
-  	margin: 0 3px;
-	}
-	pre code {
-  	display: block;
-	}
+  /* code 样式 */
+  code {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    padding: 3px 5px;
+    margin: 0 3px;
+  }
+  pre code {
+    display: block;
+  }
 
-	/* ul ol 样式 */
-	ul, ol {
-  	margin: 10px 0 10px 20px;
-	}
+  /* ul ol 样式 */
+  ul,
+  ol {
+    margin: 10px 0 10px 20px;
+  }
 }

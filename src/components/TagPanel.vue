@@ -31,6 +31,6 @@ const toTag = id => {
 
 <style lang="scss" scoped>
 .article-tag {
-  @include panel-styl($primary-color, $primary-color-h);
+  @include panel-styl(var(--el-color-primary), var(--el-color-primary-light-9));
 }
 </style>

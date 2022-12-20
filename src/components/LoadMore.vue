@@ -13,8 +13,8 @@ const loadMore = () => emit('on-load-more')
 
 <style lang="scss" scoped>
 .pagination-container {
-  $mc: $font-color-a;
-  $hc: $primary-color;
+  $mc: var(--el-text-regular);
+  $hc: var(--el-color-primary);
   @include layout(auto, auto, 16px 0, 0);
   .pagination-content {
     @include layout(100%, 100%, 0, 8px 16px);

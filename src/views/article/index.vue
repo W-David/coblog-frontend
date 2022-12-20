@@ -152,13 +152,13 @@ onUnmounted(() => {
       display: flex;
       justify-content: center;
       align-items: center;
-      color: $primary-color;
+      color: var(--el-color-primary);
       @include bg-color(#fff, #1d1d1d);
       z-index: 1000;
       box-shadow: 0 0 6px rgb(0 0 0 / 12%);
       cursor: pointer;
       &:hover {
-        background-color: $primary-color-h;
+        background-color: var(--el-color-primary-light-9);
       }
     }
     .article-main-area {
@@ -184,7 +184,7 @@ onUnmounted(() => {
           right: 8px;
           bottom: 8px;
           .article-author {
-            color: $success-color;
+            color: var(--el-color-success);
             font-weight: bold;
             font-size: 14px;
             // text-align: end;
@@ -195,7 +195,7 @@ onUnmounted(() => {
             color: #000;
           }
           .article-date {
-            color: $warning-color;
+            color: var(--el-color-warning);
             font-size: 12px;
           }
         }
@@ -228,13 +228,13 @@ onUnmounted(() => {
           .favorite-num {
             @include font-hei;
             font-size: 12px;
-            color: #272643;
+            color: var(--el-text-color-primary);
           }
         }
         .article-desc-content {
           @include layout(100%, auto, 0, 8px);
           @include font-fang-song;
-          color: $font-color-a;
+          color: var(--el-text-regular);
           font-style: italic;
           font-weight: bold;
           // @include border(none, 4px);

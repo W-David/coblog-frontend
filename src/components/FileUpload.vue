@@ -108,8 +108,8 @@ const handleUpload = () => {
           @include border(1.5px dashed #ccc, 4px);
           font-size: 16px;
           &:hover {
-            color: $primary-color;
-            border-color: $primary-color;
+            color: var(--el-color-primary);
+            border-color: var(--el-color-primary);
           }
         }
       }
@@ -118,7 +118,7 @@ const handleUpload = () => {
   .file-img-container {
     @include position(absolute, 0, 0);
     @include layout(100%, 100%, 0, 0);
-    @include border(1px solid $primary-color, 4px);
+    @include border(1px solid var(--el-color-primary), 4px);
     .file-img {
       @include layout(100%, 100%, 0, 0);
       @include border(1px solid transparent, 4px);
@@ -140,7 +140,7 @@ const handleUpload = () => {
         font-size: 14px;
         @include pointer;
         &:hover {
-          color: $primary-color;
+          color: var(--el-color-primary);
         }
       }
     }

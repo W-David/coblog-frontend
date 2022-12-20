@@ -60,12 +60,12 @@ const toArticle = id => {
   z-index: 1000;
 
   .tag-icon {
-    color: $primary-color;
+    color: var(--el-color-primary);
     font-size: 24px;
     text-align: center;
   }
   .empty-icon {
-    color: $primary-color-b;
+    color: var(--el-color-primary-light-5);
     font-size: 42px;
     text-align: center;
   }
@@ -78,19 +78,19 @@ const toArticle = id => {
 
     .name-content {
       @include font-hei;
-      color: $primary-color;
+      color: var(--el-color-primary);
       font-size: 20px;
       font-weight: bolder;
     }
     .info-content {
       @include font-hei;
-      color: $font-color-c;
+      color: var(--el-text-color-placeholder);
       font-weight: bold;
     }
   }
   .tag-article-list {
     @include layout(100%, 180px, 0, 0);
-    @include scroll-bar(4px, auto, transparent, $primary-color-b, 2px);
+    @include scroll-bar(4px, auto, transparent, var(--el-color-primary-light-5), 2px);
     overflow-y: auto;
     .tag-article-card {
       @include layout(auto, auto, 0 8px, 8px);
@@ -101,10 +101,10 @@ const toArticle = id => {
         @include flex-box(row, space-between, center);
         @include transition(all 120ms linear);
         .title-content {
-          color: $info-color;
+          color: var(--el-color-info);
 
           html.dark & {
-            color: $info-color-b;
+            color: var(--el-color-info-light-7);
           }
 
           @include font-kai;
@@ -114,7 +114,7 @@ const toArticle = id => {
           font-weight: bolder;
         }
         .time-content {
-          color: $info-color-a;
+          color: var(--el-color-info-light-3);
           font-size: 12px;
           font-style: italic;
           font-weight: bold;
@@ -123,10 +123,10 @@ const toArticle = id => {
         html.dark &:hover {
           // transform: scaleX(1.02);
           .title-content {
-            color: $primary-color;
+            color: var(--el-color-primary);
           }
           .time-content {
-            color: $primary-color-a;
+            color: var(--el-color-primary-light-3);
           }
         }
       }
@@ -139,15 +139,14 @@ const toArticle = id => {
   }
   &:hover {
     @include box-shadow(10px 10px 24px 0 rgba(0, 0, 0, 0.1));
-    // background-color: $primary-color-h;
   }
   &.is-active {
-    border-color: $primary-color;
+    border-color: var(--el-color-primary);
     border-width: 2px;
     @include box-shadow;
 
     html.dark & {
-      border-color: $primary-color;
+      border-color: var(--el-color-primary);
     }
   }
 }
