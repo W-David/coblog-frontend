@@ -23,10 +23,11 @@
               <div class="row-container">
                 <div class="article-title-content">{{ article.title }}</div>
                 <div class="article-favorite-content">
-                  <div class="favorite-icon">
-                    <svg-icon icon-class="favorite-full"></svg-icon>
+                  <div class="favorite-icon" @click="handleFavorite">
+                    <svg-icon v-show="article.isFavorited" icon-class="favorite-full"></svg-icon>
+                    <svg-icon v-show="!article.isFavorited" icon-class="favorite"></svg-icon>
                   </div>
-                  <div class="favorite-num">{{ article.favoriteNum }}</div>
+                  <div class="favorite-num">{{ article.favoritedNum }}</div>
                 </div>
               </div>
               <div class="article-panel-content">
@@ -99,15 +100,19 @@ const handleDel = async () => {
     ElMessage({ message: '请输入正确的文章标题', type: 'warning' })
     return
   }
-  const res = await store.dispatch('article/DelArticle', article.value.id)
+  await store.dispatch('article/DelArticle', article.value.id)
   router.push({ name: 'home' })
-  ElMessage({ message: '已删除', type: 'success' })
 }
 const handleEdit = () => {
   router.push({ name: 'blog', params: { id: article.value.id } })
 }
 const toBack = () => {
   router.back()
+}
+const handleFavorite = async () => {
+  const favoritedNum = await store.dispatch('article/FavoriteArticle', { id: article.value.id })
+  article.value.isFavorited = !article.value.isFavorited
+  article.value.favoritedNum = favoritedNum
 }
 onMounted(async () => {
   mountWaline()
@@ -224,11 +229,16 @@ onUnmounted(() => {
             text-align: center;
             cursor: pointer;
             font-size: 22px;
+            transition: all 500ms ease;
+            &:hover {
+              transform: scale(1.25);
+            }
           }
           .favorite-num {
             @include font-hei;
-            font-size: 12px;
-            color: var(--el-text-color-primary);
+            text-align: center;
+            font-size: 13px;
+            color: var(--el-text-color-secondary);
           }
         }
         .article-desc-content {

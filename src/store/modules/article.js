@@ -1,6 +1,7 @@
 import {
   createArticle,
   updateArticle,
+  favoriteArticle,
   deleteArticle,
   listArticle,
   detailArticle,
@@ -55,6 +56,11 @@ const article = {
       const total = res.data.count || 0
       commit('SET_ARTICLES', articles)
       return [articles, total]
+    },
+    async FavoriteArticle({ state, commit }, data) {
+      const res = await favoriteArticle(data)
+      const favoritedNum = res.data || 0
+      return favoritedNum
     },
     async GetArticleArchive({ state, commit }, data) {
       const res = await listByTimeArticle(data)

@@ -14,6 +14,13 @@ export function updateArticle(data) {
   })
 }
 
+export function favoriteArticle(data) {
+  return PUT({
+    url: `/article/favorite/${data.id}`,
+    data
+  })
+}
+
 export function listArticle(data) {
   return POST({
     url: '/article/list',

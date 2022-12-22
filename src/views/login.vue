@@ -10,6 +10,10 @@
         animationDuration: animationDuration + 's'
       }"
     ></div>
+    <div class="bulb-container" @click="handleSwitchTheme">
+      <svg-icon v-show="isDark" icon-class="bulb-light"></svg-icon>
+      <svg-icon v-show="!isDark" icon-class="bulb-off"></svg-icon>
+    </div>
     <el-row justify="center" class="login-row-container">
       <el-col class="login-col-container" :xs="22" :sm="12" :md="8" :lg="6" :xl="6">
         <div class="login-card">
@@ -75,11 +79,13 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { local } from '@/util/cache'
+import { useDark } from '@vueuse/core'
 
 const store = useStore()
 const router = useRouter()
 const needRegister = ref(false)
 const formRef = ref(null)
+const isDark = useDark()
 const form = reactive({
   // email: 'admin@root.com',
   // password: 'admin@root',
@@ -176,6 +182,7 @@ const handleSwitch = () => {
   form.nickName = ''
   needRegister.value = !needRegister.value
 }
+const handleSwitchTheme = () => (isDark.value = !isDark.value)
 const animationDuration = ref(48)
 const bgImgs = reactive([
   require('../assets/image/bg-01.jpg'),
@@ -199,6 +206,25 @@ const bgImgs = reactive([
     opacity: 0;
     @include bg-cover;
     @include bg-fade-animation;
+  }
+
+  .bulb-container {
+    @include layout(42px, 42px, 0, 0);
+    @include flex-box(row, center, center);
+    @include border(none, 8px);
+    @include box-shadow;
+    color: var(--el-text-color-secondary);
+    background-color: var(--el-bg-color);
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+    cursor: pointer;
+    font-size: 32px;
+    transition: all 320ms ease;
+    &:hover {
+      transform: scale(1.2);
+    }
   }
 
   .login-row-container {
