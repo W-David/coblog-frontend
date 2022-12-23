@@ -1,19 +1,20 @@
 'use strict'
 const path = require('path')
-const AutoImport = require('unplugin-auto-import/webpack')
-const Components = require('unplugin-vue-components/webpack')
-const ElementPlus = require('unplugin-element-plus/webpack')
+// const AutoImport = require('unplugin-auto-import/webpack')
+// const Components = require('unplugin-vue-components/webpack')
+// const ElementPlus = require('unplugin-element-plus/webpack')
+const CompressionPlugin = require('compression-webpack-plugin')
 // const Icons = require('unplugin-icons/webpack')
 
 const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 // const IconsResolver = require('unplugin-icons/resolver')
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const pathSrc = path.resolve(__dirname, 'src')
+// const pathSrc = path.resolve(__dirname, 'src')
 
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = process.env.NODE_ENV === 'development'
@@ -63,7 +64,15 @@ module.exports = {
       }
     },
     externals: {
-      '@waline/client': 'Waline'
+      // vue: 'Vue',
+      // axios: 'axios',
+      // 'vue-router': 'VueRouter',
+      // 'element-plus': 'ElementPlus',
+      // '@element-plus/icons': 'ElementPlusIconsVue',
+      // '@vueuse/core': 'VueUse',
+      wangeditor: 'wangEditor',
+      '@waline/client': 'Waline',
+      'ali-oss': 'OSS'
     },
     plugins: [
       // AutoImport({
@@ -117,13 +126,12 @@ module.exports = {
       //   ],
       //   dts: path.resolve(pathSrc, 'components.d.ts')
       // }),
-      ElementPlus({
-        useSource: true
-      })
+      // ElementPlus({
+      //   useSource: true
+      // }),
       // Icons({
       //   autoInstanll: true
       // }),
-      // new BundleAnalyzerPlugin()
     ]
   },
   pluginOptions: {
@@ -147,7 +155,7 @@ module.exports = {
       })
       .end()
 
-    config.when(!isDev, config => {
+    config.when(isProd, config => {
       config
         .plugin('ScriptExtHtmlWebpackPlugin')
         .after('html')
@@ -158,6 +166,19 @@ module.exports = {
           }
         ])
         .end()
+        .plugin('CompressionPlugin')
+        .use(
+          new CompressionPlugin({
+            filename: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: new RegExp('\\.(' + ['js', 'css'].join('|') + ')$'),
+            threshold: 10240,
+            minRatio: 0.8
+          })
+        )
+        .end()
+        .plugin('BundleAnalyzerPlugin')
+        .use(new BundleAnalyzerPlugin())
       config.optimization.splitChunks({
         chunks: 'all',
         cacheGroups: {
@@ -167,8 +188,8 @@ module.exports = {
             priority: 10,
             chunks: 'initial' // only package third parties that are initially dependent
           },
-          elementUI: {
-            name: 'chunk-elementPlus', // split elementUI into a single package
+          elementPlus: {
+            name: 'chunk-elementPlus', // split elementPlus into a single package
             priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
             test: /[\\/]node_modules[\\/]_?element-plus(.*)/ // in order to adapt to cnpm
           },

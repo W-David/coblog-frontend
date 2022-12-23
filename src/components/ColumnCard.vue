@@ -1,7 +1,7 @@
 <template>
   <div class="column-card-container">
     <div class="column-avatar-container">
-      <img :src="column.avatar" alt="noAvatar" />
+      <img v-LazyLoad="column.avatar" alt="noAvatar" />
     </div>
     <div class="column-info-container">
       <div class="column-nickname">{{ column.nickname }}</div>

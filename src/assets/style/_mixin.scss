@@ -200,6 +200,15 @@
   }
 }
 
+@mixin img-cover() {
+  @include position(absolute, 0, 0);
+  @include layout(100%, 100%, 0, 0);
+  object-fit: cover;
+  object-position: center;
+  z-index: -1;
+  overflow: hidden;
+}
+
 @mixin bg-cover() {
   @include position(absolute, 0, 0);
   @include layout(100%, 100%, 0, 0);

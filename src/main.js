@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import installElementPlus from './plugins/element'
 import registerIcon from './plugins/element-icon'
+import directives from './directives'
 
 import SvgIcon from './components/SvgIcon.vue'
 import Pagination from './components/Pagination.vue'
@@ -20,4 +21,5 @@ app.component('svg-icon', SvgIcon)
 app.component('pagination', Pagination)
 
 app.use(store).use(router)
+app.use(directives)
 router.isReady().then(() => app.mount('#app'))

@@ -12,7 +12,7 @@
           </div>
           <div class="article-main-area" v-if="article">
             <div class="article-banner-container" v-if="article.banner && article.banner.path">
-              <img :src="article.banner.path" alt="noImg" />
+              <img v-LazyLoad="article.banner.path" alt="noImg" />
               <div class="article-info-content">
                 <span class="article-author">{{ article.admin?.nickname || '佚名' }}</span>
                 <span class="article-sp">|</span>

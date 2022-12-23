@@ -1,6 +1,6 @@
 <template>
   <div class="login-page">
-    <div
+    <!-- <div
       class="bg-fade"
       v-for="(bgImg, index) in bgImgs"
       :key="index"
@@ -9,7 +9,18 @@
         animationDelay: (animationDuration / bgImgs.length) * index + 's',
         animationDuration: animationDuration + 's'
       }"
-    ></div>
+    ></div> -->
+    <img
+      class="bg-fade"
+      v-for="(bgImg, index) in bgImgs"
+      v-LazyLoad="bgImg"
+      alt="noImg"
+      :key="index"
+      :style="{
+        animationDelay: (animationDuration / bgImgs.length) * index + 's',
+        animationDuration: animationDuration + 's'
+      }"
+    />
     <div class="bulb-container" @click="handleSwitchTheme">
       <svg-icon v-show="isDark" icon-class="bulb-light"></svg-icon>
       <svg-icon v-show="!isDark" icon-class="bulb-off"></svg-icon>
@@ -204,7 +215,8 @@ const bgImgs = reactive([
 
   .bg-fade {
     opacity: 0;
-    @include bg-cover;
+    // @include bg-cover;
+    @include img-cover;
     @include bg-fade-animation;
   }
 
