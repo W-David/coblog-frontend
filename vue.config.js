@@ -177,8 +177,8 @@ module.exports = {
           })
         )
         .end()
-        .plugin('BundleAnalyzerPlugin')
-        .use(new BundleAnalyzerPlugin())
+      // .plugin('BundleAnalyzerPlugin')
+      // .use(new BundleAnalyzerPlugin())
       config.optimization.splitChunks({
         chunks: 'all',
         cacheGroups: {

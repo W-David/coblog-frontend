@@ -100,11 +100,7 @@ const toArticle = id => {
       .category-article-title {
         @include flex-box(row, space-between, center);
         .title-content {
-          color: var(--el-color-info);
-
-          html.dark & {
-            color: var(--el-color-info-light-7);
-          }
+          color: var(--el-text-color-secondary);
 
           @include font-kai;
           @include text-overflow(1, 60%);
@@ -113,7 +109,7 @@ const toArticle = id => {
           font-weight: bolder;
         }
         .time-content {
-          color: var(--el-color-info-light-3);
+          color: var(--el-text-color-placeholder);
           font-size: 12px;
           font-style: italic;
           font-weight: bold;
