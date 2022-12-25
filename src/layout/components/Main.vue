@@ -1,12 +1,12 @@
 <template>
   <div class="app-main-container">
     <div id="particles-js"></div>
-    <router-view :key="route.path"></router-view>
-    <!-- <router-view v-slot="{ Component, route }">
-          <transition :name="route.meta.transition">
-            <component :is="Component" :key="route.path" />
-          </transition>
-        </router-view> -->
+    <!-- <router-view :key="route.path"></router-view> -->
+    <router-view v-slot="{ Component, route }">
+      <transition :name="route.meta.transitionName">
+        <component :is="Component" :key="route.path" />
+      </transition>
+    </router-view>
   </div>
 </template>
 
@@ -23,9 +23,9 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .app-main-container {
-  // @include fade();
-  // @include slide-fade-left();
-  // @include slide-fade-right();
+  @include fade();
+  @include slide-fade-left();
+  @include slide-fade-right();
   #particles-js {
     position: fixed;
     @include layout;

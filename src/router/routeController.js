@@ -11,9 +11,6 @@ const redirectList = ['/login']
 const controller = router => {
   router.beforeEach(async (to, from) => {
     NProgress.start()
-    // const toDepth = to.path.split('/').length
-    // const fromDepth = from.path.split('/').length
-    // to.meta.transition = toDepth === fromDepth ? 'fade' : toDepth < fromDepth ? 'slide-fade-right' : 'slide-fade-left'
 
     const token = getToken() || ''
     const userType = getUserType() || ''
@@ -69,6 +66,10 @@ const controller = router => {
 
   router.afterEach((to, from) => {
     NProgress.done()
+    const toDepth = to.path.split('/').length
+    const fromDepth = from.path.split('/').length
+    to.meta.transitionName =
+      toDepth === fromDepth ? 'fade' : toDepth < fromDepth ? 'slide-fade-left' : 'slide-fade-right'
   })
 
   return router

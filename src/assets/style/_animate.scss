@@ -95,3 +95,12 @@
   }
   @include use-animation(svg-text-stroke 2500ms infinite alternate);
 }
+
+@mixin hue-rotate {
+  @include define-animation(hue-rotate) {
+    100% {
+      filter: hue-rotate(360deg);
+    }
+  }
+  @include use-animation(hue-rotate 20s infinite alternate);
+}

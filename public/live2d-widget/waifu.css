@@ -53,7 +53,7 @@
 	position: absolute;
 	text-overflow: ellipsis;
 	transition: opacity 300ms;
-	width: 250px;
+	width: 220px;
 	word-break: break-all;
 	font-weight: bold;
 	color: #272643;
@@ -70,9 +70,9 @@
 
 #live2d {
 	cursor: grab;
-	height: 300px;
+	width: 250px;
+	height: 250px;
 	position: relative;
-	width: 300px;
 }
 
 @media only screen and (max-width: 992px) {

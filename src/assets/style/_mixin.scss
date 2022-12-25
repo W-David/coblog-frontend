@@ -333,6 +333,27 @@
     background-color: $mc;
   }
 }
+// 标签和分类panel样式
+@mixin panel-styl($mc, $bc) {
+  color: $mc;
+  display: inline-block;
+  line-height: 36px;
+  @include layout(auto, 36px, 8px, 0 16px);
+  @include border(1px solid $mc, 18px);
+  font-size: 16px;
+  white-space: wrap;
+  background-color: $bc;
+  @include transition(all 120ms ease-in-out);
+  @include pointer;
+  &:hover {
+    color: white;
+    background-color: $mc;
+  }
+  &.is-active {
+    color: white;
+    background-color: $mc;
+  }
+}
 
 @mixin article-styl() {
   /* table 样式 */

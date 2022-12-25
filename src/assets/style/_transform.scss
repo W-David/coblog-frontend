@@ -1,75 +1,82 @@
-@mixin fade($duration: 500ms) {
-	.fade-enter-active,
-	.fade-leave-active {
-  	transition: opacity $duration ease;
-	}
-	.fade-enter-from,
-	.fade-leave-to {
-  	opacity: 0;
-	}
+@mixin fade($duration-enter: 350ms, $duration-leave: 600ms) {
+  .fade-enter-active {
+    transition: all $duration-enter ease-out;
+  }
+  .fade-leave-active {
+    display: none;
+    transition: all $duration-leave cubic-bezier(1, 0.5, 0.8, 1);
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+    transform: scale(0.912);
+  }
 }
 
-@mixin slide-fade-top($duration-enter: 300ms, $duration-leave: 800ms, $offset: 120px) {
-	.slide-fade-top-enter-active {
-  	transition: all $duration-enter ease-out;
-	}
+@mixin slide-fade-top($duration-enter: 300ms, $duration-leave: 500ms, $offset: 120px) {
+  .slide-fade-top-enter-active {
+    transition: all $duration-enter ease-out;
+  }
 
-	.slide-fade-top-leave-active {
-  	transition: all $duration-leave cubic-bezier(1, 0.5, 0.8, 1);
-	}
+  .slide-fade-top-leave-active {
+    display: none;
+    transition: all $duration-leave cubic-bezier(1, 0.5, 0.8, 1);
+  }
 
-	.slide-fade-top-enter-from,
-	.slide-fade-top-leave-to {
-  	transform: translateY(-#{$offset});
-  	opacity: 0;
-	}
+  .slide-fade-top-enter-from,
+  .slide-fade-top-leave-to {
+    transform: translateY(-#{$offset});
+    opacity: 0;
+  }
 }
 
-@mixin slide-top($duration-enter: 300ms, $duration-leave: 800ms, $offset: 120px, $scale: .2) {
-	.slide-top-enter-active {
-  	transition: all $duration-enter ease-out;
-	}
+@mixin slide-top($duration-enter: 300ms, $duration-leave: 500ms, $offset: 300px, $scale: 0.2) {
+  .slide-top-enter-active {
+    transition: all $duration-enter ease-out;
+  }
 
-	.slide-top-leave-active {
-  	transition: all $duration-leave cubic-bezier(1, 0.5, 0.8, 1);
-	}
+  .slide-top-leave-active {
+    display: none;
+    transition: all $duration-leave cubic-bezier(1, 0.5, 0.8, 1);
+  }
 
-	.slide-top-enter-from,
-	.slide-top-leave-to {
-  	transform: translateY(-#{$offset});
-	}
+  .slide-top-enter-from,
+  .slide-top-leave-to {
+    transform: translateY(-#{$offset});
+  }
 }
 
+@mixin slide-fade-right($duration-enter: 350ms, $duration-leave: 600ms, $offset: 60px) {
+  .slide-fade-right-enter-active {
+    transition: all $duration-enter ease-out;
+  }
 
-@mixin slide-fade-right($duration-enter: 300ms, $duration-leave: 800ms, $offset: 120px) {
-	.slide-fade-right-enter-active {
-  	transition: all $duration-enter ease-out;
-	}
+  .slide-fade-right-leave-active {
+    display: none;
+    transition: all $duration-leave cubic-bezier(1, 0.5, 0.8, 1);
+  }
 
-	.slide-fade-right-leave-active {
-  	transition: all $duration-leave cubic-bezier(1, 0.5, 0.8, 1);
-	}
-
-	.slide-fade-right-enter-from,
-	.slide-fade-right-leave-to {
-  	transform: translateX($offset);
-  	opacity: 0;
-	}
+  .slide-fade-right-enter-from,
+  .slide-fade-right-leave-to {
+    transform: translateX($offset);
+    opacity: 0;
+  }
 }
 
+@mixin slide-fade-left($duration-enter: 350ms, $duration-leave: 600ms, $offset: 60px) {
+  .slide-fade-left-enter-active {
+    transition: all $duration-enter ease-out;
+  }
 
-@mixin slide-fade-left($duration-enter: 300ms, $duration-leave: 800ms, $offset: 120px) {
-	.slide-fade-left-enter-active {
-  	transition: all $duration-enter ease-out;
-	}
+  .slide-fade-left-leave-active {
+    display: none;
+    transition: all $duration-leave cubic-bezier(1, 0.5, 0.8, 1);
+  }
 
-	.slide-fade-left-leave-active {
-  	transition: all $duration-leave cubic-bezier(1, 0.5, 0.8, 1);
-	}
-
-	.slide-fade-left-enter-from,
-	.slide-fade-left-leave-to {
-  	transform: translateX(-#{$offset});
-  	opacity: 0;
-	}
+  .slide-fade-left-enter-from,
+  .slide-fade-left-leave-to {
+    transform: translateX(-#{$offset});
+    opacity: 0;
+  }
 }

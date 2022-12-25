@@ -1,6 +1,6 @@
 <template>
   <div class="h-footer-container">
-    <span>© 2022 coody's blog</span>
+    <span class="footer-hint">© 2022 coody's blog</span>
   </div>
 </template>
 
@@ -8,10 +8,19 @@
 
 <style lang="scss" scoped>
 .h-footer-container {
+  @include font-hei;
+  font-size: 18px;
   @include flex-box(row, center, center);
   @include layout(100%, $footer-height, 0, 0);
-  @include box-shadow(0 0 2px var(--el-border-color));
-  @include font-song;
-  @include bg-color(#f5f5f5, #050505);
+  // box-shadow: var(--el-box-shadow);
+  // background-color: var(--el-bg-color);
+  .footer-hint {
+    color: var(--el-text-color-primary);
+    cursor: pointer;
+    transition: all 200ms ease;
+    &:hover {
+      color: var(--el-color-primary);
+    }
+  }
 }
 </style>

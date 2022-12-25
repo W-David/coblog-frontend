@@ -81,6 +81,9 @@
         </div>
       </el-col>
     </el-row>
+    <div class="footer-container">
+      <Footer />
+    </div>
   </div>
 </template>
 
@@ -91,6 +94,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { local } from '@/util/cache'
 import { useDark } from '@vueuse/core'
+import Footer from '@/layout/components/HFooter.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -201,6 +205,11 @@ const bgImgs = reactive([
   require('../assets/image/bg-03.jpg'),
   require('../assets/image/bg-04.jpg')
 ])
+onMounted(() => {
+  form.email = 'admin@root.com'
+  form.password = 'admin@root'
+  rememberMe.value = true
+})
 </script>
 
 <style lang="scss" scoped>
@@ -212,10 +221,11 @@ const bgImgs = reactive([
   top: 0;
   left: 0;
   overflow: hidden;
+  // background: linear-gradient(30deg, #ffcc00, deeppink, #9c27b0);
+  // @include hue-rotate;
 
   .bg-fade {
     opacity: 0;
-    // @include bg-cover;
     @include img-cover;
     @include bg-fade-animation;
   }
@@ -339,6 +349,15 @@ const bgImgs = reactive([
         }
       }
     }
+  }
+  .footer-container {
+    @include layout(100%, auto, 0, 0);
+    @include position(absolute, 0, auto, auto, 0);
+    z-index: 10;
+    // position: absolute;
+    // bottom: 0;
+    // left: 0;
+    // z-index: 10;
   }
 }
 </style>

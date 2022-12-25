@@ -5,7 +5,7 @@
       <el-col class="hidden-md-and-down" :lg="6">
         <div class="article-sub-area"></div>
       </el-col> -->
-      <el-col :xs="24" :sm="22" :md="20" :lg="18">
+      <el-col :xs="24" :sm="22" :md="18" :lg="16">
         <div class="article-area">
           <div class="article-ctrl-area" @click="toBack">
             <el-icon :size="20"><i-caret-left /></el-icon>

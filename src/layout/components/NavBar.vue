@@ -6,14 +6,14 @@
       </el-icon>
       <span data-text="Cody's Blog" class="icon-text">Cody's Blog</span>
     </div>
-    <div v-if="isUserLogin || isAdminLogin" class="nav-menu hidden-sm-and-down">
+    <div v-if="isLogin" class="nav-menu hidden-sm-and-down">
       <el-menu :default-active="activePage" :router="true" mode="horizontal" ref="menuRef" :ellipsis="false">
         <el-menu-item v-for="menu in menuList" :key="menu.id" :index="menu.path">
           {{ menu.name }}
         </el-menu-item>
       </el-menu>
     </div>
-    <div v-if="isUserLogin || isAdminLogin" class="nav-search">
+    <div v-if="isLogin" class="nav-search">
       <search></search>
     </div>
     <div class="nav-switch hidden-xs-only">
@@ -23,7 +23,7 @@
       <user v-if="isUserLogin"></user>
       <admin v-else-if="isAdminLogin"></admin>
       <span v-else @click="toLogin">
-        <span class="to-login">登录</span>
+        <span class="to-login">游客登录</span>
       </span>
     </div>
   </div>
@@ -44,7 +44,7 @@
           <user v-if="isUserLogin"></user>
           <admin v-else-if="isAdminLogin"></admin>
           <span v-else @click="toLogin">
-            <span class="to-login">登录</span>
+            <span class="to-login">游客登录</span>
           </span>
         </div>
         <el-menu
@@ -101,6 +101,7 @@ const isDark = useDark()
 
 const isUserLogin = computed(() => store.getters.isUserLogin)
 const isAdminLogin = computed(() => store.getters.isAdminLogin)
+const isLogin = isUserLogin.value || isAdminLogin.value
 
 const handleChange = () => setSidebarOpen(false)
 const handleExpand = e => setSidebarOpen(true)

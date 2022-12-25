@@ -178,8 +178,9 @@ onMounted(() => {
           .article-card {
             @include layout(95%, 100%, 16px auto, 12px 16px);
             @include border(none, 4px);
-            @include box-shadow(4px 4px 12px rgba(0, 0, 0, 0.05), -1px -1px 4px rgba(0, 0, 0, 0.02));
-            @include transition(all 120ms ease-in-out);
+            @include box-shadow(1px 1px 4px rgba(0, 0, 0, 0.05), -1px -1px 4px rgba(0, 0, 0, 0.02));
+            @include transition(all 220ms ease-in-out);
+            @include border(none, 8px);
             @include bg-color(#fff, #1d1d1d);
             @include pointer;
 
@@ -215,7 +216,8 @@ onMounted(() => {
             }
 
             &:hover {
-              @include box-shadow(4px 4px 20px rgba(0, 0, 0, 0.1));
+              @include box-shadow(2px 2px 12px rgba(0, 0, 0, 0.1));
+              // border-color: var(--el-border-color-hover);
               transform: scale(1.02);
             }
           }
