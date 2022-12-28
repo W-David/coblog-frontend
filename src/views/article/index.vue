@@ -1,60 +1,56 @@
 <template>
   <div class="article-page">
-    <el-row justify="center" :gutter="12">
-      <!-- <div id="article-toc"></div>
+    <!-- <div id="article-toc"></div>
       <el-col class="hidden-md-and-down" :lg="6">
         <div class="article-sub-area"></div>
       </el-col> -->
-      <el-col :xs="24" :sm="22" :md="18" :lg="16">
-        <div class="article-area">
-          <div class="article-ctrl-area" @click="toBack">
-            <el-icon :size="20"><i-caret-left /></el-icon>
-          </div>
-          <div class="article-main-area" v-if="article">
-            <div class="article-banner-container" v-if="article.banner && article.banner.path">
-              <img v-LazyLoad="article.banner.path" alt="noImg" />
-              <div class="article-info-content">
-                <span class="article-author">{{ article.admin?.nickname || '佚名' }}</span>
-                <span class="article-sp">|</span>
-                <span class="article-date">{{ article.createdAt }}</span>
-              </div>
-            </div>
-            <div class="article-title-container">
-              <div class="row-container">
-                <div class="article-title-content">{{ article.title }}</div>
-                <div class="article-favorite-content">
-                  <div class="favorite-icon" @click="handleFavorite">
-                    <svg-icon v-show="article.isFavorited" icon-class="favorite-full"></svg-icon>
-                    <svg-icon v-show="!article.isFavorited" icon-class="favorite"></svg-icon>
-                  </div>
-                  <div class="favorite-num">{{ article.favoritedNum }}</div>
-                </div>
-              </div>
-              <div class="article-panel-content">
-                <category-panel
-                  :size="10"
-                  :category="category"
-                  v-for="category in article.categories"
-                  :key="category.id"
-                ></category-panel>
-                <tag-panel :size="10" :tag="tag" v-for="tag in article.tags" :key="tag.id"></tag-panel>
-              </div>
-              <div class="article-desc-content">{{ article.description }}</div>
-            </div>
-            <div class="article-content-container">
-              <div id="article-content" class="article-content" v-html="article.content"></div>
-            </div>
-            <div class="article-edit-container" v-if="isAdminLogin && isCurAdmin">
-              <el-button type="danger" round @click="handleDel">删除 • 需输入文章标题</el-button>
-              <el-button type="success" round @click="handleEdit">修改文章</el-button>
-            </div>
-          </div>
-          <div class="article-comments-area">
-            <div id="waline"></div>
+    <div class="article-area">
+      <div class="article-ctrl-area" @click="toBack">
+        <el-icon :size="20"><i-caret-left /></el-icon>
+      </div>
+      <div class="article-main-area" v-if="article">
+        <div class="article-banner-container" v-if="article.banner && article.banner.path">
+          <img v-LazyLoad="article.banner.path" alt="noImg" />
+          <div class="article-info-content">
+            <span class="article-author">{{ article.admin?.nickname || '佚名' }}</span>
+            <span class="article-sp">|</span>
+            <span class="article-date">{{ article.createdAt }}</span>
           </div>
         </div>
-      </el-col>
-    </el-row>
+        <div class="article-title-container">
+          <div class="row-container">
+            <div class="article-title-content">{{ article.title }}</div>
+            <div class="article-favorite-content">
+              <div class="favorite-icon" @click="handleFavorite">
+                <svg-icon v-show="article.isFavorited" icon-class="favorite-full"></svg-icon>
+                <svg-icon v-show="!article.isFavorited" icon-class="favorite"></svg-icon>
+              </div>
+              <div class="favorite-num">{{ article.favoritedNum }}</div>
+            </div>
+          </div>
+          <div class="article-panel-content">
+            <category-panel
+              :size="10"
+              :category="category"
+              v-for="category in article.categories"
+              :key="category.id"
+            ></category-panel>
+            <tag-panel :size="10" :tag="tag" v-for="tag in article.tags" :key="tag.id"></tag-panel>
+          </div>
+          <div class="article-desc-content">{{ article.description }}</div>
+        </div>
+        <div class="article-content-container">
+          <div id="article-content" class="article-content" v-html="article.content"></div>
+        </div>
+        <div class="article-edit-container" v-if="isAdminLogin && isCurAdmin">
+          <el-button type="danger" round @click="handleDel">删除 • 需输入文章标题</el-button>
+          <el-button type="success" round @click="handleEdit">修改文章</el-button>
+        </div>
+      </div>
+      <div class="article-comments-area">
+        <div id="waline"></div>
+      </div>
+    </div>
     <el-backtop :bottom="25"> </el-backtop>
   </div>
 </template>
@@ -135,7 +131,7 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .article-page {
-  @include layout(100%, 100%, 8px 0, 8px);
+  @include layout(100%, 100%, 0, 0);
   // #article-toc {
   //   @include position(fixed, 360px, 88px);
   //   @include layout(240px, auto, 0, 8px);

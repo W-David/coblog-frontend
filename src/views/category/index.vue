@@ -1,15 +1,11 @@
 <template>
   <div class="category-page">
     <div class="category-article-list">
-      <el-row justify="center">
-        <el-col :xs="24" :sm="18" :md="16" :lg="18">
-          <el-row justify="start" :gutter="20">
-            <el-col :md="24" :lg="12" v-for="category in categoryArticles" :key="category.id">
-              <category-card :category="category" :is-active="isChecked(category.id)"></category-card>
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
+      <div class="widget-list">
+        <div class="widget-item" v-for="category in categoryArticles" :key="category.id">
+          <category-card :category="category" :is-active="isChecked(category.id)"></category-card>
+        </div>
+      </div>
     </div>
     <page-load :isLoadingMore="isLoadingMore" :hasMore="hasMore"></page-load>
   </div>
@@ -58,16 +54,9 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .category-page {
-  @include layout(100%, 100%, 0, 12px);
-  @include slide-top(200ms, 400ms, 120px);
-
+  @include layout(100%, 100%, 0, 0);
+  @include widget-styl;
   .category-article-list {
-    margin-top: 16px;
-  }
-  .el-row {
-    .el-col {
-      margin-bottom: $row-gutter;
-    }
   }
 }
 </style>

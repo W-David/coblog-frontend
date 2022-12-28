@@ -1,27 +1,23 @@
 <template>
-  <transition name="slide-top">
-    <div
-      class="tag-list"
-      :style="{
-        width: listStyle.width
-      }"
-    >
-      <div class="tag-list-container">
-        <span
-          v-for="tag in tagArticles"
-          :key="tag.id"
-          :class="['article-tag', isChecked(tag.id) ? 'is-active' : '']"
-          @click="handleChecked(tag)"
-        >
-          {{ tag.name }}
-        </span>
-        <span class="article-tag ctrl-btn" @click="handleAdd">
-          <el-icon><i-plus /></el-icon>
-          添加
-        </span>
-      </div>
+  <div class="tag-list-container">
+    <div class="tag-list-title">
+      <svg-icon class="title-icon" icon-class="tag"></svg-icon>
+      <span class="title-text">标签</span>
     </div>
-  </transition>
+    <div class="tag-list">
+      <span class="article-tag ctrl-btn" @click="handleAdd">
+        <el-icon><i-plus /></el-icon>
+      </span>
+      <span
+        v-for="tag in tagArticles"
+        :key="tag.id"
+        :class="['article-tag', isChecked(tag.id) ? 'is-active' : '']"
+        @click="handleChecked(tag)"
+      >
+        {{ tag.name }}
+      </span>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -51,9 +47,9 @@ const isChecked = id => checkedIds.value.includes(id)
 
 const listStyle = computed(() => {
   const device = store.getters.device
-  const wMap = { xs: 24, sm: 24, md: 6, lg: 4, xl: 4 }
+  const wMap = { xs: 24, sm: 24, md: 24, lg: 5, xl: 5 }
   return {
-    width: `calc(${((wMap[device] || 20) / 24) * 100}vw - 16px)`
+    width: `calc(${(wMap[device] / 24) * 100}vw)`
   }
 })
 const handleChecked = item => {
@@ -81,15 +77,26 @@ const handleDelete = async tag => {
 </script>
 
 <style lang="scss" scoped>
-.tag-list {
-  @include box-shadow(12px 12px 24px 0 rgba(0, 0, 0, 0.05));
-  @include scroll-bar(6px, auto, transparent, var(--el-color-info-light-7), 3px);
-  @include border(1px solid var(--el-color-primary), 8px);
+.tag-list-container {
+  // @include box-shadow(12px 12px 24px 0 rgba(0, 0, 0, 0.05));
+  @include layout(100%, auto, 0, 4px);
+  @include scroll-bar(6px, auto, transparent, var(--el-border-color), 3px);
+  @include border(none, 8px);
   @include bg-color(#fff);
-  z-index: 9999;
-  overflow-y: auto;
-  .tag-list-container {
-    @include layout(auto, auto, 0, 16px);
+  box-shadow: var(--el-box-shadow);
+  .tag-list-title {
+    @include layout(100%, auto, 0, 4px 8px);
+    font-size: 16px;
+    font-weight: bold;
+    .title-icon {
+      color: var(--el-color-primary);
+    }
+    .title-text {
+      margin-left: 4px;
+    }
+  }
+  .tag-list {
+    @include layout(auto, auto, 0, 4px 8px 12px);
     @include flex-box(row, center, center, wrap);
 
     .article-tag {

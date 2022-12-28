@@ -1,28 +1,22 @@
 <template>
   <div class="category-list-container">
-    <transition name="slide-top">
-      <div
-        class="category-list"
-        :style="{
-          width: listStyle.width
-        }"
+    <div class="category-list-title">
+      <svg-icon class="title-icon" icon-class="category"></svg-icon>
+      <span class="title-text">分类</span>
+    </div>
+    <div class="category-list">
+      <span class="article-cate ctrl-btn" @click="handleAdd">
+        <el-icon><i-plus /></el-icon>
+      </span>
+      <span
+        v-for="category in categoryArticles"
+        :key="category.id"
+        :class="['article-cate', isChecked(category.id) ? 'is-active' : '']"
+        @click="handleChecked(category)"
       >
-        <div class="category-list-container">
-          <span class="article-cate ctrl-btn" @click="handleAdd">
-            <el-icon><i-plus /></el-icon>
-            添加
-          </span>
-          <span
-            v-for="category in categoryArticles"
-            :key="category.id"
-            :class="['article-cate', isChecked(category.id) ? 'is-active' : '']"
-            @click="handleChecked(category)"
-          >
-            {{ category.name }}
-          </span>
-        </div>
-      </div>
-    </transition>
+        {{ category.name }}
+      </span>
+    </div>
   </div>
 </template>
 
@@ -52,13 +46,6 @@ const router = useRouter()
 const checkedIds = ref([])
 const isChecked = id => checkedIds.value.includes(id)
 
-const listStyle = computed(() => {
-  const device = store.getters.device
-  const wMap = { xs: 24, sm: 24, md: 6, lg: 4, xl: 4 }
-  return {
-    width: `calc(${((wMap[device] || 20) / 24) * 100}vw - 16px)`
-  }
-})
 const handleChecked = item => {
   if (isChecked(item.id)) {
     const index = checkedIds.value.indexOf(item.id)
@@ -84,16 +71,27 @@ const handleDelete = async category => {
 </script>
 
 <style lang="scss" scoped>
-.category-list {
-  @include box-shadow(12px 12px 24px 0 rgba(0, 0, 0, 0.05));
-  @include scroll-bar(6px, auto, transparent, var(--el-color-info-light-7), 3px);
-  @include border(1px solid var(--el-color-success), 8px);
+.category-list-container {
+  // @include box-shadow(12px 12px 24px 0 rgba(0, 0, 0, 0.05));
+  @include layout(100%, auto, 0, 4px);
+  @include scroll-bar(6px, auto, transparent, var(--el-border-color), 3px);
+  @include border(none, 8px);
   @include bg-color(#fff);
-  z-index: 9999;
-  overflow-y: auto;
+  box-shadow: var(--el-box-shadow);
 
-  .category-list-container {
-    @include layout(auto, auto, 0, 20px);
+  .category-list-title {
+    @include layout(100%, auto, 0, 4px 8px);
+    font-size: 16px;
+    font-weight: bold;
+    .title-icon {
+      color: var(--el-color-success);
+    }
+    .title-text {
+      margin-left: 4px;
+    }
+  }
+  .category-list {
+    @include layout(auto, auto, 0, 4px 8px 12px);
     @include flex-box(row, center, center, wrap);
 
     .article-cate {

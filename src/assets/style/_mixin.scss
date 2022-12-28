@@ -205,7 +205,6 @@
   @include layout(100%, 100%, 0, 0);
   object-fit: cover;
   object-position: center;
-  z-index: -1;
   overflow: hidden;
 }
 
@@ -215,8 +214,8 @@
   background-position: center;
   background-repeat: none;
   background-size: cover;
-  z-index: -1;
   overflow: hidden;
+  z-index: -1;
   // 解决高斯模糊的白边问题
   // &:before {
   //   content: '';
@@ -318,29 +317,14 @@
   -ms-transition: $params;
   -o-transition: $params;
 }
-
-@mixin panel-styl($mc, $bc) {
-  color: $mc;
-  @include layout(auto, auto, 4px, 0 12px);
-  @include border(1px solid $mc, none);
-  display: inline-block;
-  white-space: nowrap;
-  background-color: $bc;
-  @include transition(all 120ms ease-in-out);
-  @include pointer;
-  &:hover {
-    color: white;
-    background-color: $mc;
-  }
-}
 // 标签和分类panel样式
 @mixin panel-styl($mc, $bc) {
   color: $mc;
   display: inline-block;
-  line-height: 36px;
-  @include layout(auto, 36px, 8px, 0 16px);
-  @include border(1px solid $mc, 18px);
-  font-size: 16px;
+  line-height: 24px;
+  @include layout(auto, 24px, 6px, 0 12px);
+  @include border(1px solid $mc, 12px);
+  font-size: 12px;
   white-space: wrap;
   background-color: $bc;
   @include transition(all 120ms ease-in-out);
@@ -352,6 +336,20 @@
   &.is-active {
     color: white;
     background-color: $mc;
+  }
+}
+
+@mixin widget-styl() {
+  .widget-list {
+    @include layout(100%, auto, 0 0 $main-margin 0, 0);
+    .widget-item {
+      margin-bottom: $main-margin;
+    }
+    // z-index: 1000;
+  }
+  .is-sticky {
+    position: sticky;
+    top: $header-height + 16px;
   }
 }
 

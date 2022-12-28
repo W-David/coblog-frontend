@@ -37,7 +37,7 @@
       <div class="description-content">
         <span class="article-time">
           <el-icon><i-calendar /></el-icon>
-          {{ article.createdAt }}
+          {{ article.createdAt.split(' ')[0] }}
         </span>
       </div>
       <div class="load-more">
@@ -79,7 +79,8 @@ $descrip-mr: 12px;
   @include layout(100%, 100%, 0, 0 0 16px 0);
   @include border(1px solid var(--el-border-color-light), 6px);
   @include transition(all 120ms ease-in-out);
-  @include box-shadow;
+  // @include box-shadow;
+  box-shadow: var(--el-box-shadow);
   @include bg-color;
   z-index: 1000;
 
@@ -87,7 +88,6 @@ $descrip-mr: 12px;
     @include layout(100%, 280px, 0, 0);
     @include position(relative);
     border-bottom-color: var(--el-border-color-light);
-    @include pointer;
     .article-banner-description {
       @include position(absolute);
       top: 50%;
@@ -98,6 +98,7 @@ $descrip-mr: 12px;
       opacity: 0;
       // color: white;
       transition: all 220ms ease-out;
+      @include pointer;
       &:hover {
         @include layout(auto, auto, 0, 12px 18px);
       }

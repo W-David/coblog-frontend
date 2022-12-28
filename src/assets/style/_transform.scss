@@ -1,4 +1,4 @@
-@mixin fade($duration-enter: 350ms, $duration-leave: 600ms) {
+@mixin fade($duration-enter: 300ms, $duration-leave: 600ms) {
   .fade-enter-active {
     transition: all $duration-enter ease-out;
   }
@@ -14,7 +14,7 @@
   }
 }
 
-@mixin slide-fade-top($duration-enter: 300ms, $duration-leave: 500ms, $offset: 120px) {
+@mixin slide-fade-top($duration-enter: 300ms, $duration-leave: 600ms, $offset: 120px) {
   .slide-fade-top-enter-active {
     transition: all $duration-enter ease-out;
   }
@@ -31,7 +31,7 @@
   }
 }
 
-@mixin slide-top($duration-enter: 300ms, $duration-leave: 500ms, $offset: 300px, $scale: 0.2) {
+@mixin slide-top($duration-enter: 300ms, $duration-leave: 600ms, $offset: 300px, $scale: 0.2) {
   .slide-top-enter-active {
     transition: all $duration-enter ease-out;
   }
@@ -47,7 +47,7 @@
   }
 }
 
-@mixin slide-fade-right($duration-enter: 350ms, $duration-leave: 600ms, $offset: 60px) {
+@mixin slide-fade-right($duration-enter: 300ms, $duration-leave: 600ms, $offset: 60px) {
   .slide-fade-right-enter-active {
     transition: all $duration-enter ease-out;
   }
@@ -64,7 +64,7 @@
   }
 }
 
-@mixin slide-fade-left($duration-enter: 350ms, $duration-leave: 600ms, $offset: 60px) {
+@mixin slide-fade-left($duration-enter: 300ms, $duration-leave: 600ms, $offset: 60px) {
   .slide-fade-left-enter-active {
     transition: all $duration-enter ease-out;
   }

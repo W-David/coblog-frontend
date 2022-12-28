@@ -1,68 +1,58 @@
 <template>
   <div class="archive-page">
     <div class="archive-timeline-container">
-      <el-row justify="center">
-        <el-col :xs="24" :sm="20" :md="18" :lg="16" :xl="16">
-          <div class="timeline-container">
-            <el-timeline>
-              <el-timeline-item
-                :timestamp="a.time"
-                type="primary"
-                :hollow="true"
-                placement="top"
-                v-for="a in archive"
-                :key="a.time"
-              >
-                <el-collapse :model-value="[a.time]">
-                  <el-collapse-item :name="a.time">
-                    <template #title>
-                      <div class="display-title-container">
-                        <div
-                          class="display-title"
-                          v-for="(title, index) in generateArchiveTitles(a.articles)"
-                          :key="index"
-                        >
-                          <div class="display-title-content">{{ title }}</div>
-                        </div>
-                      </div>
-                    </template>
-                    <div
-                      class="article-card"
-                      v-for="article in a.articles"
-                      :key="article.id"
-                      @click="toArticle(article.id)"
-                    >
-                      <div class="article-title">
-                        <span class="title-content">{{ article.title }}</span>
-                        <span class="time-content hidden-sm-and-down">{{ article.createdAt }}</span>
-                      </div>
-                      <div
-                        class="article-info"
-                        v-if="
-                          (article.categories && article.categories.length) || (article.tags && article.tags.length)
-                        "
-                      >
-                        <category-panel
-                          :size="12"
-                          :category="category"
-                          v-for="category in article.categories"
-                          :key="category.id"
-                        ></category-panel>
-                        <tag-panel :size="12" :tag="tag" v-for="tag in article.tags" :key="tag.id"></tag-panel>
-                      </div>
-                      <div class="m-article-time hidden-md-and-up">
-                        <span class="time-content">
-                          {{ article.createdAt }}
-                        </span>
-                      </div>
+      <div class="timeline-container">
+        <el-timeline>
+          <el-timeline-item
+            :timestamp="a.time"
+            type="primary"
+            :hollow="true"
+            placement="top"
+            v-for="a in archive"
+            :key="a.time"
+          >
+            <el-collapse :model-value="[a.time]">
+              <el-collapse-item :name="a.time">
+                <template #title>
+                  <div class="display-title-container">
+                    <div class="display-title" v-for="(title, index) in generateArchiveTitles(a.articles)" :key="index">
+                      <div class="display-title-content">{{ title }}</div>
                     </div>
-                  </el-collapse-item>
-                </el-collapse>
-              </el-timeline-item>
-            </el-timeline>
-          </div>
-        </el-col>
-      </el-row>
+                  </div>
+                </template>
+                <div
+                  class="article-card"
+                  v-for="article in a.articles"
+                  :key="article.id"
+                  @click="toArticle(article.id)"
+                >
+                  <div class="article-title">
+                    <span class="title-content">{{ article.title }}</span>
+                    <span class="time-content hidden-sm-and-down">{{ article.createdAt }}</span>
+                  </div>
+                  <div
+                    class="article-info"
+                    v-if="(article.categories && article.categories.length) || (article.tags && article.tags.length)"
+                  >
+                    <category-panel
+                      :size="12"
+                      :category="category"
+                      v-for="category in article.categories"
+                      :key="category.id"
+                    ></category-panel>
+                    <tag-panel :size="12" :tag="tag" v-for="tag in article.tags" :key="tag.id"></tag-panel>
+                  </div>
+                  <div class="m-article-time hidden-md-and-up">
+                    <span class="time-content">
+                      {{ article.createdAt }}
+                    </span>
+                  </div>
+                </div>
+              </el-collapse-item>
+            </el-collapse>
+          </el-timeline-item>
+        </el-timeline>
+      </div>
     </div>
     <!-- <div class="archive-load-more-container">
       <load-more v-show="hasMore" @on-load-more="onLoadMore"></load-more>
@@ -128,7 +118,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .archive-page {
-  @include layout(100%, 100%, 0, 16px 8px);
+  @include layout(100%, 100%, 0, 0);
   .archive-timeline-container {
     .timeline-container {
       @include layout(100%, 100%, 0, 32px);

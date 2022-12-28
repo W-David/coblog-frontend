@@ -1,6 +1,8 @@
 <template>
   <div class="h-footer-container">
-    <span class="footer-hint">© 2022 coody's blog</span>
+    <el-link type="primary" href="http://39.98.122.206:8088/" target="_blank">hexo博客</el-link>
+    <el-divider direction="vertical" />
+    <el-link type="primary" href="http://39.98.122.206/" target="_blank">Cody's Blog</el-link>
   </div>
 </template>
 

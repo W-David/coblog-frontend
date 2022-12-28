@@ -1,20 +1,18 @@
 <template>
   <div class="home-page">
-    <div class="article-row" v-for="article in articlesRef" :key="article.id">
-      <el-row justify="center">
-        <el-col :xs="24" :sm="20" :md="18" :lg="12" :xl="12">
-          <article-card :article="article"></article-card>
-        </el-col>
-      </el-row>
-    </div>
-    <div class="pagination-row">
-      <pagination
-        v-show="totalRef > 0"
-        :total="totalRef"
-        v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize"
-        @pagination="getList"
-      />
+    <div class="main-content-list widget-list">
+      <div class="main-article-container widget-name" v-for="article in articlesRef" :key="article.id">
+        <article-card :article="article"></article-card>
+      </div>
+      <div class="main-pagination-container widget-name">
+        <pagination
+          v-show="totalRef > 0"
+          :total="totalRef"
+          v-model:page="queryParams.pageNum"
+          v-model:limit="queryParams.pageSize"
+          @pagination="getList"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -28,7 +26,6 @@ const store = useStore()
 const articlesRef = ref([])
 const totalRef = ref(0)
 const queryParams = reactive({
-  title: '',
   pageNum: 1,
   pageSize: 10
 })
@@ -40,19 +37,23 @@ const getList = async () => {
 }
 onMounted(() => {
   store.commit('article/CLEAR_ARTICLES')
-  getList()
+  Promise.all([getList()])
 })
 </script>
 
 <style lang="scss" scoped>
 .home-page {
-  @include layout(100%, 100%, 0, 16px);
-  .article-row {
-    @include layout(100%, auto, 0 0 $row-gutter 0, 0);
-  }
-  .pagination-row {
-    @include layout(100%, auto, 0, 0);
-    @include flex-box(row, center, center);
+  @include layout(100%, 100%, 0, $main-margin);
+  @include widget-styl;
+  .main-content-list {
+    @include flex-box(column, flex-start, center);
+    .main-article-container {
+      @include layout(100%, auto, 0 0 $main-margin 0, 0);
+    }
+    .main-pagination-container {
+      @include layout(100%, auto, $main-margin, 0);
+      @include flex-box(row, center, center);
+    }
   }
 }
 </style>

@@ -1,0 +1,103 @@
+<template>
+  <div class="app-main-container">
+    <div id="particles-js"></div>
+    <el-row justify="center" :gutter="16">
+      <el-col :sm="7" :md="6" :lg="5" :xl="5" class="hidden-xs-only" v-if="!!leftSidebarComponent">
+        <component
+          :is="leftSidebarComponent"
+          :key="route.name"
+          :articlesRecent="articlesRef"
+          :articlesHot="articlesRef"
+          :tagList="tagList"
+          :categoryList="categoryList"
+          :links="links"
+        />
+      </el-col>
+      <el-col :xs="24" :sm="15" :md="16" :lg="12" :xl="12">
+        <h-main
+          :articlesRecent="articlesRef"
+          :articlesHot="articlesRef"
+          :tagList="tagList"
+          :categoryList="categoryList"
+          :links="links"
+        ></h-main>
+      </el-col>
+      <el-col :md="4" :lg="5" :xl="5" class="hidden-md-and-down" v-if="!!rightSidebarComponent">
+        <transition name="slide-fade-right" appear>
+          <component
+            :is="rightSidebarComponent"
+            :key="route.name"
+            :articlesRecent="articlesRef"
+            :articlesHot="articlesRef"
+            :tagList="tagList"
+            :categoryList="categoryList"
+            :links="links"
+          />
+        </transition>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script setup>
+import particlesJs from '@/util/particles'
+
+import { onMounted, reactive, ref, computed, watch, defineProps, toRefs } from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+
+import MainLeftSidebar from './LeftSidebar.vue'
+import MainRightSidebar from './RightSidebar.vue'
+import HMain from './HMain.vue'
+
+const store = useStore()
+const route = useRoute()
+
+const articlesRef = computed(() => store.getters['article/getArticleList']())
+const tagList = computed(() => store.getters['tag/getTagList']())
+const categoryList = computed(() => store.getters['category/getCategoryList']())
+const links = ref([
+  { href: 'http://39.98.122.206:8088/', text: 'Hexo博客 / Cody' },
+  { href: 'https://github.com/W-David', text: 'Github / W-David' }
+])
+
+const leftSidebarComponent = ref(null)
+const rightSidebarComponent = ref(null)
+const twoColPageList = ['article']
+const oneColPageList = ['blog']
+const updateSidebarComponent = routeName => {
+  const isTwoColLayout = !!~twoColPageList.indexOf(routeName)
+  const isOneColLayout = !!~oneColPageList.indexOf(routeName)
+  const isThreeColLayout = !isTwoColLayout && !isOneColLayout
+  leftSidebarComponent.value = isThreeColLayout || isTwoColLayout ? MainLeftSidebar : null
+  rightSidebarComponent.value = isThreeColLayout ? MainRightSidebar : null
+}
+watch(
+  () => route.name,
+  routeName => updateSidebarComponent(routeName)
+)
+
+onMounted(async () => {
+  particlesJs.load('particles-js', 'static/particles.json')
+  updateSidebarComponent(route.name)
+  store.commit('article/CLEAR_ARTICLES')
+  Promise.all([store.dispatch('category/GetCategories'), store.dispatch('tag/GetTags')])
+})
+</script>
+
+<style lang="scss" scoped>
+.app-main-container {
+  @include layout(100%, 100%, 0, $main-margin);
+  @include slide-fade-left;
+  @include slide-fade-right;
+  #particles-js {
+    position: fixed;
+    @include layout;
+    z-index: -1;
+  }
+  .main-content-container {
+    @include widget-styl;
+    z-index: 1000;
+  }
+}
+</style>

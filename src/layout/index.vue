@@ -15,9 +15,9 @@
 </template>
 
 <script setup>
-import NavBar from './components/NavBar'
-import HFooter from './components/HFooter'
-import AppMain from './components/Main'
+import NavBar from './components/NavBar.vue'
+import HFooter from './components/HFooter.vue'
+import AppMain from './components/AppMain.vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { reactive, ref, computed, onMounted, watch } from 'vue'

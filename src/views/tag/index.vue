@@ -1,15 +1,11 @@
 <template>
   <div class="tag-page">
     <div class="tag-article-list">
-      <el-row justify="center">
-        <el-col :xs="24" :sm="18" :md="16" :lg="18">
-          <el-row justify="start" :gutter="20">
-            <el-col :md="24" :lg="12" v-for="tag in tagArticles" :key="tag.id">
-              <tag-card :tag="tag" :is-active="isChecked(tag.id)"></tag-card>
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
+      <div class="widget-list">
+        <div class="widget-item" v-for="tag in tagArticles" :key="tag.id">
+          <tag-card :tag="tag" :is-active="isChecked(tag.id)"></tag-card>
+        </div>
+      </div>
     </div>
     <page-load :isLoadingMore="isLoadingMore" :hasMore="hasMore"></page-load>
   </div>
@@ -22,8 +18,8 @@ import { useRoute } from 'vue-router'
 
 import useReachBottom from '@/hooks/useReachBottom'
 
-import TagCard from '@/components/TagCard'
-import PageLoad from '@/components/PageLoad'
+import TagCard from '@/components/TagCard.vue'
+import PageLoad from '@/components/PageLoad.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -54,23 +50,14 @@ onMounted(async () => {
   }
   store.commit('tag/CLEAR_TAG_ARTICLES')
   await Promise.all([getTagArticles(queryParams)])
-  await new Promise(res => setTimeout(res, 3000))
 })
 </script>
 
 <style lang="scss" scoped>
 .tag-page {
-  @include layout(100%, 100%, 0, 12px);
-  @include slide-top(200ms, 400ms, 120px);
-
+  @include layout(100%, 100%, 0, 0);
+  @include widget-styl;
   .tag-article-list {
-    margin-top: 16px;
-  }
-
-  .el-row {
-    .el-col {
-      margin-bottom: $row-gutter;
-    }
   }
 }
 </style>
