@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
-import routeController from './routeController'
+import { getYPosition } from '@/util/scroll-to'
+import controller from './controller'
 
 const Layout = () => import(/* webpackChunkName: "Layout" */ '@/layout/index')
 const Home = () => import(/* webpackChunkName: "home" */ '@/views/home')
@@ -62,10 +63,24 @@ const routes = [
   }
 ]
 
-const router = routeController(
+const router = controller(
   createRouter({
     history: createWebHistory(),
-    // scrollBehavior: () => ({ top: 0, behavior: 'smooth' }),
+    scrollBehavior: async (to, from, savedPosition) => {
+      await new Promise(res => setTimeout(res, 500))
+      if (savedPosition) {
+        return savedPosition
+      } else {
+        const routeName = to.name
+        const topRouteList = ['home', 'archive', 'about']
+        const isTopRoute = !!~topRouteList.includes(routeName)
+        if (isTopRoute) {
+          return { top: 0, behavior: 'smooth' }
+        } else {
+          return { top: 0, behavior: 'smooth' }
+        }
+      }
+    },
     routes
   })
 )
