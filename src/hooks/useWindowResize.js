@@ -25,7 +25,7 @@ const useWindowResize = () => {
   }
   const $_resize = () => {
     if (document.hidden) return
-    store.dispatch('app/ToggleDevice', $toggle_device())
+    store.dispatch('app/ToggleDeviceSize', $toggle_device())
   }
 }
 

@@ -22,21 +22,26 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { reactive, ref, computed, onMounted, watch } from 'vue'
 import useWindowResize from '@/hooks/useWindowResize'
+import useDevice from '@/hooks/useDevice'
 
+useDevice()
 useWindowResize()
+
 const store = useStore()
 const route = useRoute()
-const activePage = ref('')
+const activePage = ref('/home')
 const isAdminLogin = computed(() => store.getters.isAdminLogin)
 const isUserLogin = computed(() => store.getters.isUserLogin)
+const isLogin = isAdminLogin.value || isUserLogin.value
 
 watch(
   () => route.path,
-  val => (activePage.value = val),
-  { immediate: true }
+  path => {
+    activePage.value = path
+  }
 )
 
-const adminMenu = [
+const loginMenu = [
   { id: 0, name: '首页', path: '/home' },
   { id: 1, name: '归档', path: '/archive' },
   { id: 2, name: '标签', path: '/tag' },
@@ -44,14 +49,14 @@ const adminMenu = [
   { id: 4, name: '关于', path: '/about' }
 ]
 
-const userMenu = [
+const unLoginMenu = [
   { id: 0, name: '首页', path: '/home' },
   { id: 1, name: '标签', path: '/tag' },
   { id: 2, name: '分类', path: '/category' },
   { id: 3, name: '关于', path: '/about' }
 ]
 
-const menuList = isAdminLogin.value ? adminMenu : isUserLogin.value ? userMenu : []
+const menuList = isLogin ? loginMenu : unLoginMenu
 </script>
 
 <style lang="scss" scoped>

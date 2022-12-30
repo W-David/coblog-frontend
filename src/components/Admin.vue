@@ -13,7 +13,7 @@
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item>
-            <span @click="toAdminInfo">管理员信息</span>
+            <span @click="toAdminInfo">个人信息</span>
           </el-dropdown-item>
           <el-dropdown-item>
             <span @click="toBlog">写个博文</span>
@@ -55,7 +55,7 @@
         </div>
       </div>
       <template #header>
-        <span class="admin-info-title">管理员信息</span>
+        <span class="admin-info-title">个人信息</span>
       </template>
       <template #footer>
         <div class="admin-info-footer">
@@ -84,9 +84,9 @@ const adminForm = reactive({
   nickname: adminInfo.value.nickname,
   email: adminInfo.value.email
 })
-const device = computed(() => store.getters.device)
+const deviceSize = computed(() => store.getters.deviceSize)
 const dialogWidth = computed(() => {
-  const dv = device.value
+  const dv = deviceSize.value
   return dv === 'xl' || dv === 'lg' ? '30%' : dv === 'md' ? '40%' : dv === 'sm' ? '60%' : '90%'
 })
 const openAdminInfo = ref(false)
@@ -100,7 +100,7 @@ const toAdminInfo = () => {
   openAdminInfo.value = true
 }
 const tapAvatar = () => {
-  const isSM = device.value === 'xs' || device.value === 'sm'
+  const isSM = deviceSize.value === 'xs' || deviceSize.value === 'sm'
   if (!isSM) return
   store.dispatch('app/ToggleSidebar', false)
   openAdminInfo.value = true

@@ -6,7 +6,8 @@ const getters = {
   userInfo: state => state.user.userInfo,
   adminInfo: state => state.admin.adminInfo,
   loginInfo: state => (state.user.isLogin ? state.user.userInfo : state.admin.isLogin ? state.admin.adminInfo : {}),
-  device: state => state.app.device,
+  deviceSize: state => state.app.deviceSize,
+  isTouchDevice: state => state.app.isTouchDevice,
   sidebarOpen: state => state.app.sidebarOpen,
   sts: state => state.alioss.sts
 }

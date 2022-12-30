@@ -94,7 +94,7 @@ $descrip-mr: 12px;
       left: 50%;
       transform: translate(-50%, -50%);
       @include layout(auto, auto, 0, 6px 12px);
-      @include border(2px solid var(--el-border-color), 6px);
+      @include border(2px solid var(--el-color-primary), 6px);
       opacity: 0;
       // color: white;
       transition: all 220ms ease-out;

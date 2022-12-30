@@ -58,7 +58,7 @@
       <load-more v-show="hasMore" @on-load-more="onLoadMore"></load-more>
     </div> -->
 
-    <page-load :isLoadingMore="isLoadingMore" :hasMore="hasMore"></page-load>
+    <page-load :isLoadingMore="isLoadingMore" :hasMore="hasMore" @on-load-more="onLoadMore"></page-load>
   </div>
 </template>
 
@@ -67,12 +67,11 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
-import LoadMore from '@/components/LoadMore'
 import useReachBottom from '@/hooks/useReachBottom'
 
-import CategoryPanel from '@/components/CategoryPanel'
-import TagPanel from '@/components/TagPanel'
-import PageLoad from '@/components/PageLoad'
+import CategoryPanel from '@/components/CategoryPanel.vue'
+import TagPanel from '@/components/TagPanel.vue'
+import PageLoad from '@/components/PageLoad.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -85,6 +84,7 @@ const form = reactive({
 })
 
 const archive = computed(() => store.getters['article/getArticleArchive'])
+const isTouchDevice = computed(() => store.getters.isTouchDevice)
 const hasMore = ref(true)
 const isLoadingMore = ref(false)
 const getArchive = async form => {
@@ -118,7 +118,8 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .archive-page {
-  @include layout(100%, 100%, 0, 0);
+  @include layout(100%, auto, 0 0 $main-margin 0, 0);
+  z-index: 1000;
   .archive-timeline-container {
     .timeline-container {
       @include layout(100%, 100%, 0, 32px);
@@ -216,7 +217,7 @@ onMounted(() => {
     }
   }
   .archive-load-more-container {
-    @include layout(100%, auto, 16px 0 0 0, 0);
+    @include layout(100%, auto, $main-margin 0 0 0, 0);
     @include flex-box(row, center, center);
   }
 }

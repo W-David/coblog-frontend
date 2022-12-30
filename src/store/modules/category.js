@@ -1,17 +1,19 @@
-import { listCategory, detailCategory, deleteCategory, listCategoryArticles } from '@/api/category'
+import { createCategory, listCategory, detailCategory, deleteCategory, listCategoryArticles } from '@/api/category'
 import { cloneLoop, cloneForce } from '@jsmini/clone'
 
 const category = {
   namespaced: true,
   state: () => ({
     categoryMap: new Map(),
-    categoryArticlesMap: new Map()
+    categoryArticlesMap: new Map(),
+    checkedCateIds: []
   }),
   getters: {
     getCategoryById: state => id => state.categoryMap.get(id),
     getCategoryArticleById: state => id => state.categoryArticlesMap.get(id),
     getCategoryList: state => () => [...state.categoryMap.values()],
-    getCategoryArticles: state => () => [...state.categoryArticlesMap.values()]
+    getCategoryArticles: state => () => [...state.categoryArticlesMap.values()],
+    getCheckedCateIds: state => state.checkedCateIds
   },
   mutations: {
     SET_CATEGORIES: (state, categories) => {
@@ -41,9 +43,27 @@ const category = {
     },
     CLEAR_CATEGORY_ARTICLES: state => {
       state.categoryArticlesMap.clear()
+    },
+    ADD_CHECKED_CATE_ID: (state, cateId) => {
+      state.checkedCateIds.push(cateId)
+    },
+    REMOVE_CHECKED_CATE_ID: (state, cateId) => {
+      const index = state.checkedCateIds.indexOf(cateId)
+      state.checkedCateIds.splice(index, 1)
+    },
+    CLEAR_CHECKED_CATE_IDS: state => {
+      const len = state.checkedCateIds.length
+      state.checkedCateIds.splice(0, len)
     }
   },
   actions: {
+    async CreateCategory({ state, commit }, params = {}) {
+      const res = await createCategory(params)
+      const category = res.data || {}
+      commit('SET_CATEGORY', category)
+      commit('SET_CATEGORY_ARTICLE', category)
+      return category
+    },
     async GetCategories({ state, commit }, params = {}) {
       const res = await listCategory(params)
       const categories = res.data.rows || []

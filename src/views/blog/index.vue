@@ -46,13 +46,11 @@
         <el-button type="success" @click="submitBlog">提交博文</el-button>
       </div>
     </div>
+    <!-- <div class="blog-view-area" v-html="previewHtml"></div> -->
     <el-dialog v-model="showAll" :title="title.text">
       <selected-list :loading="isListLoading" :isShow="showAll" :list="list" v-model:checkedArr="checkedArr">
       </selected-list>
     </el-dialog>
-    <!-- <el-col class="hidden-md-and-down" :md="12" :lg="12" :xl="12">
-        <div class="blog-view-area" v-html="previewHtml"></div>
-      </el-col> -->
   </div>
 </template>
 
@@ -282,44 +280,45 @@ const submitBlog = async () => {
 
 <style lang="scss" scoped>
 .blog-page {
-  @include layout(100%, auto, 0, 0);
-  // z-index: 1000;
+  @include layout(100%, auto, 0 0 $main-margin 0, 0);
+  z-index: 1000;
 
   .blog-edit-area {
-    @include layout(auto, auto, 0, 16px);
-    @include border(none, 8px);
+    @include layout(auto, auto, 0, $main-margin);
+    @include border(none);
     @include box-shadow(8px 8px 20px rgba(0, 0, 0, 0.05), -4px -4px 20px rgba(0, 0, 0, 0.05));
     @include bg-color(#fff, #1a1a1a);
     .blog-img {
       @include layout(100%, 300px, 0 0 8px 0, 0);
-      @include bg-color(#fff, #2a2a2a);
+      background-color: var(--el-bg-color);
+      border-radius: 8px;
     }
     .blog-title {
       @include layout(100%, auto, 0 0 8px 0, 0);
-      @include border(1px solid #ccc);
+      @include border(1px solid var(--el-border-color));
       min-height: 48px;
       input {
         @include layout(100%, auto, 0, 12px);
+        border-radius: 8px;
         font-size: 24px;
         font-weight: bold;
         border: none !important;
         outline: none !important;
+        background-color: var(--el-bg-color);
         @include font-hei;
       }
     }
     .blog-toolbar {
-      @include border(1px solid #ccc);
+      @include border(1px solid var(--el-border-color));
+      border-radius: 8px;
       ::v-deep .w-e-toolbar {
-        background-color: #fdfdfd;
-        html.dark & {
-          background-color: #222;
-          color: #eee;
-        }
+        background-color: var(--el-bg-color);
       }
     }
     .blog-tc {
       @include layout(100%, auto, 8px 0, 6px);
-      @include border(1px solid #ccc);
+      @include border(1px solid var(--el-border-color));
+      background-color: var(--el-bg-color);
       .tag-area {
         @include layout(100%, auto, 0, 0);
       }
@@ -329,43 +328,42 @@ const submitBlog = async () => {
     }
     .blog-desc {
       @include layout(100%, auto, 8px 0, 0);
-      @include border(1px solid #ccc);
+      @include border(1px solid var(--el-border-color));
       textarea {
         width: 100%;
         height: 120px;
         margin: 0;
-        padding: 6px;
+        padding: 12px;
         resize: none;
         border: none;
         outline: none;
         font-size: 20px;
         font-weight: 550;
+        border-radius: 8px;
         @include font-hei;
+        background-color: var(--el-bg-color);
       }
     }
     .blog-text {
-      @include border(1px solid #ccc);
+      @include border(1px solid var(--el-border-color));
       ::v-deep .w-e-text-container {
         min-height: 360px;
-        background-color: #fdfdfd;
-        html.dark & {
-          background-color: #222;
-          color: #eee;
-        }
+        background-color: var(--el-bg-color);
+        border-radius: 8px;
       }
     }
     .blog-ctrl {
       &:deep {
         .el-button {
           @include layout(100%, auto, 8px 0 0 0, auto);
-          border-radius: 2px;
+          border-radius: 16px;
         }
       }
     }
   }
   .blog-view-area {
     @include layout(100%, 100%, 0, 16px);
-    @include border(1px solid #ccc);
+    @include border(1px solid var(--el-border-color));
   }
 }
 </style>

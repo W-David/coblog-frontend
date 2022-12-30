@@ -57,7 +57,6 @@
 
 <script setup>
 import { ref, reactive, onMounted, onUnmounted, computed, nextTick, onActivated } from 'vue'
-import { deleteArticle } from '@/api/article'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -131,14 +130,15 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .article-page {
-  @include layout(100%, 100%, 0, 0);
+  @include layout(100%, auto, 0 0 $main-margin 0, 0);
+  z-index: 1000;
   // #article-toc {
   //   @include position(fixed, 360px, 88px);
   //   @include layout(240px, auto, 0, 8px);
   //   line-height: 1.8;
   // }
   // .article-sub-area {
-  //   @include layout(100%, auto, 0, 16px);
+  //   @include layout(100%, auto, 0, $main-margin);
   //   @include border(none, 8px);
   //   @include box-shadow;
   // }
@@ -240,7 +240,7 @@ onUnmounted(() => {
         .article-desc-content {
           @include layout(100%, auto, 0, 8px);
           @include font-fang-song;
-          color: var(--el-text-regular);
+          color: var(--el-text-color-primary);
           font-style: italic;
           font-weight: bold;
           // @include border(none, 4px);
@@ -270,7 +270,7 @@ onUnmounted(() => {
     }
 
     .article-comments-area {
-      @include layout(100%, auto, 16px 0 0 0, 8px 12px);
+      @include layout(100%, auto, $main-margin 0 0 0, 8px 12px);
       @include border(1px solid #eee, 8px);
       @include box-shadow(4px 4px 16px rgba(0, 0, 0, 0.1));
       @include bg-color(#fafafa, #1f1f1f);

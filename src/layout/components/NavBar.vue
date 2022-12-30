@@ -6,25 +6,27 @@
       </el-icon>
       <span data-text="Cody's Blog" class="icon-text">Cody's Blog</span>
     </div>
-    <div v-if="isLogin" class="nav-menu hidden-sm-and-down">
+    <div class="nav-menu hidden-sm-and-down">
       <el-menu :default-active="activePage" :router="true" mode="horizontal" ref="menuRef" :ellipsis="false">
         <el-menu-item v-for="menu in menuList" :key="menu.id" :index="menu.path">
           {{ menu.name }}
         </el-menu-item>
       </el-menu>
     </div>
-    <div v-if="isLogin" class="nav-search">
+    <div class="nav-search">
       <search></search>
     </div>
-    <div class="nav-switch hidden-xs-only">
-      <switch-dark v-model="isDark"></switch-dark>
-    </div>
-    <div class="nav-user-info hidden-sm-and-down">
-      <user v-if="isUserLogin"></user>
-      <admin v-else-if="isAdminLogin"></admin>
-      <span v-else @click="toLogin">
-        <span class="to-login">游客登录</span>
-      </span>
+    <div class="nav-right">
+      <div class="nav-switch hidden-xs-only">
+        <switch-dark v-model="isDark"></switch-dark>
+      </div>
+      <div class="nav-user-info hidden-sm-and-down">
+        <user v-if="isUserLogin"></user>
+        <admin v-else-if="isAdminLogin"></admin>
+        <span v-else @click="toLogin">
+          <span class="to-login">登录</span>
+        </span>
+      </div>
     </div>
   </div>
   <div class="drawer-container hidden-md-and-up">
@@ -44,7 +46,7 @@
           <user v-if="isUserLogin"></user>
           <admin v-else-if="isAdminLogin"></admin>
           <span v-else @click="toLogin">
-            <span class="to-login">游客登录</span>
+            <span class="to-login">登录</span>
           </span>
         </div>
         <el-menu
@@ -61,7 +63,9 @@
         </el-menu>
       </div>
       <div class="collapse-bottom">
-        <el-button class="drawer-logout" type="warning" plain @click="handleLogout"> 退出登录 </el-button>
+        <el-button v-if="isLogin" class="drawer-logout" type="warning" plain @click="handleLogout">
+          退出登录
+        </el-button>
         <switch-dark class="drawer-switch hidden-sm-and-up" v-model="isDark"></switch-dark>
       </div>
     </el-drawer>
@@ -93,15 +97,16 @@ const { activePage, menuList } = toRefs(props)
 const userType = getUserType()
 const store = useStore()
 const router = useRouter()
+const route = useRoute()
 const sidebarOpen = computed(() => store.getters.sidebarOpen)
 const setSidebarOpen = open => store.dispatch('app/ToggleSidebar', open)
 const menuRef = ref()
 
-const isDark = useDark()
-
-const isUserLogin = computed(() => store.getters.isUserLogin)
 const isAdminLogin = computed(() => store.getters.isAdminLogin)
-const isLogin = isUserLogin.value || isAdminLogin.value
+const isUserLogin = computed(() => store.getters.isUserLogin)
+const isLogin = isAdminLogin.value || isUserLogin.value
+
+const isDark = useDark()
 
 const handleChange = () => setSidebarOpen(false)
 const handleExpand = e => setSidebarOpen(true)
@@ -179,20 +184,27 @@ const toLogin = () => {
     margin-left: auto;
   }
 
-  .nav-switch {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 16px;
-  }
+  .nav-right {
+    @include flex-box(row, center, center, nowrap);
+    .nav-switch {
+      @include flex-box(row, center, center, nowrap);
+      margin-left: 16px;
+    }
 
-  .nav-user-info {
-    margin-left: 16px;
-    .to-login {
-      font-weight: bolder;
-      color: var(--el-text-regular);
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
+    .nav-user-info {
+      margin-left: 16px;
+      .to-login {
+        font-weight: bold;
+        font-size: 16px;
+        text-indent: 1px;
+        letter-spacing: 1px;
+        // text-shadow: 1px 1px 2px var(--el-color-primary-light-9);
+        cursor: pointer;
+        transition: all 300ms ease;
+        &:hover {
+          color: var(--el-color-primary);
+        }
+      }
     }
   }
 }

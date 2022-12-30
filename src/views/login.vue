@@ -21,9 +21,12 @@
         animationDuration: animationDuration + 's'
       }"
     />
-    <div class="bulb-container" @click="handleSwitchTheme">
+    <div class="bult-btn" @click="handleSwitchTheme">
       <svg-icon v-show="isDark" icon-class="bulb-light"></svg-icon>
       <svg-icon v-show="!isDark" icon-class="bulb-off"></svg-icon>
+    </div>
+    <div class="no-auth-btn" @click="handleNoAuth">
+      <span>游客登入</span>
     </div>
     <el-row justify="center" class="login-row-container">
       <el-col class="login-col-container" :xs="22" :sm="12" :md="8" :lg="6" :xl="6">
@@ -69,12 +72,13 @@
             </el-form-item>
             <el-form-item>
               <div v-if="!needRegister" class="login-area">
-                <el-button type="primary" style="width: 100%" @click="handleLogin('admin')"> 管理员登录 </el-button>
-                <el-button type="primary" style="width: 100%" @click="handleLogin('user')"> 用户登录 </el-button>
+                <!-- <el-button type="primary" @click="handleNoAuth"> 游客登入 </el-button> -->
+                <el-button type="primary" @click="handleLogin('admin')"> 登录 </el-button>
+                <!-- <el-button type="primary" @click="handleLogin('user')"> 用户登录 </el-button> -->
               </div>
               <div class="register-area" v-else>
-                <el-button type="success" @click="handleRegister('admin')" style="width: 100%"> 管理员注册 </el-button>
-                <el-button type="success" @click="handleRegister('user')" style="width: 100%"> 用户注册 </el-button>
+                <el-button type="success" @click="handleRegister('admin')"> 注册 </el-button>
+                <!-- <el-button type="success" @click="handleRegister('user')"> 用户注册 </el-button> -->
               </div>
             </el-form-item>
           </el-form>
@@ -110,20 +114,16 @@ const form = reactive({
   nickName: ''
 })
 const rememberMe = ref(false)
-watch(
-  rememberMe,
-  (nv, ov) => {
-    if (!nv && ov) {
-      // debugger
-      local.remove('login-form')
-      local.set('remember-me', false)
-    }
-  },
-  { immediate: true }
-)
+watch(rememberMe, (nv, ov) => {
+  if (!nv && ov) {
+    // debugger
+    local.remove('login-form')
+    local.set('remember-me', false)
+  }
+})
 const initForm = () => {
-  const rememberMeCache = !!local.get('remember-me')
-  rememberMe.value = rememberMeCache || false
+  const rememberMeCache = !!local.get('remember-me') || false
+  rememberMe.value = rememberMeCache
   if (rememberMe.value) {
     // debugger
     const formCache = local.getJSON('login-form')
@@ -162,7 +162,10 @@ const handleLogin = async param => {
     local.setJSON('login-form', form)
   }
   router.push({ name: 'home' })
-  ElMessage({ type: 'success', message: res.msg })
+  ElMessage({ type: 'success', message: `欢迎来到Cody's Blog, ${res.data.nickname}` })
+}
+const handleNoAuth = () => {
+  router.push({ name: 'home' })
 }
 const handleRegister = async param => {
   const isAdmin = param === 'admin'
@@ -205,11 +208,6 @@ const bgImgs = reactive([
   require('../assets/image/bg-03.jpg'),
   require('../assets/image/bg-04.jpg')
 ])
-onMounted(() => {
-  form.email = 'admin@root.com'
-  form.password = 'admin@root'
-  rememberMe.value = true
-})
 </script>
 
 <style lang="scss" scoped>
@@ -230,7 +228,7 @@ onMounted(() => {
     @include bg-fade-animation;
   }
 
-  .bulb-container {
+  .bult-btn {
     @include layout(42px, 42px, 0, 0);
     @include flex-box(row, center, center);
     @include border(none, 8px);
@@ -238,14 +236,40 @@ onMounted(() => {
     color: var(--el-text-color-secondary);
     background-color: var(--el-bg-color);
     position: fixed;
-    top: 16px;
-    right: 16px;
+    top: $main-margin;
+    right: $main-margin;
     z-index: 1000;
     cursor: pointer;
     font-size: 32px;
     transition: all 320ms ease;
     &:hover {
-      transform: scale(1.2);
+      transform: scale(1.12);
+      color: #fff;
+      background-color: var(--el-color-primary);
+    }
+  }
+
+  .no-auth-btn {
+    @include layout(auto, 42px, 0, 0 $main-margin);
+    @include flex-box(row, center, center);
+    @include border(none, 8px);
+    @include box-shadow;
+    color: var(--el-text-color-secondary);
+    background-color: var(--el-bg-color);
+    position: fixed;
+    top: $main-margin;
+    right: 76px;
+    z-index: 1000;
+    cursor: pointer;
+    font-size: 17px;
+    // letter-spacing: 2px;
+    // text-indent: 2px;
+    font-weight: bold;
+    transition: all 320ms ease;
+    &:hover {
+      transform: scale(1.12);
+      color: #fff;
+      background-color: var(--el-color-primary);
     }
   }
 
@@ -261,7 +285,7 @@ onMounted(() => {
         @include bg-color(#fff, #1d1d1d);
 
         .login-card-header {
-          @include layout(100%, 120px, 0 0 16px 0, 4px);
+          @include layout(100%, 120px, 0 0 $main-margin 0, 4px);
           @include flex-box(row, center, center);
           @include border(null, 4px);
           @include box-shadow(2px 2px 4px #ececec, -1px -1px 2px #ececec);
@@ -321,6 +345,9 @@ onMounted(() => {
             &:deep {
               .el-button {
                 margin: 0;
+                width: 100%;
+                text-indent: 4px;
+                letter-spacing: 4px;
               }
 
               .el-button:last-child {

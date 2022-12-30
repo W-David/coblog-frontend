@@ -1,17 +1,19 @@
-import { listTag, detailTag, deleteTag, listTagArticles } from '@/api/tag'
+import { createTag, listTag, detailTag, deleteTag, listTagArticles } from '@/api/tag'
 import { cloneLoop, cloneForce } from '@jsmini/clone'
 
 const tag = {
   namespaced: true,
   state: () => ({
     tagMap: new Map(),
-    tagArticlesMap: new Map()
+    tagArticlesMap: new Map(),
+    checkedTagIds: []
   }),
   getters: {
     getTagById: state => id => state.tagMap.get(id),
     getTagArticleById: state => id => state.tagArticlesMap.get(id),
     getTagList: state => () => [...state.tagMap.values()],
-    getTagArticles: state => () => [...state.tagArticlesMap.values()]
+    getTagArticles: state => () => [...state.tagArticlesMap.values()],
+    getCheckedTagIds: state => state.checkedTagIds
   },
   mutations: {
     SET_TAGS: (state, tags) => {
@@ -41,9 +43,27 @@ const tag = {
     },
     CLEAR_TAG_ARTICLES: state => {
       state.tagArticlesMap.clear()
+    },
+    ADD_CHECKED_TAG_ID: (state, tagId) => {
+      state.checkedTagIds.push(tagId)
+    },
+    REMOVE_CHECKED_TAG_ID: (state, tagId) => {
+      const index = state.checkedTagIds.indexOf(tagId)
+      state.checkedTagIds.splice(index, 1)
+    },
+    CLEAR_CHECKED_TAG_IDS: state => {
+      const len = state.checkedTagIds.length
+      state.checkedTagIds.splice(0, len)
     }
   },
   actions: {
+    async CreateTag({ state, commit }, params = {}) {
+      const res = await createTag(params)
+      const tag = res.data || {}
+      commit('SET_TAG', tag)
+      commit('SET_TAG_ARTICLE', tag)
+      return tag
+    },
     async GetTags({ state, commit }, params = {}) {
       const res = await listTag(params)
       const tags = res.data.rows || []

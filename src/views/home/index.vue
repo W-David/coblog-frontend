@@ -1,10 +1,10 @@
 <template>
   <div class="home-page">
-    <div class="main-content-list widget-list">
-      <div class="main-article-container widget-name" v-for="article in articlesRef" :key="article.id">
+    <div class="main-content-list">
+      <div class="main-article-container" v-for="article in articlesRef" :key="article.id">
         <article-card :article="article"></article-card>
       </div>
-      <div class="main-pagination-container widget-name">
+      <div class="main-pagination-container">
         <pagination
           v-show="totalRef > 0"
           :total="totalRef"
@@ -43,8 +43,8 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .home-page {
-  @include layout(100%, 100%, 0, $main-margin);
-  @include widget-styl;
+  @include layout(100%, auto, 0 0 $main-margin 0, 0);
+  z-index: 1000;
   .main-content-list {
     @include flex-box(column, flex-start, center);
     .main-article-container {

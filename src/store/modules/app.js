@@ -3,25 +3,24 @@ import Cookies from 'js-cookie'
 const app = {
   namespaced: true,
   state: () => ({
-    device: 'desktop',
-    sidebarOpen: false,
-    size: ''
+    deviceSize: 'lg',
+    isTouchDevice: false,
+    sidebarOpen: false
   }),
   mutations: {
-    TOGGLE_DEVICE: (state, device) => {
-      state.device = device
+    TOGGLE_DEVICE_SIZE: (state, deviceSize) => {
+      state.deviceSize = deviceSize
     },
     TOGGLE_SIDEBAR: (state, open) => {
       state.sidebarOpen = open
     },
-    SET_SIZE: (state, size) => {
-      state.size = size
-      Cookies.set('size', size)
+    SET_ISTOUCHDEVICE: (state, isTouchDevice) => {
+      state.isTouchDevice = isTouchDevice
     }
   },
   actions: {
-    ToggleDevice({ commit }, device) {
-      commit('TOGGLE_DEVICE', device)
+    ToggleDeviceSize({ commit }, deviceSize) {
+      commit('TOGGLE_DEVICE_SIZE', deviceSize)
     },
     ToggleSidebar({ commit }, open) {
       commit('TOGGLE_SIDEBAR', open)

@@ -5,7 +5,7 @@
       <span class="title-text">分类</span>
     </div>
     <div class="category-list">
-      <span class="article-cate ctrl-btn" @click="handleAdd">
+      <span class="article-cate ctrl-btn" v-if="isAdminLogin" @click="handleAdd">
         <el-icon><i-plus /></el-icon>
       </span>
       <span
@@ -21,15 +21,12 @@
 </template>
 
 <script setup>
-import { reactive, computed, onMounted, ref, nextTick, watch, defineProps, toRefs } from 'vue'
+import { reactive, computed, onMounted, ref, nextTick, watch, defineProps, toRefs, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
 import usePrompt from '@/hooks/usePrompt'
-
-import { createCategory } from '@/api/category'
-import { scrollToByEle } from '@/util/scroll-to'
 
 const props = defineProps({
   list: {
@@ -43,31 +40,37 @@ const { list: categoryArticles } = toRefs(props)
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
-const checkedIds = ref([])
+const checkedIds = computed(() => store.getters['category/getCheckedCateIds'])
 const isChecked = id => checkedIds.value.includes(id)
+
+const isAdminLogin = computed(() => store.getters.isAdminLogin)
 
 const handleChecked = item => {
   if (isChecked(item.id)) {
-    const index = checkedIds.value.indexOf(item.id)
-    checkedIds.value.splice(index, 1)
+    store.commit('category/REMOVE_CHECKED_CATE_ID', item.id)
   } else {
-    scrollToByEle(document.getElementById(`cate-${item.id}`), 600, () => checkedIds.value.push(item.id))
+    store.commit('category/ADD_CHECKED_CATE_ID', item.id)
   }
 }
 
 const handleAdd = async () => {
   const { setIsFinish, showPrompt, setHint } = usePrompt()
   setHint('已添加')
-  const { value } = await showPrompt('请输入添加的种类名称', '添加种类', '添加')
-  if (!value) return
-  const res = await createCategory({ name: value })
-  if (res.code !== 200) return
-  store.dispatch('category/GetCategoryArticles', { ids: [res.data.id] })
+  const { value: name } = await showPrompt('请输入添加的种类名称', '添加种类', '添加')
+  if (!name) {
+    ElMessage({ message: '名称不可为空', type: 'warning' })
+    return
+  }
+  await store.dispatch('category/CreateCategory', { name })
   setIsFinish(true)
 }
 const handleDelete = async category => {
   const res = await store.dispatch('category/DelCategory', category.id)
 }
+
+onUnmounted(() => {
+  store.commit('category/CLEAR_CHECKED_CATE_IDS')
+})
 </script>
 
 <style lang="scss" scoped>

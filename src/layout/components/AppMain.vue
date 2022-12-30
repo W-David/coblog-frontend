@@ -13,7 +13,13 @@
           :links="links"
         />
       </el-col>
-      <el-col :xs="24" :sm="15" :md="16" :lg="12" :xl="12">
+      <el-col
+        :xs="24"
+        :sm="isOneColLayout ? 22 : 15"
+        :md="isOneColLayout ? 20 : 16"
+        :lg="isOneColLayout ? 14 : 12"
+        :xl="12"
+      >
         <h-main
           :articlesRecent="articlesRef"
           :articlesHot="articlesRef"
@@ -22,7 +28,7 @@
           :links="links"
         ></h-main>
       </el-col>
-      <el-col :md="4" :lg="5" :xl="5" class="hidden-md-and-down" v-if="!!rightSidebarComponent">
+      <el-col :lg="5" class="hidden-md-and-down" v-if="!!rightSidebarComponent">
         <transition name="slide-fade-right" appear>
           <component
             :is="rightSidebarComponent"
@@ -61,25 +67,20 @@ const links = ref([
   { href: 'https://github.com/W-David', text: 'Github / W-David' }
 ])
 
-const leftSidebarComponent = ref(null)
-const rightSidebarComponent = ref(null)
+// const leftSidebarComponent = ref(null)
+// const rightSidebarComponent = ref(null)
 const twoColPageList = ['article']
 const oneColPageList = ['blog']
-const updateSidebarComponent = routeName => {
-  const isTwoColLayout = !!~twoColPageList.indexOf(routeName)
-  const isOneColLayout = !!~oneColPageList.indexOf(routeName)
-  const isThreeColLayout = !isTwoColLayout && !isOneColLayout
-  leftSidebarComponent.value = isThreeColLayout || isTwoColLayout ? MainLeftSidebar : null
-  rightSidebarComponent.value = isThreeColLayout ? MainRightSidebar : null
-}
-watch(
-  () => route.name,
-  routeName => updateSidebarComponent(routeName)
-)
+
+const isTwoColLayout = computed(() => !!~twoColPageList.indexOf(route.name))
+const isOneColLayout = computed(() => !!~oneColPageList.indexOf(route.name))
+const isThreeColLayout = computed(() => !isTwoColLayout.value && !isOneColLayout.value)
+
+const leftSidebarComponent = computed(() => (isThreeColLayout.value || isTwoColLayout.value ? MainLeftSidebar : null))
+const rightSidebarComponent = computed(() => (isThreeColLayout.value ? MainRightSidebar : null))
 
 onMounted(async () => {
   particlesJs.load('particles-js', 'static/particles.json')
-  updateSidebarComponent(route.name)
   store.commit('article/CLEAR_ARTICLES')
   Promise.all([store.dispatch('category/GetCategories'), store.dispatch('tag/GetTags')])
 })

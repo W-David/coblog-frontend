@@ -81,9 +81,9 @@ const userForm = reactive({
   username: userInfo.value.username,
   email: userInfo.value.email
 })
-const device = computed(() => store.getters.device)
+const deviceSize = computed(() => store.getters.deviceSize)
 const dialogWidth = computed(() => {
-  const dv = device.value
+  const dv = deviceSize.value
   return dv === 'xl' || dv === 'lg' ? '30%' : dv === 'md' ? '40%' : dv === 'sm' ? '60%' : '90%'
 })
 const openUserInfo = ref(false)
@@ -94,7 +94,7 @@ const toUserInfo = () => {
   openUserInfo.value = true
 }
 const tapAvatar = () => {
-  const isSM = device.value === 'xs' || device.value === 'sm'
+  const isSM = deviceSize.value === 'xs' || deviceSize.value === 'sm'
   if (!isSM) return
   store.dispatch('app/ToggleSidebar', false)
   openUserInfo.value = true

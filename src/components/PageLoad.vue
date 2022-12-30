@@ -14,14 +14,19 @@
         <span class="shadow" style="--i: 5"></span>
       </div>
     </div>
-    <div class="bottom-divide" v-show="!hasMore">
-      <span class="bottom-hint">已经到底啦(❁´◡`❁)`</span>
+    <div class="load-more-area" v-show="isTouchDevice && !isLoadingMore && hasMore">
+      <load-more @on-load-more="handleLoadMore"></load-more>
     </div>
+    <!-- <div class="bottom-divide" v-show="!hasMore">
+      <span class="bottom-hint">已经到底啦(❁´◡`❁)`</span>
+    </div> -->
   </div>
 </template>
 
 <script setup>
-import { defineProps, toRefs } from 'vue'
+import { defineProps, defineEmits, toRefs, computed } from 'vue'
+import { useStore } from 'vuex'
+import LoadMore from './LoadMore.vue'
 const props = defineProps({
   isLoadingMore: {
     type: Boolean,
@@ -32,6 +37,10 @@ const props = defineProps({
     default: true
   }
 })
+const store = useStore()
+const isTouchDevice = computed(() => store.getters.isTouchDevice)
+const emit = defineEmits(['on-load-more'])
+const handleLoadMore = () => emit('on-load-more')
 const { isLoadingMore, hasMore } = toRefs(props)
 </script>
 
@@ -86,6 +95,10 @@ const { isLoadingMore, hasMore } = toRefs(props)
       letter-spacing: 2px;
       text-indent: 2px;
     }
+  }
+  .load-more-area {
+    @include layout(100%, auto, 16px 0, 0);
+    @include flex-box(row, center, center);
   }
 
   @keyframes jump {

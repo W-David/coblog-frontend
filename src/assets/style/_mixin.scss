@@ -349,7 +349,7 @@
   }
   .is-sticky {
     position: sticky;
-    top: $header-height + 16px;
+    top: $header-height + $main-margin;
   }
 }
 

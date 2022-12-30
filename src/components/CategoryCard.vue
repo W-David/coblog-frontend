@@ -88,9 +88,9 @@ const toArticle = id => {
     }
   }
   .category-article-list {
-    @include layout(100%, 180px, 0, 0);
+    @include layout(100%, auto, 0, 0);
     @include scroll-bar(4px, auto, transparent, var(--el-color-success-light-3), 2px);
-    overflow-y: auto;
+    min-height: 68px;
 
     .category-article-card {
       @include layout(auto, auto, 0 8px, 8px);

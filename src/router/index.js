@@ -21,6 +21,7 @@ const routes = [
   {
     path: '/',
     component: Layout,
+    name: 'layout',
     redirect: 'home',
     children: [
       {
@@ -72,8 +73,11 @@ const router = controller(
         return savedPosition
       } else {
         const routeName = to.name
-        const topRouteList = ['home', 'archive', 'about']
+        const topRouteList = ['home']
         const isTopRoute = !!~topRouteList.includes(routeName)
+        const routeNameScrollToElementMap = {
+          about: document.querySelector('.about-card')
+        }
         if (isTopRoute) {
           return { top: 0, behavior: 'smooth' }
         } else {

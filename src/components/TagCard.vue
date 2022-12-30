@@ -89,9 +89,10 @@ const toArticle = id => {
     }
   }
   .tag-article-list {
-    @include layout(100%, 180px, 0, 0);
+    @include layout(100%, auto, 0, 0);
     @include scroll-bar(4px, auto, transparent, var(--el-color-primary-light-5), 2px);
-    overflow-y: auto;
+    min-height: 68px;
+
     .tag-article-card {
       @include layout(auto, auto, 0 8px, 8px);
       @include border(1px solid #ddd, 0, bottom);

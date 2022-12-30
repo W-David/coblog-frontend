@@ -1,18 +1,16 @@
 <template>
   <div class="tag-page">
     <div class="tag-article-list">
-      <div class="widget-list">
-        <div class="widget-item" v-for="tag in tagArticles" :key="tag.id">
-          <tag-card :tag="tag" :is-active="isChecked(tag.id)"></tag-card>
-        </div>
+      <div class="tag-aritlce-item" v-for="tag in tagArticles" :key="tag.id">
+        <tag-card :tag="tag" :is-active="isChecked(tag.id)"></tag-card>
       </div>
     </div>
-    <page-load :isLoadingMore="isLoadingMore" :hasMore="hasMore"></page-load>
+    <page-load :isLoadingMore="isLoadingMore" :hasMore="hasMore" @on-load-more="onLoadMore"></page-load>
   </div>
 </template>
 
 <script setup>
-import { reactive, computed, onMounted, ref, nextTick, watch } from 'vue'
+import { reactive, computed, onMounted, onUnmounted, ref, nextTick, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
@@ -23,7 +21,7 @@ import PageLoad from '@/components/PageLoad.vue'
 
 const store = useStore()
 const route = useRoute()
-const checkedIds = ref([])
+const checkedIds = computed(() => store.getters['tag/getCheckedTagIds'])
 const isChecked = id => checkedIds.value.includes(id)
 const hasMore = ref(true)
 const isLoadingMore = ref(false)
@@ -36,8 +34,8 @@ const getTagArticles = async queryParams => {
   hasMore.value = list && list.length && queryParams.pageNum * queryParams.pageSize < total
 }
 
-useReachBottom(onReachBottom)
-const onReachBottom = async () => {
+useReachBottom(onLoadMore)
+const onLoadMore = async () => {
   isLoadingMore.value = true
   await getTagArticles({ ...queryParams, pageNum: queryParams.pageNum + 1 })
   queryParams.pageNum += 1
@@ -51,13 +49,20 @@ onMounted(async () => {
   store.commit('tag/CLEAR_TAG_ARTICLES')
   await Promise.all([getTagArticles(queryParams)])
 })
+
+onUnmounted(() => {
+  store.commit('tag/CLEAR_CHECKED_TAG_IDS')
+})
 </script>
 
 <style lang="scss" scoped>
 .tag-page {
-  @include layout(100%, 100%, 0, 0);
-  @include widget-styl;
+  @include layout(100%, auto, 0 0 $main-margin 0, 0);
+  z-index: 1000;
   .tag-article-list {
+    .tag-aritlce-item {
+      margin-bottom: $main-margin;
+    }
   }
 }
 </style>

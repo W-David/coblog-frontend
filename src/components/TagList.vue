@@ -5,7 +5,7 @@
       <span class="title-text">标签</span>
     </div>
     <div class="tag-list">
-      <span class="article-tag ctrl-btn" @click="handleAdd">
+      <span class="article-tag ctrl-btn" v-if="isAdminLogin" @click="handleAdd">
         <el-icon><i-plus /></el-icon>
       </span>
       <span
@@ -24,11 +24,9 @@
 import { reactive, computed, onMounted, ref, nextTick, watch, defineProps, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 
 import usePrompt from '@/hooks/usePrompt'
-
-import { createTag } from '@/api/tag'
-import { scrollToByEle } from '@/util/scroll-to'
 
 const props = defineProps({
   list: {
@@ -42,32 +40,27 @@ const { list: tagArticles } = toRefs(props)
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
-const checkedIds = ref([])
+const checkedIds = computed(() => store.getters['tag/getCheckedTagIds'])
 const isChecked = id => checkedIds.value.includes(id)
 
-const listStyle = computed(() => {
-  const device = store.getters.device
-  const wMap = { xs: 24, sm: 24, md: 24, lg: 5, xl: 5 }
-  return {
-    width: `calc(${(wMap[device] / 24) * 100}vw)`
-  }
-})
+const isAdminLogin = computed(() => store.getters.isAdminLogin)
+
 const handleChecked = item => {
   if (isChecked(item.id)) {
-    const index = checkedIds.value.indexOf(item.id)
-    checkedIds.value.splice(index, 1)
+    store.commit('tag/REMOVE_CHECKED_TAG_ID', item.id)
   } else {
-    scrollToByEle(document.getElementById(`tag-${item.id}`), 600, () => checkedIds.value.push(item.id))
+    store.commit('tag/ADD_CHECKED_TAG_ID', item.id)
   }
 }
 const handleAdd = async () => {
   const { setIsFinish, showPrompt, setHint } = usePrompt()
   setHint('已添加')
-  const { value } = await showPrompt('请输入添加的标签名称', '添加标签', '添加')
-  if (!value) return
-  const res = await createTag({ name: value })
-  if (res.code !== 200) return
-  store.dispatch('tag/GetTagArticles', { ids: [res.data.id] })
+  const { value: name } = await showPrompt('请输入添加的标签名称', '添加标签', '添加')
+  if (!name) {
+    ElMessage({ message: '名称不可为空', type: 'warning' })
+    return
+  }
+  await store.dispatch('tag/CreateTag', { name })
   setIsFinish(true)
 }
 
