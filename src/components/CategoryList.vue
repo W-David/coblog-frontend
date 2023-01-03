@@ -9,7 +9,7 @@
         <el-icon><i-plus /></el-icon>
       </span>
       <span
-        v-for="category in categoryArticles"
+        v-for="category in categoryList"
         :key="category.id"
         :class="['article-cate', isChecked(category.id) ? 'is-active' : '']"
         @click="handleChecked(category)"
@@ -25,21 +25,12 @@ import { reactive, computed, onMounted, ref, nextTick, watch, defineProps, toRef
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-
 import usePrompt from '@/hooks/usePrompt'
-
-const props = defineProps({
-  list: {
-    type: Array,
-    default: () => []
-  }
-})
-
-const { list: categoryArticles } = toRefs(props)
 
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
+const categoryList = computed(() => store.getters['category/getCategoryList']())
 const checkedIds = computed(() => store.getters['category/getCheckedCateIds'])
 const isChecked = id => checkedIds.value.includes(id)
 

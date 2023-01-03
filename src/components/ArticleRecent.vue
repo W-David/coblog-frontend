@@ -21,20 +21,16 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs } from 'vue'
+import { defineProps, toRefs, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const props = defineProps({
-  list: {
-    type: Array,
-    default: () => []
-  }
-})
+const store = useStore()
+const articles = computed(() => store.getters['article/getArticlesRecent'])
 const toArticle = id => {
   router.push({ name: 'article', params: { id } })
 }
-const { list: articles } = toRefs(props)
 </script>
 
 <style lang="scss" scoped>

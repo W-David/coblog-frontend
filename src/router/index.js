@@ -73,16 +73,16 @@ const router = controller(
         return savedPosition
       } else {
         const routeName = to.name
-        const topRouteList = ['home']
-        const isTopRoute = !!~topRouteList.includes(routeName)
-        const routeNameScrollToElementMap = {
-          about: document.querySelector('.about-card')
+        const routeElMap = {
+          home: '.app-main-container',
+          about: '.about-page',
+          archive: '.archive-page',
+          article: '.article-page',
+          tag: '.tag-page',
+          blog: '.blog-page',
+          category: '.category-page'
         }
-        if (isTopRoute) {
-          return { top: 0, behavior: 'smooth' }
-        } else {
-          return { top: 0, behavior: 'smooth' }
-        }
+        return { top: routeElMap[routeName], behavior: 'smooth' }
       }
     },
     routes

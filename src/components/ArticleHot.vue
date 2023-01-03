@@ -8,6 +8,9 @@
           <img v-else src="/static/img/defaultCover.jpg" alt="noImg" />
         </div>
         <div class="article-content">
+          <div class="favorite-content">
+            <div class="favorite-num">{{ article.favoCount + '喜欢' }}</div>
+          </div>
           <div class="article-title">
             {{ article.title }}
           </div>
@@ -21,20 +24,16 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs } from 'vue'
+import { defineProps, toRefs, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const props = defineProps({
-  list: {
-    type: Array,
-    default: () => []
-  }
-})
+const store = useStore()
+const articles = computed(() => store.getters['article/getArticlesHot'])
 const toArticle = id => {
   router.push({ name: 'article', params: { id } })
 }
-const { list: articles } = toRefs(props)
 </script>
 
 <style lang="scss" scoped>
@@ -86,11 +85,26 @@ const { list: articles } = toRefs(props)
         }
       }
       .article-content {
+        position: relative;
         @include layout(calc(100% - 76px), 64px, 0 0 0 8px, 2px 4px);
+
+        .favorite-content {
+          position: absolute;
+          top: 0;
+          right: 0;
+          z-index: 2000;
+
+          .favorite-num {
+            @include font-hei;
+            text-align: center;
+            font-size: 10px;
+            color: #e74645;
+          }
+        }
         .article-title {
           color: var(--el-text-color-primary);
           font-size: 13px;
-          @include text-overflow(1);
+          @include text-overflow(1, 24px);
           transition: all 300ms ease-out;
         }
         .article-description {

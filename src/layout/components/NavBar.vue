@@ -56,7 +56,7 @@
           mode="veritical"
           @select="handleChange"
         >
-          <el-menu-item class="hidden-md-and-up" index="/blog">博文</el-menu-item>
+          <el-menu-item v-if="isAdminLogin" class="hidden-md-and-up" index="/blog">博文</el-menu-item>
           <el-menu-item v-for="menu in menuList" :key="menu.id" :index="menu.path">
             {{ menu.name }}
           </el-menu-item>

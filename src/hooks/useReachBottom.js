@@ -11,7 +11,7 @@ const useReachBottom = callback => {
     const isReachBottom = scrollTop + windowHeight >= scrollHeight - offset
     // debugger
     if (!isReachBottom) return
-    callback()
+    if (callback) callback()
   }
   const onThrottleScroll = throttle(onScroll, 200)
   onMounted(() => setTimeout(() => window.addEventListener('scroll', onThrottleScroll), 0))

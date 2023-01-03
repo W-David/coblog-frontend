@@ -5,7 +5,10 @@ import {
   deleteArticle,
   listArticle,
   detailArticle,
-  listByTimeArticle
+  noAuthDetailArticle,
+  listByTimeArticle,
+  listByFavoArticle,
+  listArchive
 } from '@/api/article'
 import { articles2Archive, concatArchive } from '@/util/format'
 import { cloneLoop, cloneForce } from '@jsmini/clone'
@@ -14,13 +17,17 @@ const article = {
   namespaced: true,
   state: () => ({
     articleMap: new Map(),
-    articleArchive: []
+    articleArchive: [],
+    articlesRecent: [],
+    articlesHot: []
   }),
   getters: {
     getArticleMap: state => () => cloneLoop(state.articleMap),
     getArticleArchive: state => cloneLoop(state.articleArchive),
     getArticleById: state => id => state.articleMap.get(id),
-    getArticleList: state => () => [...state.articleMap.values()]
+    getArticleList: state => () => [...state.articleMap.values()],
+    getArticlesRecent: state => cloneLoop(state.articlesRecent),
+    getArticlesHot: state => cloneLoop(state.articlesHot)
   },
   mutations: {
     SET_ARTICLES: (state, articles) => {
@@ -47,6 +54,18 @@ const article = {
     },
     CLEAR_ARTICLES: state => {
       state.articleMap.clear()
+    },
+    SET_ARTICLES_RECENT: (state, articlesRecent) => {
+      state.articlesRecent = articlesRecent
+    },
+    CLEAR_ARTICLES_RECENT: state => {
+      state.articlesRecent.splice(0, state.articlesRecent.length)
+    },
+    SET_ARTICLES_HOT: (state, articlesHot) => {
+      state.articlesHot = articlesHot
+    },
+    CLEAR_ARTICLES_HOT: state => {
+      state.articlesHot.splice(0, state.articlesHot.length)
     }
   },
   actions: {
@@ -57,13 +76,32 @@ const article = {
       commit('SET_ARTICLES', articles)
       return [articles, total]
     },
+    async GetArticlesRecent({ state, commit }, data) {
+      if (state.articlesRecent && state.articlesRecent.length) {
+        return Promise.resolve(cloneLoop(state.articlesRecent))
+      }
+      const res = await listByTimeArticle(data)
+      const articles = res.data.rows || []
+      const total = res.data.count || 0
+      commit('CLEAR_ARTICLES_RECENT')
+      commit('SET_ARTICLES_RECENT', articles)
+      return [articles, total]
+    },
+    async GetArticlesHot({ state, commit }, data) {
+      if (state.articlesHot && state.articlesHot.length) {
+        return Promise.resolve(cloneLoop(state.articlesHot))
+      }
+      const res = await listByFavoArticle(data)
+      const articles = res.data || []
+      commit('CLEAR_ARTICLES_HOT')
+      commit('SET_ARTICLES_HOT', articles)
+      return articles
+    },
     async FavoriteArticle({ state, commit }, data) {
-      const res = await favoriteArticle(data)
-      const favoritedNum = res.data || 0
-      return favoritedNum
+      return favoriteArticle(data)
     },
     async GetArticleArchive({ state, commit }, data) {
-      const res = await listByTimeArticle(data)
+      const res = await listArchive(data)
       const rawArchive = res.data.rows || []
       const total = res.data.count || 0
       const articleArchive = articles2Archive(rawArchive)
@@ -75,12 +113,13 @@ const article = {
       }
       return [articleArchive, total]
     },
-    async GetArticle({ state, commit }, articleId) {
+    async GetArticle({ state, commit, rootGetters }, articleId) {
       const curArticle = state.articleMap.get(articleId)
       if (curArticle && curArticle.content) {
         return Promise.resolve(curArticle)
       }
-      const res = await detailArticle(articleId)
+      const isAdminLogin = rootGetters.isAdminLogin
+      const res = isAdminLogin ? await detailArticle(articleId) : await noAuthDetailArticle(articleId)
       const article = res.data || null
       commit('SET_ARTICLE', article)
       return article

@@ -3,15 +3,7 @@
     <div id="particles-js"></div>
     <el-row justify="center" :gutter="16">
       <el-col :sm="7" :md="6" :lg="5" :xl="5" class="hidden-xs-only" v-if="!!leftSidebarComponent">
-        <component
-          :is="leftSidebarComponent"
-          :key="route.name"
-          :articlesRecent="articlesRef"
-          :articlesHot="articlesRef"
-          :tagList="tagList"
-          :categoryList="categoryList"
-          :links="links"
-        />
+        <component :is="leftSidebarComponent" :key="route.name" />
       </el-col>
       <el-col
         :xs="24"
@@ -20,25 +12,11 @@
         :lg="isOneColLayout ? 14 : 12"
         :xl="12"
       >
-        <h-main
-          :articlesRecent="articlesRef"
-          :articlesHot="articlesRef"
-          :tagList="tagList"
-          :categoryList="categoryList"
-          :links="links"
-        ></h-main>
+        <h-main :articlesRecent="articlesRef"></h-main>
       </el-col>
       <el-col :lg="5" class="hidden-md-and-down" v-if="!!rightSidebarComponent">
         <transition name="slide-fade-right" appear>
-          <component
-            :is="rightSidebarComponent"
-            :key="route.name"
-            :articlesRecent="articlesRef"
-            :articlesHot="articlesRef"
-            :tagList="tagList"
-            :categoryList="categoryList"
-            :links="links"
-          />
+          <component :is="rightSidebarComponent" :key="route.name" />
         </transition>
       </el-col>
     </el-row>
@@ -59,14 +37,6 @@ import HMain from './HMain.vue'
 const store = useStore()
 const route = useRoute()
 
-const articlesRef = computed(() => store.getters['article/getArticleList']())
-const tagList = computed(() => store.getters['tag/getTagList']())
-const categoryList = computed(() => store.getters['category/getCategoryList']())
-const links = ref([
-  { href: 'http://39.98.122.206:8088/', text: 'Hexo博客 / Cody' },
-  { href: 'https://github.com/W-David', text: 'Github / W-David' }
-])
-
 // const leftSidebarComponent = ref(null)
 // const rightSidebarComponent = ref(null)
 const twoColPageList = ['article']
@@ -81,8 +51,6 @@ const rightSidebarComponent = computed(() => (isThreeColLayout.value ? MainRight
 
 onMounted(async () => {
   particlesJs.load('particles-js', 'static/particles.json')
-  store.commit('article/CLEAR_ARTICLES')
-  Promise.all([store.dispatch('category/GetCategories'), store.dispatch('tag/GetTags')])
 })
 </script>
 

@@ -35,9 +35,29 @@ export function listByTimeArticle(data) {
   })
 }
 
+export function listByFavoArticle(data) {
+  return POST({
+    url: '/article/listByFavo',
+    data
+  })
+}
+
+export function listArchive(data) {
+  return POST({
+    url: '/article/listArchive',
+    data
+  })
+}
+
 export function detailArticle(id) {
   return GET({
     url: `/article/detail/${id}`
+  })
+}
+
+export function noAuthDetailArticle(id) {
+  return GET({
+    url: `/article/noAuthDetail/${id}`
   })
 }
 

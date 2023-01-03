@@ -57,6 +57,15 @@ const unLoginMenu = [
 ]
 
 const menuList = isLogin ? loginMenu : unLoginMenu
+onMounted(async () => {
+  store.commit('article/CLEAR_ARTICLES')
+  await Promise.all([
+    store.dispatch('category/GetCategories'),
+    store.dispatch('tag/GetTags'),
+    store.dispatch('article/GetArticlesHot', { pageSize: 5 }),
+    store.dispatch('article/GetArticlesRecent', { pageNum: 1, pageSize: 5 })
+  ])
+})
 </script>
 
 <style lang="scss" scoped>

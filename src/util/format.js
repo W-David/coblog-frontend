@@ -1,9 +1,16 @@
 export function articles2Archive(rawArchive) {
   let curTime = '',
     curArticles = null,
-    _list = []
+    _list = [],
+    format = rawArchive[0].month ? 'month' : rawArchive[0].week ? 'week' : 'day'
   for (let i = 0, len = rawArchive.length; i < len; i++) {
-    const time = rawArchive[i].createdAt.split(' ')[0]
+    const year = rawArchive[i][format].split('-')[0]
+    const time =
+      format === 'month'
+        ? `${year}年, ${rawArchive[i][format].split('-')[1]}月`
+        : format === 'week'
+        ? `${year}年, 第${rawArchive[i][format].split('-')[1]}周`
+        : `${year}年, ${rawArchive[i][format].split('-')[1]}月, ${rawArchive[i][format].split('-')[2]}日`
     if (curTime !== time) {
       const curArchive = { time, articles: [] }
       _list.push(curArchive)

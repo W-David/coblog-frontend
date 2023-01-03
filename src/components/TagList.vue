@@ -9,7 +9,7 @@
         <el-icon><i-plus /></el-icon>
       </span>
       <span
-        v-for="tag in tagArticles"
+        v-for="tag in tagList"
         :key="tag.id"
         :class="['article-tag', isChecked(tag.id) ? 'is-active' : '']"
         @click="handleChecked(tag)"
@@ -25,21 +25,12 @@ import { reactive, computed, onMounted, ref, nextTick, watch, defineProps, toRef
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-
 import usePrompt from '@/hooks/usePrompt'
-
-const props = defineProps({
-  list: {
-    type: Array,
-    default: () => []
-  }
-})
-
-const { list: tagArticles } = toRefs(props)
 
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
+const tagList = computed(() => store.getters['tag/getTagList']())
 const checkedIds = computed(() => store.getters['tag/getCheckedTagIds'])
 const isChecked = id => checkedIds.value.includes(id)
 

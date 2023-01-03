@@ -295,29 +295,27 @@ const submitBlog = async () => {
     }
     .blog-title {
       @include layout(100%, auto, 0 0 8px 0, 0);
-      @include border(1px solid var(--el-border-color));
       min-height: 48px;
       input {
         @include layout(100%, auto, 0, 12px);
-        border-radius: 8px;
         font-size: 24px;
         font-weight: bold;
-        border: none !important;
         outline: none !important;
         background-color: var(--el-bg-color);
+        @include border(1px solid var(--el-border-color), 4px);
         @include font-hei;
       }
     }
     .blog-toolbar {
-      @include border(1px solid var(--el-border-color));
-      border-radius: 8px;
       ::v-deep .w-e-toolbar {
         background-color: var(--el-bg-color);
+        @include border(1px solid var(--el-border-color), 4px);
+        @include layout(100%, auto, 8px 0, 0);
       }
     }
     .blog-tc {
       @include layout(100%, auto, 8px 0, 6px);
-      @include border(1px solid var(--el-border-color));
+      @include border(1px solid var(--el-border-color), 4px);
       background-color: var(--el-bg-color);
       .tag-area {
         @include layout(100%, auto, 0, 0);
@@ -328,7 +326,6 @@ const submitBlog = async () => {
     }
     .blog-desc {
       @include layout(100%, auto, 8px 0, 0);
-      @include border(1px solid var(--el-border-color));
       textarea {
         width: 100%;
         height: 120px;
@@ -339,17 +336,17 @@ const submitBlog = async () => {
         outline: none;
         font-size: 20px;
         font-weight: 550;
-        border-radius: 8px;
+        @include border(1px solid var(--el-border-color), 4px);
         @include font-hei;
         background-color: var(--el-bg-color);
       }
     }
     .blog-text {
-      @include border(1px solid var(--el-border-color));
       ::v-deep .w-e-text-container {
         min-height: 360px;
         background-color: var(--el-bg-color);
-        border-radius: 8px;
+        @include border(1px solid var(--el-border-color), 4px);
+        @include layout(100%, auto, 8px 0, 0);
       }
     }
     .blog-ctrl {

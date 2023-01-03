@@ -2,25 +2,25 @@
   <div class="widget-list">
     <!-- article-hot -->
     <transition name="slide-fade-left" appear>
-      <article-hot class="widget-item hidden-lg-and-up" :list="articlesHot"></article-hot>
+      <article-hot class="widget-item hidden-lg-and-up"></article-hot>
     </transition>
     <!-- links -->
     <transition name="slide-fade-left" appear>
-      <links class="widget-item" :links="links"></links>
+      <links class="widget-item"></links>
     </transition>
   </div>
   <div class="widget-list is-sticky">
     <!-- article-recent -->
     <transition name="slide-fade-left" appear>
-      <article-recent class="widget-item" :list="articlesRecent"></article-recent>
+      <article-recent class="widget-item"></article-recent>
     </transition>
     <!-- tag-list -->
     <transition name="slide-fade-left" appear>
-      <tag-list class="widget-item hidden-lg-and-up" :list="tagList"></tag-list>
+      <tag-list class="widget-item hidden-lg-and-up"></tag-list>
     </transition>
     <!-- category-list -->
     <transition name="slide-fade-left" appear>
-      <category-list class="widget-item hidden-lg-and-up" :list="categoryList"></category-list>
+      <category-list class="widget-item hidden-lg-and-up"></category-list>
     </transition>
   </div>
 </template>
@@ -31,16 +31,6 @@ import TagList from '@/components/TagList.vue'
 import CategoryList from '@/components/CategoryList.vue'
 import ArticleHot from '@/components/ArticleHot.vue'
 import Links from '@/components/Links.vue'
-import { defineProps, toRefs } from 'vue'
-
-const props = defineProps({
-  articlesRecent: Array,
-  articlesHot: Array,
-  tagList: Array,
-  categoryList: Array,
-  links: Array
-})
-const { articlesRecent, articlesHot, tagList, categoryList, links } = toRefs(props)
 </script>
 
 <style lang="scss" scoped>

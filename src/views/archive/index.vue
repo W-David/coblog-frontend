@@ -79,8 +79,7 @@ const router = useRouter()
 const form = reactive({
   pageNum: 1,
   pageSize: 20,
-  beginTime: undefined,
-  endTime: undefined
+  format: 'month'
 })
 
 const archive = computed(() => store.getters['article/getArticleArchive'])

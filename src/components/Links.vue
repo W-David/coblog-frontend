@@ -13,15 +13,11 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs } from 'vue'
-
-const props = defineProps({
-  links: {
-    type: Array,
-    default: () => []
-  }
-})
-const { links } = toRefs(props)
+import { ref } from 'vue'
+const links = ref([
+  { href: 'http://39.98.122.206:8088/', text: 'Hexo博客 / Cody' },
+  { href: 'https://github.com/W-David', text: 'Github / W-David' }
+])
 </script>
 
 <style lang="scss" scoped>

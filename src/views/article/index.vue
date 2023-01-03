@@ -105,9 +105,10 @@ const toBack = () => {
   router.back()
 }
 const handleFavorite = async () => {
-  const favoritedNum = await store.dispatch('article/FavoriteArticle', { id: article.value.id })
+  const res = await store.dispatch('article/FavoriteArticle', { id: article.value.id })
+  if (res.code !== 200) return
   article.value.isFavorited = !article.value.isFavorited
-  article.value.favoritedNum = favoritedNum
+  article.value.favoritedNum = res.data || article.value.favoritedNum
 }
 onMounted(async () => {
   mountWaline()
