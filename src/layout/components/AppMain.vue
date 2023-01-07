@@ -12,7 +12,7 @@
         :lg="isOneColLayout ? 14 : 12"
         :xl="12"
       >
-        <h-main :articlesRecent="articlesRef"></h-main>
+        <h-main></h-main>
       </el-col>
       <el-col :lg="5" class="hidden-md-and-down" v-if="!!rightSidebarComponent">
         <transition name="slide-fade-right" appear>

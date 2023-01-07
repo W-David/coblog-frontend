@@ -15,7 +15,10 @@
 <script setup>
 import { defineProps, toRefs, defineEmits } from 'vue'
 const props = defineProps({
-  modelValue: Boolean
+  modelValue: {
+    type: Boolean,
+    default: false
+  }
 })
 const { modelValue } = toRefs(props)
 const emit = defineEmits(['update:modelValue'])

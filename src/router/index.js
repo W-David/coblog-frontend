@@ -82,7 +82,8 @@ const router = controller(
           blog: '.blog-page',
           category: '.category-page'
         }
-        return { top: routeElMap[routeName], behavior: 'smooth' }
+        const top = getYPosition(document.querySelector(routeElMap[routeName])) - 80
+        return { top, behavior: 'smooth' }
       }
     },
     routes

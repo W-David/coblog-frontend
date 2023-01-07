@@ -25,7 +25,7 @@ const checkedIds = computed(() => store.getters['tag/getCheckedTagIds'])
 const isChecked = id => checkedIds.value.includes(id)
 const hasMore = ref(true)
 const isLoadingMore = ref(false)
-const queryParams = reactive({ pageNum: 1, pageSize: 10 })
+const queryParams = reactive({ pageNum: 1, pageSize: 5 })
 const tagArticles = computed(() => store.getters['tag/getTagArticles']())
 
 const getTagArticles = async queryParams => {
@@ -34,7 +34,7 @@ const getTagArticles = async queryParams => {
   hasMore.value = list && list.length && queryParams.pageNum * queryParams.pageSize < total
 }
 
-useReachBottom(onLoadMore)
+// useReachBottom(onLoadMore)
 const onLoadMore = async () => {
   isLoadingMore.value = true
   await getTagArticles({ ...queryParams, pageNum: queryParams.pageNum + 1 })

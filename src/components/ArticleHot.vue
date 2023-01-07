@@ -9,7 +9,8 @@
         </div>
         <div class="article-content">
           <div class="favorite-content">
-            <div class="favorite-num">{{ article.favoCount + '喜欢' }}</div>
+            <div class="favorite-num">{{ article.favoCount }}</div>
+            <svg-icon class="favorite-icon" icon-class="fire"></svg-icon>
           </div>
           <div class="article-title">
             {{ article.title }}
@@ -92,18 +93,27 @@ const toArticle = id => {
           position: absolute;
           top: 0;
           right: 0;
-          z-index: 2000;
+          z-index: 1000;
+          color: #fb7756;
 
           .favorite-num {
+            display: inline-block;
             @include font-hei;
             text-align: center;
-            font-size: 10px;
-            color: #e74645;
+            font-size: 12px;
+            font-weight: bolder;
+            margin-right: 2px;
+          }
+
+          .favorite-icon {
+            display: inline-block;
+            font-size: 15px;
           }
         }
         .article-title {
-          color: var(--el-text-color-primary);
-          font-size: 13px;
+          color: var(--el-color-danger-light-3);
+          font-weight: bolder;
+          font-size: 14px;
           @include text-overflow(1, 24px);
           transition: all 300ms ease-out;
         }

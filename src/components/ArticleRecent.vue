@@ -84,12 +84,13 @@ const toArticle = id => {
       .article-content {
         @include layout(calc(100% - 76px), 64px, 0 0 0 8px, 2px 4px);
         .article-time {
-          color: var(--el-text-color-secondary);
+          color: var(--el-color-primary-light-3);
+          font-weight: bolder;
           font-size: 10px;
           font-style: italic;
         }
         .article-title {
-          color: var(--el-text-color-primary);
+          color: var(--el-color-primary-light-3);
           margin-top: 4px;
           font-size: 13px;
           @include text-overflow(2);
@@ -104,7 +105,7 @@ const toArticle = id => {
         }
         .article-content {
           .article-time {
-            color: var(--el-text-color-regular);
+            color: var(--el-color-primary);
           }
           .article-title {
             color: var(--el-color-primary);

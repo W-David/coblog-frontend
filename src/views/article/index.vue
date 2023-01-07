@@ -49,6 +49,13 @@
       </div>
       <div class="article-comments-area">
         <div id="waline"></div>
+        <!-- <waline
+          el="#waline"
+          dark=".dark"
+          :serverURL="process.env.VUE_APP_WALINE_API"
+          lang="zh-CN"
+          :reaction="true"
+        ></waline> -->
       </div>
     </div>
     <el-backtop :bottom="25"> </el-backtop>
@@ -56,7 +63,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onUnmounted, computed, nextTick, onActivated } from 'vue'
+import { ref, reactive, onMounted, onUnmounted, computed, nextTick, onActivated, onUpdated, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -76,10 +83,19 @@ const isAdminLogin = computed(() => store.getters.isAdminLogin)
 const article = computed(() => store.getters['article/getArticleById'](articleId))
 const isCurAdmin = computed(() => article.value?.admin?.id === loginInfo.value?.id)
 
+// watch(
+//   () => route.path,
+//   path => {
+//     if (path.split('/')[1] !== 'article') return
+//     waline.update()
+//   }
+// )
+
 const mountWaline = () => {
   init({
     el: '#waline',
     serverURL: process.env.VUE_APP_WALINE_API,
+    lang: 'zh-CN',
     reaction: true,
     dark: '.dark'
   })
@@ -110,6 +126,7 @@ const handleFavorite = async () => {
   article.value.isFavorited = !article.value.isFavorited
   article.value.favoritedNum = res.data || article.value.favoritedNum
 }
+
 onMounted(async () => {
   mountWaline()
   await getArticle(articleId)

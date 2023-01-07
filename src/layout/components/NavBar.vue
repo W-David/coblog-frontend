@@ -73,7 +73,7 @@
 </template>
 
 <script setup>
-import { defineProps, reactive, ref, toRef, toRefs, computed } from 'vue'
+import { defineProps, reactive, ref, toRef, toRefs, computed, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import User from '@/components/User'

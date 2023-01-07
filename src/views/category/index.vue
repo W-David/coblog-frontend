@@ -16,8 +16,8 @@ import { useRoute } from 'vue-router'
 
 import useReachBottom from '@/hooks/useReachBottom'
 
-import CategoryCard from '@/components/CategoryCard'
-import PageLoad from '@/components/PageLoad'
+import CategoryCard from '@/components/CategoryCard.vue'
+import PageLoad from '@/components/PageLoad.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -25,7 +25,7 @@ const checkedIds = computed(() => store.getters['category/getCheckedCateIds'])
 const isChecked = id => checkedIds.value.includes(id)
 const hasMore = ref(true)
 const isLoadingMore = ref(false)
-const queryParams = reactive({ pageNum: 1, pageSize: 10 })
+const queryParams = reactive({ pageNum: 1, pageSize: 5 })
 const categoryArticles = computed(() => store.getters['category/getCategoryArticles']())
 
 const getCategoryArticles = async queryParams => {
@@ -34,7 +34,7 @@ const getCategoryArticles = async queryParams => {
   hasMore.value = list && list.length && queryParams.pageNum * queryParams.pageSize < total
 }
 
-useReachBottom(onLoadMore)
+// useReachBottom(onLoadMore)
 const onLoadMore = async () => {
   isLoadingMore.value = true
   await getCategoryArticles({ ...queryParams, pageNum: queryParams.pageNum + 1 })

@@ -14,7 +14,7 @@
         <span class="shadow" style="--i: 5"></span>
       </div>
     </div>
-    <div class="load-more-area" v-show="isTouchDevice && !isLoadingMore && hasMore">
+    <div class="load-more-area" v-show="!isLoadingMore && hasMore">
       <load-more @on-load-more="handleLoadMore"></load-more>
     </div>
     <!-- <div class="bottom-divide" v-show="!hasMore">
