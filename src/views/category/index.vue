@@ -5,7 +5,12 @@
         <category-card :category="category" :is-active="isChecked(category.id)"></category-card>
       </div>
     </div>
-    <page-load :isLoadingMore="isLoadingMore" :hasMore="hasMore" @on-load-more="onLoadMore"></page-load>
+    <page-load
+      v-show="categoryArticles && categoryArticles.length"
+      :isLoadingMore="isLoadingMore"
+      :hasMore="hasMore"
+      @on-load-more="onLoadMore"
+    ></page-load>
   </div>
 </template>
 

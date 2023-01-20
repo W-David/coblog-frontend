@@ -21,7 +21,7 @@
         animationDuration: animationDuration + 's'
       }"
     />
-    <div class="bult-btn" @click="handleSwitchTheme">
+    <div class="bult-btn" @click="handleSwitchTheme()">
       <svg-icon v-show="isDark" icon-class="bulb-light"></svg-icon>
       <svg-icon v-show="!isDark" icon-class="bulb-off"></svg-icon>
     </div>
@@ -97,7 +97,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { local } from '@/util/cache'
-import { useDark } from '@vueuse/core'
+import { useDark, useToggle } from '@vueuse/core'
 import Footer from '@/layout/components/HFooter.vue'
 
 const store = useStore()
@@ -105,6 +105,7 @@ const router = useRouter()
 const needRegister = ref(false)
 const formRef = ref(null)
 const isDark = useDark()
+const handleSwitchTheme = useToggle(isDark)
 const form = reactive({
   // email: 'admin@root.com',
   // password: 'admin@root',
@@ -200,7 +201,6 @@ const handleSwitch = () => {
   form.nickName = ''
   needRegister.value = !needRegister.value
 }
-const handleSwitchTheme = () => (isDark.value = !isDark.value)
 const animationDuration = ref(48)
 const bgImgs = reactive([
   require('../assets/image/bg-01.jpg'),

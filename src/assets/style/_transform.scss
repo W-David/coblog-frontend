@@ -10,8 +10,9 @@
   .fade-enter-from,
   .fade-leave-to {
     opacity: 0;
-    transform: scale(0.95);
-    transform-origin: 5% center;
+    transform: translateY(-20px);
+    // transform: scaleX(0.88);
+    // transform-origin: 0 center;
   }
 }
 

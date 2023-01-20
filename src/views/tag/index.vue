@@ -5,7 +5,12 @@
         <tag-card :tag="tag" :is-active="isChecked(tag.id)"></tag-card>
       </div>
     </div>
-    <page-load :isLoadingMore="isLoadingMore" :hasMore="hasMore" @on-load-more="onLoadMore"></page-load>
+    <page-load
+      v-show="tagArticles && tagArticles.length"
+      :isLoadingMore="isLoadingMore"
+      :hasMore="hasMore"
+      @on-load-more="onLoadMore"
+    ></page-load>
   </div>
 </template>
 

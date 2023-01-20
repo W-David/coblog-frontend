@@ -73,13 +73,13 @@
 </template>
 
 <script setup>
-import { defineProps, reactive, ref, toRef, toRefs, computed, onUnmounted } from 'vue'
+import { defineProps, reactive, ref, toRef, toRefs, computed, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-import User from '@/components/User'
-import Admin from '@/components/Admin'
-import Search from '@/components/Search'
-import SwitchDark from '@/components/SwitchDark'
+import User from '@/components/User.vue'
+import Admin from '@/components/Admin.vue'
+import Search from '@/components/Search.vue'
+import SwitchDark from '@/components/SwitchDark.vue'
 import { getUserType } from '@/util/auth'
 import { useDark } from '@vueuse/core'
 

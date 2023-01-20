@@ -54,11 +54,12 @@
         </el-timeline>
       </div>
     </div>
-    <!-- <div class="archive-load-more-container">
-      <load-more v-show="hasMore" @on-load-more="onLoadMore"></load-more>
-    </div> -->
-
-    <page-load :isLoadingMore="isLoadingMore" :hasMore="hasMore" @on-load-more="onLoadMore"></page-load>
+    <page-load
+      v-show="archive && archive.length"
+      :isLoadingMore="isLoadingMore"
+      :hasMore="hasMore"
+      @on-load-more="onLoadMore"
+    ></page-load>
   </div>
 </template>
 

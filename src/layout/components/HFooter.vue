@@ -1,8 +1,8 @@
 <template>
   <div class="h-footer-container">
-    <el-link type="primary" href="http://39.98.122.206:8088/" target="_blank">hexo博客</el-link>
+    <el-link type="primary" href="https://beian.miit.gov.cn" target="_blank">晋ICP备2023000379号-1</el-link>
     <el-divider direction="vertical" />
-    <el-link type="primary" href="http://39.98.122.206/" target="_blank">Cody's Blog</el-link>
+    <el-link type="primary" href="http://coblog.fun" target="_blank">Cody's Blog</el-link>
   </div>
 </template>
 
