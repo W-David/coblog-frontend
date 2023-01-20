@@ -37,6 +37,9 @@ import HMain from './HMain.vue'
 const store = useStore()
 const route = useRoute()
 
+const routeName = route.name
+const isArticlePage = ref(routeName === 'article')
+
 // const leftSidebarComponent = ref(null)
 // const rightSidebarComponent = ref(null)
 const twoColPageList = ['article']

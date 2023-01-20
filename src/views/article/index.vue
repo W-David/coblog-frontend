@@ -47,19 +47,9 @@
           <el-button type="success" round @click="handleEdit">修改文章</el-button>
         </div>
       </div>
-      <div class="article-comments-area">
-        <div id="waline"></div>
-        <!-- <waline
-          el="#waline"
-          dark=".dark"
-          :serverURL="process.env.VUE_APP_WALINE_API"
-          lang="zh-CN"
-          :reaction="true"
-        ></waline> -->
-      </div>
     </div>
-    <el-backtop :bottom="25"> </el-backtop>
   </div>
+  <el-backtop :bottom="25"> </el-backtop>
 </template>
 
 <script setup>
@@ -67,7 +57,6 @@ import { ref, reactive, onMounted, onUnmounted, computed, nextTick, onActivated,
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { init } from '@waline/client'
 // import '@waline/client/dist/waline.css'
 // import tocbot from 'tocbot'
 
@@ -82,24 +71,6 @@ const loginInfo = computed(() => store.getters.loginInfo)
 const isAdminLogin = computed(() => store.getters.isAdminLogin)
 const article = computed(() => store.getters['article/getArticleById'](articleId))
 const isCurAdmin = computed(() => article.value?.admin?.id === loginInfo.value?.id)
-
-// watch(
-//   () => route.path,
-//   path => {
-//     if (path.split('/')[1] !== 'article') return
-//     waline.update()
-//   }
-// )
-
-const mountWaline = () => {
-  init({
-    el: '#waline',
-    serverURL: process.env.VUE_APP_WALINE_API,
-    lang: 'zh-CN',
-    reaction: true,
-    dark: '.dark'
-  })
-}
 
 const getArticle = async articleId => await store.dispatch('article/GetArticle', articleId)
 const handleDel = async () => {
@@ -128,7 +99,6 @@ const handleFavorite = async () => {
 }
 
 onMounted(async () => {
-  mountWaline()
   await getArticle(articleId)
   // nextTick(() => {
   //   tocbot.init({

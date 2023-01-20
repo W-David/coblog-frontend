@@ -11,6 +11,7 @@
       <component :is="Component" :key="route.path" />
     </transition>
   </router-view>
+  <waline v-if="isArticlePage"></waline>
   <div class="widget-list hidden-sm-and-up">
     <!-- tag-list -->
     <transition name="fade" appear>
@@ -37,6 +38,11 @@ import TagList from '@/components/TagList.vue'
 import CategoryList from '@/components/CategoryList.vue'
 import ArticleHot from '@/components/ArticleHot.vue'
 import Links from '@/components/Links.vue'
+import Waline from '@/components/Waline.vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
+const isArticlePage = computed(() => useRoute().name === 'article')
 </script>
 
 <style lang="scss" scoped>
