@@ -6,9 +6,12 @@
 
 <script setup>
 import { init } from '@waline/client'
-import { onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { onMounted, onUnmounted, watch, computed } from 'vue'
 
-const mountWaline = () => {
+const route = useRoute()
+const waline = { instance: null }
+const generateWaline = () =>
   init({
     el: '#waline',
     serverURL: process.env.VUE_APP_WALINE_API,
@@ -16,10 +19,17 @@ const mountWaline = () => {
     reaction: true,
     dark: '.dark'
   })
-}
 onMounted(() => {
-  mountWaline()
+  waline.instance = generateWaline()
 })
+onUnmounted(() => {
+  waline.instance.destroy()
+})
+
+watch(
+  () => route.params.id,
+  () => waline.instance.update()
+)
 </script>
 
 <style lang="scss" scoped>
