@@ -40,7 +40,7 @@
           <div class="article-desc-content">{{ article.description }}</div>
         </div>
         <div class="article-content-container">
-          <div id="article-content" class="article-content" v-html="article.content"></div>
+          <div id="article-content" class="article-content" v-html="articleContent"></div>
         </div>
         <div class="article-edit-container" v-if="isAdminLogin && isCurAdmin">
           <el-button type="danger" round @click="handleDel">删除 • 需输入文章标题</el-button>
@@ -57,12 +57,18 @@ import { ref, reactive, onMounted, onUnmounted, computed, nextTick, onActivated,
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import MarkdownIt from 'markdown-it'
 // import '@waline/client/dist/waline.css'
 // import tocbot from 'tocbot'
 
 import CategoryPanel from '@/components/CategoryPanel'
 import TagPanel from '@/components/TagPanel'
 
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  typographer: true
+})
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
@@ -70,6 +76,7 @@ const articleId = +route.params.id
 const loginInfo = computed(() => store.getters.loginInfo)
 const isAdminLogin = computed(() => store.getters.isAdminLogin)
 const article = computed(() => store.getters['article/getArticleById'](articleId))
+const articleContent = computed(() => (article.value.content ? md.render(article.value.content) : ''))
 const isCurAdmin = computed(() => article.value?.admin?.id === loginInfo.value?.id)
 
 const getArticle = async articleId => await store.dispatch('article/GetArticle', articleId)
