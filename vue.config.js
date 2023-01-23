@@ -31,7 +31,6 @@ module.exports = {
     loaderOptions: {
       scss: {
         additionalData: `
-					@use "./src/assets/element/index.scss" as *;
 				  @use "./src/assets/style/index.scss" as *;
 				`
       }

@@ -7056,11 +7056,6 @@ mlly@^1.0.0:
     pkg-types "^1.0.0"
     ufo "^1.0.0"
 
-modern-normalize@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.npmmirror.com/modern-normalize/-/modern-normalize-1.1.0.tgz"
-  integrity sha512-2lMlY1Yc1+CUy0gw4H95uNN7vjbpoED7NNRSBHE25nWfLBdmMzFCsPshlzbxHz+gYMcBEUN8V4pU16prcdPSgA==
-
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmmirror.com/move-concurrently/-/move-concurrently-1.0.1.tgz"
@@ -10004,11 +9999,6 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
-
-tocbot@^4.18.2:
-  version "4.18.2"
-  resolved "https://registry.npmmirror.com/tocbot/-/tocbot-4.18.2.tgz"
-  integrity sha512-bWUfEYQZ4oFgT+qZYvzlTgbsTmA645ApHbo1iRaOBUeFfy5IpctgAQQjCXbPZy+4RDZ1JJYlIBgoApZMzMaYog==
 
 toidentifier@1.0.1:
   version "1.0.1"

@@ -58,8 +58,6 @@ import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import MarkdownIt from 'markdown-it'
-// import '@waline/client/dist/waline.css'
-// import tocbot from 'tocbot'
 
 import CategoryPanel from '@/components/CategoryPanel'
 import TagPanel from '@/components/TagPanel'
@@ -107,20 +105,8 @@ const handleFavorite = async () => {
 
 onMounted(async () => {
   await getArticle(articleId)
-  // nextTick(() => {
-  //   tocbot.init({
-  //     tocSelector: '#article-toc',
-  //     contentSelector: '#article-content',
-  //     headingSelector: 'h1, h2, h3',
-  //     hasInnerContainers: true,
-  //     headingsOffset: 20,
-  //     scrollSmoothOffset: -90
-  //   })
-  // })
 })
-onUnmounted(() => {
-  // tocbot.destroy()
-})
+onUnmounted(() => {})
 </script>
 
 <style lang="scss" scoped>

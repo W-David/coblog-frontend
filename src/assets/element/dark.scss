@@ -1,26 +1,28 @@
 @use '../style/color' as color;
 
-@forward '~element-plus/theme-chalk/src/dark/var.scss' with (
+@forward 'element-plus/theme-chalk/src/dark/var.scss' with (
   $colors: (
-		'white': #ffffff,
+    'white': #ffffff,
     'black': #000000,
     'primary': (
-      'base': color.$primary-color,
+      'base': color.$primary-color
     ),
     'success': (
-      'base': color.$success-color,
+      'base': color.$success-color
     ),
     'warning': (
-      'base': color.$warning-color,
+      'base': color.$warning-color
     ),
     'danger': (
-      'base': color.$danger-color,
+      'base': color.$danger-color
     ),
     'error': (
-      'base': color.$danger-color,
+      'base': color.$danger-color
     ),
     'info': (
-      'base': color.$info-color,
-    ),
+      'base': color.$info-color
+    )
   )
 );
+
+@use 'element-plus/theme-chalk/src/dark/css-vars.scss' as *;

@@ -10,8 +10,8 @@ import SvgIcon from './components/SvgIcon.vue'
 import Pagination from './components/Pagination.vue'
 
 import './assets/icons'
+import './assets/element/index.scss'
 import './assets/style/normallize.scss'
-import 'highlight.js/styles/monokai-sublime.css'
 
 const app = createApp(App)
 installElementPlus(app)
