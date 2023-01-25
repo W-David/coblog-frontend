@@ -337,13 +337,36 @@ const submitBlog = async () => {
     }
     .blog-text {
       @include layout(100%, auto, 8px 0, 0);
-      @include border(1px solid var(--el-border-color), 4px);
-      // ::v-deep .w-e-text-container {
-      //   min-height: 360px;
-      //   background-color: var(--el-bg-color);
-      //   @include border(1px solid var(--el-border-color), 4px);
-      //   @include layout(100%, auto, 8px 0, 0);
-      // }
+      &:deep {
+        .v-note-wrapper {
+          z-index: 1000 !important;
+          @include border(1px solid var(--el-border-color), 4px);
+          &.fullscreen {
+            z-index: 10000 !important;
+          }
+          background-color: var(--el-bg-color) !important;
+          .v-note-op {
+            background-color: var(--el-bg-color) !important;
+            border-bottom-color: var(--el-border-color) !important;
+            .op-icon:hover {
+              background-color: var(--el-border-color) !important;
+            }
+            .op-icon,
+            .op-icon-divider {
+              color: var(--el-text-color-regular) !important;
+            }
+          }
+          .v-note-panel {
+            .content-input-wrapper {
+              background-color: var(--el-bg-color) !important;
+              textarea {
+                background-color: var(--el-bg-color) !important;
+                color: var(--el-text-color-primary) !important;
+              }
+            }
+          }
+        }
+      }
     }
     .blog-ctrl {
       &:deep {

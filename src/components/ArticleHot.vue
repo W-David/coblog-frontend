@@ -118,10 +118,10 @@ const toArticle = id => {
           transition: all 300ms ease-out;
         }
         .article-description {
-          @include font-song;
           color: var(--el-text-color-secondary);
           margin-top: 4px;
-          font-size: 13px;
+          font-size: 12px;
+          font-style: italic;
           @include text-overflow(2);
           transition: all 300ms ease-out;
         }

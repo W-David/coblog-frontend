@@ -40,7 +40,9 @@
           <div class="article-desc-content">{{ article.description }}</div>
         </div>
         <div class="article-content-container">
-          <div id="article-content" class="article-content" v-html="articleContent"></div>
+          <div id="article-content" class="article-content">
+            <article class="markdown-body" v-html="articleContent"></article>
+          </div>
         </div>
         <div class="article-edit-container" v-if="isAdminLogin && isCurAdmin">
           <el-button type="danger" round @click="handleDel">删除 • 需输入文章标题</el-button>
@@ -58,6 +60,8 @@ import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import MarkdownIt from 'markdown-it'
+import MDHighLight from 'markdown-it-highlightjs'
+import MDTocAndAnchor from 'markdown-it-toc-and-anchor'
 
 import CategoryPanel from '@/components/CategoryPanel'
 import TagPanel from '@/components/TagPanel'
@@ -67,6 +71,8 @@ const md = new MarkdownIt({
   linkify: true,
   typographer: true
 })
+  .use(MDHighLight)
+  .use(MDTocAndAnchor)
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
@@ -113,16 +119,6 @@ onUnmounted(() => {})
 .article-page {
   @include layout(100%, auto, 0 0 $main-margin 0, 0);
   z-index: 1000;
-  // #article-toc {
-  //   @include position(fixed, 360px, 88px);
-  //   @include layout(240px, auto, 0, 8px);
-  //   line-height: 1.8;
-  // }
-  // .article-sub-area {
-  //   @include layout(100%, auto, 0, $main-margin);
-  //   @include border(none, 8px);
-  //   @include box-shadow;
-  // }
   .article-area {
     .article-ctrl-area {
       position: fixed;
@@ -230,17 +226,23 @@ onUnmounted(() => {})
         }
       }
       .article-content-container {
-        @include layout(100%, auto, 0 0 12px 0, 16px 24px);
-        @include border(1px solid #e5e5e5, 4px);
-        // background-color: rgba(245, 236, 211, 0.2);
-        @include bg-color(#eee, #1f1f1f);
+        @include layout(100%, auto, 0 0 12px 0, 0);
         .article-content {
-          @include font-hei;
-          &:deep {
-            @include article-styl;
-            img {
-              @include layout(100%, auto, 8px 0, 0);
-              object-fit: cover;
+          .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            // max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            overflow: auto;
+            @include scroll-bar;
+            @include border(none, 8px);
+            // box-shadow: var(--el-box-shadow);
+            @include box-shadow;
+            @media (max-width: 767px) {
+              .markdown-body {
+                padding: 15px;
+              }
             }
           }
         }

@@ -86,13 +86,13 @@ const toArticle = id => {
         .article-time {
           color: var(--el-color-primary-light-3);
           font-weight: bolder;
-          font-size: 10px;
-          font-style: italic;
+          font-size: 14px;
         }
         .article-title {
           color: var(--el-color-primary-light-3);
           margin-top: 4px;
-          font-size: 13px;
+          font-size: 12px;
+          font-style: italic;
           @include text-overflow(2);
           transition: all 300ms ease-out;
         }
