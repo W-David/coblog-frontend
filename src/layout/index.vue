@@ -29,17 +29,10 @@ useWindowResize()
 
 const store = useStore()
 const route = useRoute()
-const activePage = ref('/home')
 const isAdminLogin = computed(() => store.getters.isAdminLogin)
 const isUserLogin = computed(() => store.getters.isUserLogin)
 const isLogin = isAdminLogin.value || isUserLogin.value
-
-watch(
-  () => route.path,
-  path => {
-    activePage.value = path
-  }
-)
+const activePage = computed(() => '/' + route.name)
 
 const loginMenu = [
   { id: 0, name: '首页', path: '/home' },

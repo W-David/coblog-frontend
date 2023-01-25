@@ -5,19 +5,11 @@
       <el-col :sm="7" :md="6" :lg="5" :xl="5" class="hidden-xs-only" v-if="!!leftSidebarComponent">
         <component :is="leftSidebarComponent" :key="route.name" />
       </el-col>
-      <el-col
-        :xs="24"
-        :sm="isOneColLayout ? 22 : 15"
-        :md="isOneColLayout ? 20 : 16"
-        :lg="isOneColLayout ? 14 : 12"
-        :xl="12"
-      >
+      <el-col :xs="24" :sm="isOneColLayout ? 22 : 15" :md="isOneColLayout ? 20 : 16" :lg="isOneColLayout ? 14 : 12">
         <h-main></h-main>
       </el-col>
       <el-col :lg="5" class="hidden-md-and-down" v-if="!!rightSidebarComponent">
-        <transition name="slide-fade-right" appear>
-          <component :is="rightSidebarComponent" :key="route.name" />
-        </transition>
+        <component :is="rightSidebarComponent" :key="route.name" />
       </el-col>
     </el-row>
   </div>
@@ -40,8 +32,6 @@ const route = useRoute()
 const routeName = route.name
 const isArticlePage = ref(routeName === 'article')
 
-// const leftSidebarComponent = ref(null)
-// const rightSidebarComponent = ref(null)
 const twoColPageList = ['article']
 const oneColPageList = ['blog']
 

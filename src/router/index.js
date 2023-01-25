@@ -70,7 +70,7 @@ const router = controller(
     scrollBehavior: async (to, from, savedPosition) => {
       await new Promise(res => setTimeout(res, 500))
       if (savedPosition) {
-        return savedPosition
+        return { top: savedPosition.top, behavior: 'smooth' }
       } else {
         const routeName = to.name
         const routeElMap = {

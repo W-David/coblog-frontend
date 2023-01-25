@@ -69,7 +69,6 @@ module.exports = {
       // 'element-plus': 'ElementPlus',
       // '@element-plus/icons': 'ElementPlusIconsVue',
       // '@vueuse/core': 'VueUse',
-      wangeditor: 'wangEditor',
       '@waline/client': 'Waline',
       'ali-oss': 'OSS'
     },

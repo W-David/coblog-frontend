@@ -15,7 +15,6 @@
       <div class="blog-title">
         <input v-model="blogTitle" placeholder="取个标题吧(❁´◡`❁)" />
       </div>
-      <div class="blog-toolbar" ref="toolbar"></div>
       <div class="blog-tc">
         <div class="tag-area">
           <select-area
@@ -41,7 +40,16 @@
       <div class="blog-desc">
         <textarea v-model="blogDesc" placeholder="请输入文章描述(^///^)"></textarea>
       </div>
-      <div class="blog-text" ref="text"></div>
+      <div class="blog-text">
+        <mavon-editor
+          ref="mavon"
+          @imgAdd="imgAdd"
+          @imgDel="imgDel"
+          :boxShadow="false"
+          :subfield="false"
+          v-model="text"
+        ></mavon-editor>
+      </div>
       <div class="blog-ctrl">
         <el-button type="success" @click="submitBlog">提交博文</el-button>
       </div>
@@ -55,8 +63,6 @@
 </template>
 
 <script setup>
-import WangEditor from 'wangeditor'
-import hljs from 'highlight.js'
 import { onMounted, onBeforeUnmount, ref, reactive, watch, computed, toRaw } from 'vue'
 import BannerUpload from '@/components/FileUpload.vue'
 import SelectArea from '@/components/SelectArea.vue'
@@ -65,6 +71,8 @@ import getOssClient from '@/util/alioss'
 import { useStore, defineProps } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { mavonEditor as MavonEditor } from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
 import { createArticle, updateArticle } from '@/api/article'
 import { addFile, deleteFile } from '@/api/file'
@@ -75,8 +83,8 @@ const props = defineProps(['id'])
 const store = useStore()
 const router = useRouter()
 
-const toolbar = ref()
 const text = ref()
+const mavon = ref()
 
 const title = ref('')
 const list = ref([])
@@ -89,28 +97,12 @@ const blogBanner = ref('')
 const blogBannerId = ref('')
 const blogTitle = ref('')
 const blogDesc = ref('')
-const previewHtml = ref('')
 const tags = ref([])
 const cates = ref([])
 
 const isEditMode = computed(() => !!props.id)
 
-let contentInstance = null
-const createContentInstance = () => {
-  contentInstance = new WangEditor(toolbar.value, text.value)
-  Object.assign(contentInstance.config, {
-    highlight: hljs,
-    zIndex: 1000,
-    showFullScreen: false,
-    customUploadImg,
-    onchange,
-    onchangeTimeout: 1500
-  })
-  contentInstance.create()
-}
-
 onMounted(() => {
-  createContentInstance()
   if (isEditMode.value) {
     const article = computed(() => store.getters['article/getArticleById'](+props.id))
     const { title = '', content = '', banner = {}, description = '', categories = [], tags: tgs = [] } = article.value
@@ -121,30 +113,32 @@ onMounted(() => {
     blogDesc.value = description
     cates.value = categories
     tags.value = tgs
-    contentInstance.txt.html(content)
+    text.value = content
+    // contentInstance.txt.html(content)
   }
 })
 
 onBeforeUnmount(() => {
-  contentInstance.destroy()
-  contentInstance = null
+  // contentInstance.destroy()
+  // contentInstance = null
 })
 
-const onchange = newHtml => {
-  previewHtml.value = newHtml
+const imgAdd = async (pos, file) => {
+  const url = await uploadImg(file)
+  mavon.value.$img2Url(pos, url)
 }
 
-const customUploadImg = async (resultFiles, insertImgFn) => {
+const imgDel = () => {}
+const uploadImg = async file => {
   const client = getOssClient(store)
-  const file = resultFiles[0]
   const res = await client.put(file.name, file)
   if (res.res.status === 200 && res.res.statusCode === 200) {
     ElMessage({ message: '上传成功', type: 'success' })
     const url = res.url
-    insertImgFn(url)
+    return url
   } else {
     ElMessage({ message: '图片上传失败', type: 'error' })
-    return
+    return ''
   }
 }
 
@@ -257,7 +251,7 @@ const handleDelete = async () => {
 
 const submitBlog = async () => {
   const title = blogTitle.value
-  const content = contentInstance.txt.html()
+  const content = text.value
   const categoryIds = cates.value.map(cate => cate.id)
   const tagIds = tags.value.map(tag => tag.id)
   const description = blogDesc.value || '默认描述内容'
@@ -342,12 +336,14 @@ const submitBlog = async () => {
       }
     }
     .blog-text {
-      ::v-deep .w-e-text-container {
-        min-height: 360px;
-        background-color: var(--el-bg-color);
-        @include border(1px solid var(--el-border-color), 4px);
-        @include layout(100%, auto, 8px 0, 0);
-      }
+      @include layout(100%, auto, 8px 0, 0);
+      @include border(1px solid var(--el-border-color), 4px);
+      // ::v-deep .w-e-text-container {
+      //   min-height: 360px;
+      //   background-color: var(--el-bg-color);
+      //   @include border(1px solid var(--el-border-color), 4px);
+      //   @include layout(100%, auto, 8px 0, 0);
+      // }
     }
     .blog-ctrl {
       &:deep {

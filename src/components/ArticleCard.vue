@@ -23,7 +23,10 @@
         {{ article.title }}
       </span>
     </div>
-    <div class="article-ct-container">
+    <div
+      class="article-ct-container"
+      v-if="(article.categories && article.categories.length) || (article.tags && article.tags.length)"
+    >
       <category-panel
         :size="12"
         :category="category"
@@ -34,17 +37,15 @@
     </div>
     <div class="article-content-container" v-html="article.description"></div>
     <div class="article-description-container">
-      <div class="description-content">
-        <span class="article-time">
-          <el-icon><i-calendar /></el-icon>
-          {{ article.createdAt.split(' ')[0] }}
-        </span>
+      <div class="article-time">
+        <el-icon><i-calendar /></el-icon>
+        {{ article.createdAt.split(' ')[0] }}
       </div>
       <div class="load-more">
-        <span class="load-more-content" @click.stop.prevent="openDetail">
-          查看全文
+        <el-button @click="openDetail" text bg>
+          详情
           <el-icon><i-arrow-right /></el-icon>
-        </span>
+        </el-button>
       </div>
     </div>
   </div>
@@ -76,7 +77,7 @@ const isBannerHover = ref(false)
 $descrip-mr: 12px;
 
 .article-card-container {
-  @include layout(100%, 100%, 0, 0 0 16px 0);
+  @include layout(100%, 100%, 0, 0);
   @include border(1px solid var(--el-border-color-light), 6px);
   @include transition(all 120ms ease-in-out);
   // @include box-shadow;
@@ -94,9 +95,9 @@ $descrip-mr: 12px;
       left: 50%;
       transform: translate(-50%, -50%);
       @include layout(auto, auto, 0, 6px 12px);
-      @include border(2px solid var(--el-color-primary), 6px);
+      @include border(2px solid var(--el-color-primary), 4px);
       opacity: 0;
-      // color: white;
+      color: var(--el-color-primary);
       transition: all 220ms ease-out;
       @include pointer;
       &:hover {
@@ -183,7 +184,7 @@ $descrip-mr: 12px;
   }
 
   .article-title-container {
-    @include layout(100%, auto, 28px 0 0 0, 12px 16px);
+    @include layout(100%, auto, 16px 0 0 0, 8px);
     @include flex-box(row, center, center);
 
     .title-content {
@@ -192,7 +193,8 @@ $descrip-mr: 12px;
       font-size: 24px;
       font-weight: bold;
       @include pointer;
-
+      transition: all 220ms ease-out;
+      max-width: 88%;
       &:hover {
         transform: scale(1.02);
       }
@@ -200,42 +202,43 @@ $descrip-mr: 12px;
   }
 
   .article-ct-container {
-    @include layout(100%, auto, 0, 12px 0);
+    @include layout(auto, auto, 0 32px, 8px 0);
     @include flex-box(row, center, center, wrap);
-    @include border(1.2px solid var(--el-border-color-extra-light), null, bottom);
+    @include border(2px solid var(--el-border-color-extra-light), null, bottom);
   }
 
   .article-content-container {
-    @include layout(100%, auto, 16px 0 18px 0, 0 24px);
-    font-size: 16px;
+    @include layout(auto, auto, 0, 8px 32px);
+    @include text-overflow(5);
+    color: var(--el-text-color-regular);
+    font-size: 15px;
     line-height: 1.6;
     text-align: left;
-    @include text-overflow(5);
-    text-indent: 1em;
+    text-indent: 16px;
   }
 
   .article-description-container {
-    @include layout(100%, auto, 16px 0 0 0, 0 22px);
+    @include layout(100%, auto, 0, 0 16px 12px 16px);
     @include flex-box(row, space-between);
 
-    .description-content {
+    .article-time {
+      @include flex-box(row, center, center);
       color: var(--el-text-color-secondary);
-      .article-time {
-        margin-right: $descrip-mr;
-        &:deep .el-icon {
-          margin-right: 2px;
-        }
+      font-size: 12px;
+      &:deep .el-icon {
+        margin-right: 6px;
       }
     }
 
     .load-more {
       @include transition(all 120ms ease);
       @include pointer;
-      .el-icon {
-        vertical-align: middle;
-      }
-      &:hover {
-        color: var(--el-color-primary);
+      transition: all 220ms ease-out;
+      &:deep .el-button {
+        font-weight: bold;
+        &:hover {
+          color: var(--el-color-primary);
+        }
       }
     }
   }

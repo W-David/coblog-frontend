@@ -48,8 +48,8 @@
         </div>
       </div>
     </div>
+    <el-backtop :bottom="25"> </el-backtop>
   </div>
-  <el-backtop :bottom="25"> </el-backtop>
 </template>
 
 <script setup>
@@ -238,6 +238,10 @@ onUnmounted(() => {})
           @include font-hei;
           &:deep {
             @include article-styl;
+            img {
+              @include layout(100%, auto, 8px 0, 0);
+              object-fit: cover;
+            }
           }
         }
       }
