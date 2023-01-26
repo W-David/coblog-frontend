@@ -2,7 +2,11 @@
   <div class="article-card-container">
     <div class="article-banner-container">
       <div class="article-banner-img">
-        <img v-if="article.banner && article.banner.path" v-LazyLoad="article.banner.path" alt="noImg" />
+        <img
+          v-if="article.banner && article.banner.path"
+          v-LazyLoad="`${article.banner.path}?x-oss-process=image/resize,p_25`"
+          alt="noImg"
+        />
         <img v-else src="/static/img/defaultCover.jpg" alt="noImg" />
       </div>
       <div

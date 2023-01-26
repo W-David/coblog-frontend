@@ -4,7 +4,11 @@
     <div class="article-recent-list">
       <div class="article-recent-item" v-for="article in articles" :key="article.id" @click="toArticle(article.id)">
         <div class="article-cover">
-          <img v-if="article.banner && article.banner.path" v-LazyLoad="article.banner.path" alt="noImg" />
+          <img
+            v-if="article.banner && article.banner.path"
+            v-LazyLoad="`${article.banner.path}?x-oss-process=image/resize,m_fill,h_64,w_64`"
+            alt="noImg"
+          />
           <img v-else src="/static/img/defaultCover.jpg" alt="noImg" />
         </div>
         <div class="article-content">

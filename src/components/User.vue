@@ -1,6 +1,12 @@
 <template>
   <div class="user-container">
-    <el-avatar :size="36" shape="circle" :src="avatar" fit="cover" @click.stop="tapAvatar">
+    <el-avatar
+      :size="36"
+      shape="circle"
+      :src="`${avatar}?x-oss-process=image/resize,m_fill,h_36,w_36`"
+      fit="cover"
+      @click.stop="tapAvatar"
+    >
       <span>{{ userInfo.username.substr(0, 1) }}</span>
     </el-avatar>
     <el-dropdown class="hidden-sm-and-down">

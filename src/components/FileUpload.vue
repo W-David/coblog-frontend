@@ -19,7 +19,13 @@
     </el-upload>
     <transition name="fade">
       <div class="file-img-container" v-if="isUploaded">
-        <img class="file-img" :src="imgUrl" alt="noImg" width="100%" height="100%" />
+        <img
+          class="file-img"
+          :src="`${imgUrl}?x-oss-process=image/resize,p_25`"
+          alt="noImg"
+          width="100%"
+          height="100%"
+        />
         <div class="file-cover">
           <span class="file-ctrl" @click="handleView">
             <el-icon><i-view /></el-icon>
