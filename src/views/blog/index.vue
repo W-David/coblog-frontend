@@ -348,8 +348,14 @@ const submitBlog = async () => {
           .v-note-op {
             background-color: var(--el-bg-color) !important;
             border-bottom-color: var(--el-border-color) !important;
-            .op-icon:hover {
-              background-color: var(--el-border-color) !important;
+            .op-icon {
+              &:hover {
+                background-color: var(--el-bg-color-overlay) !important;
+              }
+              &.selected {
+                color: var(--el-text-color-regular) !important;
+                background-color: var(--el-bg-color-page) !important;
+              }
             }
             .op-icon,
             .op-icon-divider {
@@ -357,11 +363,20 @@ const submitBlog = async () => {
             }
           }
           .v-note-panel {
-            .content-input-wrapper {
-              background-color: var(--el-bg-color) !important;
-              textarea {
+            .v-note-edit {
+              .content-input-wrapper {
                 background-color: var(--el-bg-color) !important;
-                color: var(--el-text-color-primary) !important;
+                textarea {
+                  background-color: var(--el-bg-color) !important;
+                  color: var(--el-text-color-primary) !important;
+                }
+              }
+            }
+            .v-note-show {
+              &.single-show {
+                .scroll-style {
+                  background-color: var(--el-bg-color) !important;
+                }
               }
             }
           }

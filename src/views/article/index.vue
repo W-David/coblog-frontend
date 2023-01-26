@@ -71,7 +71,7 @@ const md = new MarkdownIt({
   linkify: true,
   typographer: true
 })
-  .use(MDHighLight)
+  .use(MDHighLight, { code: false })
   .use(MDTocAndAnchor)
 const store = useStore()
 const route = useRoute()
@@ -146,6 +146,8 @@ onUnmounted(() => {})
       @include bg-color(#fafafa, #2f2f2f);
       .article-banner-container {
         @include layout(100%, 320px, 0 0 12px 0, 0);
+        @include border(none, 8px);
+        @include box-shadow;
         position: relative;
         img {
           object-fit: cover;
@@ -180,7 +182,8 @@ onUnmounted(() => {})
       }
       .article-title-container {
         @include layout(100%, auto, 0 0 12px 0, 8px);
-        @include border(1px solid #ddd, 4px);
+        @include border(none, 8px);
+        @include box-shadow;
         .row-container {
           @include layout(100%, auto, 4px 0, 4px 8px);
           @include flex-box(row, space-between, flex-start, wrap);
@@ -227,6 +230,8 @@ onUnmounted(() => {})
       }
       .article-content-container {
         @include layout(100%, auto, 0 0 12px 0, 0);
+        @include border(none, 8px);
+        @include box-shadow;
         .article-content {
           .markdown-body {
             box-sizing: border-box;
@@ -238,7 +243,6 @@ onUnmounted(() => {})
             @include scroll-bar;
             @include border(none, 8px);
             // box-shadow: var(--el-box-shadow);
-            @include box-shadow;
             @media (max-width: 767px) {
               .markdown-body {
                 padding: 15px;

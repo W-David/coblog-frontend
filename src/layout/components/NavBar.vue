@@ -31,6 +31,7 @@
   </div>
   <div class="drawer-container hidden-md-and-up">
     <el-drawer
+      class="side-drawer"
       :model-value="sidebarOpen"
       :with-header="false"
       direction="ltr"
@@ -152,11 +153,9 @@ const toLogin = () => {
       white-space: nowrap;
     }
 
-    .el-icon {
+    &:deep .el-icon {
+      --color: var(--el-color-primary) !important;
       margin-right: 6px;
-      &:active {
-        color: var(--el-color-primary);
-      }
     }
   }
   .nav-menu {

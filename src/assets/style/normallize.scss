@@ -1,5 +1,4 @@
-@import url('../../assets/markdown/github-markdown-light.css');
-@import url('../../assets/markdown/github-markdown-dark.css');
+// css标准化
 html,
 body,
 #app {
@@ -11,18 +10,56 @@ body,
   box-sizing: border-box !important;
 }
 
+/* 使用怪异盒模型 */
+* {
+  box-sizing: border-box !important;
+}
+
+/* 列表格式化 */
+ol,
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: var(--el-text-color-regular);
+  &:hover {
+    color: var(--el-text-color-primary);
+  }
+}
+
+/* html5元素 */
+footer,
+header,
+hgroup,
+nav,
+main,
+article,
+aside,
+details,
+menu,
+section,
+figure,
+figcaption {
+  display: block;
+}
+
+// 遮盖层样式
 body {
   /* drawer 样式，组件有scope限制 */
   .el-overlay {
     z-index: 300000 !important;
   }
-  .el-overlay > .el-drawer > .el-drawer__body {
+  .el-overlay > .el-drawer.side-drawer > .el-drawer__body {
     @include layout(100%, 100%, 0, 28px 0 18px 0);
     @include flex-box(column, space-between, center);
 
     .collapse-top {
       @include flex-box(column, space-between, center);
       .drawer-icon {
+        --color: var(--el-color-primary) !important;
         margin-bottom: 36px;
       }
       .drawer-user-info {
@@ -64,42 +101,6 @@ body {
       }
     }
   }
-}
-
-/* 使用怪异盒模型 */
-* {
-  box-sizing: border-box !important;
-}
-
-/* 列表格式化 */
-ol,
-ul,
-li {
-  list-style: none;
-}
-
-a {
-  text-decoration: none;
-  color: var(--el-text-color-regular);
-  &:hover {
-    color: var(--el-text-color-primary);
-  }
-}
-
-/* html5元素 */
-footer,
-header,
-hgroup,
-nav,
-main,
-article,
-aside,
-details,
-menu,
-section,
-figure,
-figcaption {
-  display: block;
 }
 
 //waline CSS变量

@@ -13,6 +13,8 @@ import './assets/icons'
 import './assets/element/index.scss'
 import './assets/style/normallize.scss'
 
+import './assets/markdown/github-markdown/index.scss'
+
 const app = createApp(App)
 installElementPlus(app)
 registerIcon(app)
