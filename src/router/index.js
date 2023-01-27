@@ -68,6 +68,10 @@ const router = controller(
   createRouter({
     history: createWebHistory(),
     scrollBehavior: async (to, from, savedPosition) => {
+      //对于文章页面不处理，防止与原生的锚点定位冲突
+      if (to.name === 'article' && from.name === 'article') {
+        return false
+      }
       await new Promise(res => setTimeout(res, 500))
       if (savedPosition) {
         return { top: savedPosition.top, behavior: 'smooth' }

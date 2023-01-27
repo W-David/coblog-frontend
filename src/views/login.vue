@@ -203,15 +203,15 @@ const handleSwitch = () => {
 }
 const animationDuration = ref(48)
 const bgImgs = reactive([
-  require('../assets/image/bg-01.jpg'),
-  require('../assets/image/bg-02.jpg'),
-  require('../assets/image/bg-03.jpg'),
-  require('../assets/image/bg-04.jpg')
+  require('../assets/image/bg-01.webp'),
+  require('../assets/image/bg-02.webp'),
+  require('../assets/image/bg-03.webp'),
+  require('../assets/image/bg-04.webp')
 ])
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Homemade+Apple&family=Sacramento&display=swap');
+@import url('../assets/web_font/google.css');
 
 .login-page {
   @include layout(100vw, 100vh, 0, 0);

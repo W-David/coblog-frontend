@@ -51,7 +51,7 @@ const toArticle = id => {
   z-index: 1000;
 
   .article-hot-title {
-    @include layout(100%, auto, 4px 8px, 2px 8px);
+    @include layout(auto, auto, 2px 8px, 2px 8px);
     border-left: 4px solid var(--el-color-danger);
     font-size: 16px;
     font-weight: bold;

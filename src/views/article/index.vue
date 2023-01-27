@@ -66,13 +66,6 @@ import MDTocAndAnchor from 'markdown-it-toc-and-anchor'
 import CategoryPanel from '@/components/CategoryPanel'
 import TagPanel from '@/components/TagPanel'
 
-const md = new MarkdownIt({
-  html: true,
-  linkify: true,
-  typographer: true
-})
-  .use(MDHighLight, { code: false })
-  .use(MDTocAndAnchor)
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
@@ -82,6 +75,20 @@ const isAdminLogin = computed(() => store.getters.isAdminLogin)
 const article = computed(() => store.getters['article/getArticleById'](articleId))
 const articleContent = computed(() => (article.value.content ? md.render(article.value.content) : ''))
 const isCurAdmin = computed(() => article.value?.admin?.id === loginInfo.value?.id)
+
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  typographer: true
+})
+  .use(MDHighLight, { code: false })
+  .use(MDTocAndAnchor, {
+    tocFirstLevel: 2,
+    tocLastLevel: 5,
+    tocCallback: (tocMarkdown, tocArray, tocHtml) => {
+      store.commit('article/SET_ARTICLE', { ...article.value, tocArray })
+    }
+  })
 
 const getArticle = async articleId => await store.dispatch('article/GetArticle', articleId)
 const handleDel = async () => {

@@ -11,9 +11,9 @@
   </div>
   <div class="widget-list is-sticky">
     <!-- toc -->
-    <!-- <transition name="slide-fade-left" appear>
+    <transition name="slide-fade-left" appear>
       <toc class="widget-item" v-if="isArticlePage"></toc>
-    </transition> -->
+    </transition>
     <!-- article-recent -->
     <transition name="slide-fade-left" appear>
       <article-recent class="widget-item"></article-recent>

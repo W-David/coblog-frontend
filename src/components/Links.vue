@@ -28,7 +28,7 @@ const links = ref([
   @include bg-color(#fff);
   box-shadow: var(--el-box-shadow);
   .links-title {
-    @include layout(100%, auto, 4px 8px, 4px);
+    @include layout(auto, auto, 4px, 4px);
     font-size: 16px;
     font-weight: bold;
     .title-icon {

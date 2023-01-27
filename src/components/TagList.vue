@@ -69,7 +69,7 @@ const handleDelete = async tag => {
   @include bg-color(#fff);
   box-shadow: var(--el-box-shadow);
   .tag-list-title {
-    @include layout(100%, auto, 0, 4px 8px);
+    @include layout(auto, auto, 0, 4px 8px);
     font-size: 16px;
     font-weight: bold;
     .title-icon {
