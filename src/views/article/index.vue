@@ -156,6 +156,19 @@ onUnmounted(() => {})
         @include border(none, 8px);
         @include box-shadow;
         position: relative;
+
+        &::after {
+          @include position(absolute);
+          content: '';
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 320px;
+          background-color: transparent;
+          html.dark & {
+            background-color: #00000050;
+          }
+        }
         img {
           object-fit: cover;
           width: 100%;
