@@ -63,12 +63,12 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount, ref, reactive, watch, computed, toRaw } from 'vue'
+import { onMounted, onBeforeUnmount, ref, reactive, watch, computed, toRaw, defineProps } from 'vue'
 import BannerUpload from '@/components/FileUpload.vue'
 import SelectArea from '@/components/SelectArea.vue'
 import SelectedList from '@/components/SelectedList.vue'
 import getOssClient from '@/util/alioss'
-import { useStore, defineProps } from 'vuex'
+import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { mavonEditor as MavonEditor } from 'mavon-editor'

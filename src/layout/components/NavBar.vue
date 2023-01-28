@@ -50,13 +50,7 @@
             <span class="to-login">登录</span>
           </span>
         </div>
-        <el-menu
-          class="drawer-menu"
-          :default-active="activePage"
-          :router="true"
-          mode="veritical"
-          @select="handleChange"
-        >
+        <el-menu class="drawer-menu" :default-active="activePage" :router="true" mode="vertical" @select="handleChange">
           <el-menu-item v-if="isAdminLogin" class="hidden-md-and-up" index="/blog">博文</el-menu-item>
           <el-menu-item v-for="menu in menuList" :key="menu.id" :index="menu.path">
             {{ menu.name }}

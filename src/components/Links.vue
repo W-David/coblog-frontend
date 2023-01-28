@@ -6,7 +6,7 @@
     </div>
     <div class="links-list">
       <div class="links-item" v-for="(link, index) in links" :key="index">
-        <el-link :type="link.type || 'default'" :href="link.href" target="_blank">{{ link.text }}</el-link>
+        <el-link :type="link.type" :href="link.href" target="_blank">{{ link.text }}</el-link>
       </div>
     </div>
   </div>
@@ -15,8 +15,8 @@
 <script setup>
 import { ref } from 'vue'
 const links = ref([
-  { href: 'http://39.98.122.206:8088/', text: 'Hexo博客 / Cody' },
-  { href: 'https://github.com/W-David', text: 'Github / W-David' }
+  { type: 'default', href: 'http://coblog.fun:8088/', text: 'Hexo博客 / Cody' },
+  { type: 'default', href: 'https://github.com/W-David', text: 'Github / W-David' }
 ])
 </script>
 
@@ -66,6 +66,9 @@ const links = ref([
       &:hover {
         &:after {
           background-color: #00000010;
+          html.dark & {
+            background-color: #ffffff10;
+          }
         }
       }
     }

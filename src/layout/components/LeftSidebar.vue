@@ -39,8 +39,11 @@ import Links from '@/components/Links.vue'
 
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 
+const store = useStore()
 const isArticlePage = computed(() => useRoute().name === 'article')
+const isXS = computed(() => store.getters.devicesize === 'xs')
 </script>
 
 <style lang="scss" scoped>

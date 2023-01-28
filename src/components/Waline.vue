@@ -1,35 +1,45 @@
 <template>
   <div class="waline-comp-container">
-    <div id="waline"></div>
+    <!-- <div id="waline"></div> -->
+    <waline :serverURL="serverURL" :path="path" :lang="lang" :dark="dark" :reaction="reaction" :copyright="copyright" />
   </div>
 </template>
 
 <script setup>
-import { init } from '@waline/client'
 import { useRoute } from 'vue-router'
 import { onMounted, onUnmounted, watch, computed } from 'vue'
+import { Waline } from '@waline/client/dist/component'
+import { init } from '@waline/client'
 
 const route = useRoute()
-const waline = { instance: null }
-const generateWaline = () =>
-  init({
-    el: '#waline',
-    serverURL: process.env.VUE_APP_WALINE_API,
-    lang: 'zh-CN',
-    reaction: true,
-    dark: '.dark'
-  })
-onMounted(() => {
-  waline.instance = generateWaline()
-})
-onUnmounted(() => {
-  waline.instance.destroy()
-})
+const serverURL = process.env.VUE_APP_WALINE_API
+const lang = 'zh-CN'
+const dark = '.dark'
+const reaction = true
+const copyright = false
+const path = computed(() => route.path)
 
-watch(
-  () => route.params.id,
-  () => waline.instance.update()
-)
+// const waline = { instance: null }
+// const generateWaline = () =>
+//   init({
+//     el: '#waline',
+//     serverURL: process.env.VUE_APP_WALINE_API,
+//     lang: 'zh-CN',
+//     reaction: true,
+//     dark: '.dark'
+//   })
+// onMounted(() => {
+//   waline.instance = generateWaline()
+// })
+// onUnmounted(() => {
+//   waline.instance.destroy()
+//   waline.instance = null
+// })
+
+// watch(
+//   () => route.params.id,
+//   () => waline.instance.update()
+// )
 </script>
 
 <style lang="scss" scoped>

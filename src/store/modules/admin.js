@@ -67,6 +67,7 @@ const admin = {
           nickname,
           email
         })
+        commit('app/TOGGLE_SIDEBAR', false, { root: true })
         setToken(token)
         setUserType('admin')
       } else {
@@ -85,6 +86,7 @@ const admin = {
           nickname,
           email
         })
+        commit('app/TOGGLE_SIDEBAR', false, { root: true })
         setToken(token)
         setUserType('admin')
       } else {
@@ -112,6 +114,7 @@ const admin = {
     },
     async Logout({ state, commit }) {
       commit('LOGOUT')
+      commit('app/TOGGLE_SIDEBAR', false, { root: true })
     }
   }
 }

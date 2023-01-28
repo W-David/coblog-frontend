@@ -4,6 +4,7 @@ const getOssClient = store => {
   const sts = store.getters.sts
   if (sts) {
     const client = new OSS({
+      secure: true,
       region: 'oss-cn-beijing',
       bucket: 'coblog-upload',
       accessKeyId: sts.AccessKeyId,

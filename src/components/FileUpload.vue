@@ -137,9 +137,17 @@ const handleUpload = () => {
       @include border(1px solid transparent, 4px);
       @include transition(all 0.5s ease);
       background-color: transparent;
+      html.dark & {
+        background-color: #00000030;
+      }
       @include pointer;
+
       &:hover {
-        background-color: #00000080;
+        background-color: #00000050;
+
+        html.dark & {
+          background-color: #00000080;
+        }
       }
       .file-ctrl {
         color: #fff;

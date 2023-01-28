@@ -4,7 +4,7 @@
       <div class="article-banner-img">
         <img
           v-if="article.banner && article.banner.path"
-          v-LazyLoad="`${article.banner.path}?x-oss-process=image/resize,p_25`"
+          v-LazyLoad="`${article.banner.path}?x-oss-process=image/resize,m_fill,h_280,w_780`"
           alt="noImg"
         />
         <img v-else src="/static/img/defaultCover.jpg" alt="noImg" />
@@ -126,6 +126,9 @@ $descrip-mr: 12px;
         width: 100%;
         height: 100%;
         background-color: transparent;
+        html.dark & {
+          background-color: #00000030;
+        }
         transition: transform 600ms ease-out;
       }
       img {
@@ -170,6 +173,9 @@ $descrip-mr: 12px;
         }
         &:after {
           background-color: #00000050;
+          html.dark & {
+            background-color: #00000080;
+          }
         }
       }
       .article-no-banner {

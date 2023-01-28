@@ -75,6 +75,22 @@ const toArticle = id => {
       }
       .article-cover {
         @include layout(64px, 64px, 0, 0);
+        position: relative;
+
+        &::after {
+          @include position(absolute);
+          content: '';
+          top: 0;
+          left: 0;
+          width: 64px;
+          height: 64px;
+          background-color: transparent;
+          transform: scale(1.05);
+          html.dark & {
+            background-color: #00000030;
+          }
+          transition: all 300ms ease-out;
+        }
         img {
           @include layout(100%, 100%, 0, 0);
           @include border(none, 4px);
@@ -103,6 +119,9 @@ const toArticle = id => {
       }
       &:hover {
         .article-cover {
+          &:after {
+            transform: scale(1);
+          }
           img {
             transform: scale(1);
           }
@@ -117,6 +136,9 @@ const toArticle = id => {
         }
         &:after {
           background-color: #00000010;
+          html.dark & {
+            background-color: #ffffff10;
+          }
         }
       }
     }

@@ -69,8 +69,8 @@ module.exports = {
       // 'element-plus': 'ElementPlus',
       // '@element-plus/icons': 'ElementPlusIconsVue',
       // '@vueuse/core': 'VueUse',
-      '@waline/client': 'Waline',
-      'ali-oss': 'OSS'
+      // '@waline/client': 'Waline',
+      // 'ali-oss': 'OSS'
     },
     plugins: [
       // AutoImport({
@@ -201,5 +201,6 @@ module.exports = {
         }
       })
     })
-  }
+  },
+  transpileDependencies: ['@waline/client']
 }

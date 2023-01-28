@@ -44,10 +44,10 @@ const anchor = anchor => {
     transition: all 220ms ease;
     cursor: pointer;
     .item-content {
-      height: 18px;
-      line-height: 18px;
       a {
         font-size: 14px;
+        height: 18px;
+        line-height: 18px;
         color: var(--el-text-color-regular);
         @include text-overflow(1, 8px);
         transition: all 220ms ease;

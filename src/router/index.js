@@ -68,6 +68,10 @@ const router = controller(
   createRouter({
     history: createWebHistory(),
     scrollBehavior: async (to, from, savedPosition) => {
+      // 不处理登录页
+      if (to.name === 'login') {
+        return false
+      }
       //对于文章页面不处理，防止与原生的锚点定位冲突
       if (to.name === 'article' && from.name === 'article') {
         return false
