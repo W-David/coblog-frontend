@@ -4,6 +4,8 @@
       <el-link href="https://beian.miit.gov.cn" target="_blank">晋ICP备2023000379号-1</el-link>
       <el-divider direction="vertical" />
       <el-link href="https://coblog.fun" target="_blank">Cody's Blog</el-link>
+      <el-divider direction="vertical" />
+      <span id="busuanzi_container_site_uv">累计访客数 <span id="busuanzi_value_site_uv"></span> 人次</span>
     </div>
     <div class="copyright-hint">
       <span>Copyright © 2022 Cody. All rights reserved.</span>
@@ -37,10 +39,14 @@
     @include flex-box(row, center, center);
     @include font-hei;
     margin-bottom: 6px;
+    font-size: 12px;
     &:deep {
       .el-link {
         font-size: 12px;
       }
+    }
+    span {
+      color: var(--el-text-color-primary);
     }
   }
   .copyright-hint {

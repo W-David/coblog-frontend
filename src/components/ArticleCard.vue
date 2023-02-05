@@ -86,7 +86,7 @@ $descrip-mr: 12px;
   @include transition(all 120ms ease-in-out);
   // @include box-shadow;
   box-shadow: var(--el-box-shadow);
-  @include bg-color;
+  @include bg-color();
   z-index: 1000;
 
   .article-banner-container {

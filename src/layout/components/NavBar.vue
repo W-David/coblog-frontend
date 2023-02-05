@@ -4,7 +4,7 @@
       <el-icon :size="20" class="hidden-md-and-up" @click.stop.prevent="handleExpand">
         <i-expand />
       </el-icon>
-      <span data-text="Cody's Blog" class="icon-text">Cody's Blog</span>
+      <span data-text="Cody's Blog" class="icon-text" @click="toHome">Cody's Blog</span>
     </div>
     <div class="nav-menu hidden-sm-and-down">
       <el-menu :default-active="activePage" :router="true" mode="horizontal" ref="menuRef" :ellipsis="false">
@@ -97,6 +97,10 @@ const sidebarOpen = computed(() => store.getters.sidebarOpen)
 const setSidebarOpen = open => store.dispatch('app/ToggleSidebar', open)
 const menuRef = ref()
 
+const toHome = () => {
+  router.push({ name: 'home' })
+}
+
 const isAdminLogin = computed(() => store.getters.isAdminLogin)
 const isUserLogin = computed(() => store.getters.isUserLogin)
 const isLogin = isAdminLogin.value || isUserLogin.value
@@ -145,6 +149,8 @@ const toLogin = () => {
       word-spacing: 1.2px;
       line-height: 1.2;
       white-space: nowrap;
+      user-select: none;
+      cursor: pointer;
     }
 
     &:deep .el-icon {

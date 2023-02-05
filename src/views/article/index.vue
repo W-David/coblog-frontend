@@ -41,7 +41,7 @@
         </div>
         <div class="article-content-container">
           <div id="article-content" class="article-content">
-            <article class="markdown-body" v-html="articleContent"></article>
+            <article class="markdown-body" v-html="article.htmlContent"></article>
           </div>
         </div>
         <div class="article-edit-container" v-if="isAdminLogin && isCurAdmin">
@@ -59,9 +59,9 @@ import { ref, reactive, onMounted, onUnmounted, computed, nextTick, onActivated,
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import MarkdownIt from 'markdown-it'
-import MDHighLight from 'markdown-it-highlightjs'
-import MDTocAndAnchor from 'markdown-it-toc-and-anchor'
+// import MarkdownIt from 'markdown-it'
+// import MDHighLight from 'markdown-it-highlightjs'
+// import MDTocAndAnchor from 'markdown-it-toc-and-anchor'
 
 import CategoryPanel from '@/components/CategoryPanel'
 import TagPanel from '@/components/TagPanel'
@@ -73,22 +73,22 @@ const articleId = +route.params.id
 const loginInfo = computed(() => store.getters.loginInfo)
 const isAdminLogin = computed(() => store.getters.isAdminLogin)
 const article = computed(() => store.getters['article/getArticleById'](articleId))
-const articleContent = computed(() => (article.value.content ? md.render(article.value.content) : ''))
 const isCurAdmin = computed(() => article.value?.admin?.id === loginInfo.value?.id)
 
-const md = new MarkdownIt({
-  html: true,
-  linkify: true,
-  typographer: true
-})
-  .use(MDHighLight, { code: false })
-  .use(MDTocAndAnchor, {
-    tocFirstLevel: 2,
-    tocLastLevel: 5,
-    tocCallback: (tocMarkdown, tocArray, tocHtml) => {
-      store.commit('article/SET_ARTICLE', { ...article.value, tocArray })
-    }
-  })
+// const articleContent = computed(() => (article.value.content ? md.render(article.value.content) : ''))
+// const md = new MarkdownIt({
+//   html: true,
+//   linkify: true,
+//   typographer: true
+// })
+//   .use(MDHighLight, { code: false })
+//   .use(MDTocAndAnchor, {
+//     tocFirstLevel: 2,
+//     tocLastLevel: 5,
+//     tocCallback: (tocMarkdown, tocArray, tocHtml) => {
+//       store.commit('article/SET_ARTICLE', { ...article.value, tocArray })
+//     }
+//   })
 
 const getArticle = async articleId => await store.dispatch('article/GetArticle', articleId)
 const handleDel = async () => {

@@ -191,11 +191,13 @@
 
 @mixin bg-color($light-color: #fdfdfd, $dark-color: #1a1a1a) {
   @if ($light-color != null) {
-    background-color: $light-color;
+    background-color: rgba($light-color, 1);
+    @include bg-glossy();
   }
   @if ($dark-color!= null) {
     html.dark & {
-      background-color: $dark-color;
+      background-color: rgba($dark-color, 1);
+      @include bg-glossy();
     }
   }
 }
@@ -307,6 +309,10 @@
   @keyframes #{$animation-name} {
     @content;
   }
+}
+
+@mixin bg-glossy($blur: 2px) {
+  backdrop-filter: blur($blur);
 }
 
 /* 过渡效果 */
