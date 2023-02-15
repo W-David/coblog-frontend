@@ -10,7 +10,7 @@ const getOssClient = store => {
       accessKeyId: sts.AccessKeyId,
       accessKeySecret: sts.AccessKeySecret,
       stsToken: sts.SecurityToken,
-      refreshToken: async () => {
+      refreshSTSToken: async () => {
         const sts = await store.dispatch('alioss/FetchSTS')
         const stsObj = {
           accessKeyId: sts.AccessKeyId,
@@ -19,7 +19,7 @@ const getOssClient = store => {
         }
         return stsObj
       },
-      refreshSTSTokenInternal: 300000
+      refreshSTSTokenInterval: 300000
     })
     return client
   } else {

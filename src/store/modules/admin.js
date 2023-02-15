@@ -1,6 +1,6 @@
 import { setToken, removeToken, setUserType, removeUserType } from '@/util/auth'
-import { login, register, detailAdmin, auth, updateAdmin } from '@/api/admin'
 import getOssClient from '@/util/alioss'
+import { login, register, detailAdmin, auth, updateAdmin } from '@/api/admin'
 
 const admin = {
   namespaced: true,
