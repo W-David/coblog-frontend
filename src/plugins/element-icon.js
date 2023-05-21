@@ -5,7 +5,7 @@ const switchName = iconName => `i${iconName.replace(/[A-Z]/g, c => `-${c.toLower
 
 //导入 element-plus/icons 所有图标
 export default app => {
-  for (const iconName in ElIcons) {
-    app.component(switchName(iconName), ElIcons[iconName])
-  }
+	for (const iconName in ElIcons) {
+		app.component(switchName(iconName), ElIcons[iconName])
+	}
 }

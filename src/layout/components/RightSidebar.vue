@@ -1,20 +1,26 @@
 <template>
-  <div class="widget-list">
-    <!-- article-hot -->
-    <transition name="slide-fade-right" appear>
-      <article-hot class="widget-item"></article-hot>
-    </transition>
-  </div>
-  <div class="widget-list is-sticky">
-    <!-- tag-list -->
-    <transition name="slide-fade-right" appear>
-      <tag-list class="widget-item"></tag-list>
-    </transition>
-    <!-- category-list -->
-    <transition name="slide-fade-right" appear>
-      <category-list class="widget-item"></category-list>
-    </transition>
-  </div>
+	<div class="widget-list">
+		<!-- article-hot -->
+		<transition
+			name="slide-fade-right"
+			appear>
+			<article-hot class="widget-item"></article-hot>
+		</transition>
+	</div>
+	<div class="widget-list is-sticky">
+		<!-- tag-list -->
+		<transition
+			name="slide-fade-right"
+			appear>
+			<tag-list class="widget-item"></tag-list>
+		</transition>
+		<!-- category-list -->
+		<transition
+			name="slide-fade-right"
+			appear>
+			<category-list class="widget-item"></category-list>
+		</transition>
+	</div>
 </template>
 
 <script setup>

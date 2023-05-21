@@ -19,8 +19,8 @@ const app = createApp(App)
 installElementPlus(app)
 registerIcon(app)
 
-app.component('svg-icon', SvgIcon)
-app.component('pagination', Pagination)
+app.component('SvgIcon', SvgIcon)
+app.component('Pagination', Pagination)
 
 app.use(store).use(router)
 app.use(directives)

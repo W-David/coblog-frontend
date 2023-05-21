@@ -1,23 +1,37 @@
 <template>
-  <div class="app-main-container">
-    <div id="particles-js"></div>
-    <el-row justify="center" :gutter="16">
-      <el-col :sm="7" :md="6" :lg="5" :xl="5" class="hidden-xs-only" v-if="!!leftSidebarComponent">
-        <component :is="leftSidebarComponent" :key="route.name" />
-      </el-col>
-      <el-col
-        :xs="24"
-        :sm="isOneColLayout ? 22 : 15"
-        :md="isOneColLayout ? 20 : isTwoColLayout ? 16 : 16"
-        :lg="isOneColLayout ? 16 : isTwoColLayout ? 16 : 12"
-      >
-        <h-main></h-main>
-      </el-col>
-      <el-col :lg="5" class="hidden-md-and-down" v-if="!!rightSidebarComponent">
-        <component :is="rightSidebarComponent" :key="route.name" />
-      </el-col>
-    </el-row>
-  </div>
+	<div class="app-main-container">
+		<div id="particles-js" />
+		<el-row
+			justify="center"
+			:gutter="16">
+			<el-col
+				v-if="!!leftSidebarComponent"
+				:sm="7"
+				:md="6"
+				:lg="5"
+				:xl="5"
+				class="hidden-xs-only">
+				<component
+					:is="leftSidebarComponent"
+					:key="route.name"></component>
+			</el-col>
+			<el-col
+				:xs="24"
+				:sm="isOneColLayout ? 22 : 15"
+				:md="isOneColLayout ? 20 : isTwoColLayout ? 16 : 16"
+				:lg="isOneColLayout ? 16 : isTwoColLayout ? 16 : 12">
+				<h-main></h-main>
+			</el-col>
+			<el-col
+				v-if="!!rightSidebarComponent"
+				:lg="5"
+				class="hidden-md-and-down">
+				<component
+					:is="rightSidebarComponent"
+					:key="route.name"></component>
+			</el-col>
+		</el-row>
+	</div>
 </template>
 
 <script setup>
@@ -48,23 +62,23 @@ const leftSidebarComponent = computed(() => (isThreeColLayout.value || isTwoColL
 const rightSidebarComponent = computed(() => (isThreeColLayout.value ? MainRightSidebar : null))
 
 onMounted(async () => {
-  particlesJs.load('particles-js', 'static/particles.json')
+	particlesJs.load('particles-js', 'static/particles.json')
 })
 </script>
 
 <style lang="scss" scoped>
 .app-main-container {
-  @include layout(100%, 100%, 0, $main-margin);
-  @include slide-fade-left;
-  @include slide-fade-right;
-  #particles-js {
-    position: fixed;
-    @include layout;
-    z-index: -1;
-  }
-  .main-content-container {
-    @include widget-styl;
-    z-index: 1000;
-  }
+	@include layout(100%, 100%, 0, $main-margin);
+	@include slide-fade-left;
+	@include slide-fade-right;
+	#particles-js {
+		position: fixed;
+		@include layout;
+		z-index: -1;
+	}
+	.main-content-container {
+		@include widget-styl;
+		z-index: 1000;
+	}
 }
 </style>

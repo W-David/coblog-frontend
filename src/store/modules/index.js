@@ -7,11 +7,11 @@ import tag from './tag'
 import article from './article'
 
 export default {
-  admin,
-  alioss,
-  app,
-  user,
-  category,
-  tag,
+	admin,
+	alioss,
+	app,
+	user,
+	category,
+	tag,
 	article
 }

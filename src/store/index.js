@@ -3,8 +3,8 @@ import modules from './modules'
 import getters from './getters'
 
 const store = createStore({
-  modules,
-  getters
+	modules,
+	getters
 })
 
 export default store
