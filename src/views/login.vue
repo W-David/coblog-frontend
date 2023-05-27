@@ -143,12 +143,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, onMounted, onUnmounted } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
-import { local } from '@/util/cache'
-import { useDark, useToggle } from '@vueuse/core'
+import {ref, reactive, watch, onMounted, onUnmounted} from 'vue'
+import {useStore} from 'vuex'
+import {useRouter} from 'vue-router'
+import {ElMessage} from 'element-plus'
+import {local} from '@/util/cache'
+import {useDark, useToggle} from '@vueuse/core'
 import Footer from '@/layout/components/HFooter.vue'
 
 const store = useStore()
@@ -213,11 +213,11 @@ const handleLogin = async param => {
 		local.set('remeber-me', true)
 		local.setJSON('login-form', form)
 	}
-	router.push({ name: 'home' })
-	ElMessage({ type: 'success', message: `欢迎来到Cody's Blog, ${res.data.nickname}` })
+	router.push({name: 'home'})
+	ElMessage({type: 'success', message: `欢迎来到Cody's Blog, ${res.data.nickname}`})
 }
 const handleNoAuth = () => {
-	router.push({ name: 'home' })
+	router.push({name: 'home'})
 }
 const handleRegister = async param => {
 	const isAdmin = param === 'admin'
@@ -240,8 +240,8 @@ const handleRegister = async param => {
 		local.set('remeber-me', true)
 		local.setJSON('login-form', form)
 	}
-	router.push({ name: 'home' })
-	ElMessage({ type: 'success', message: res.msg })
+	router.push({name: 'home'})
+	ElMessage({type: 'success', message: res.msg})
 }
 const handleSwitch = () => {
 	form.email = ''

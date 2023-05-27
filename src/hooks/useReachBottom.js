@@ -1,6 +1,6 @@
-import { onMounted, onUnmounted } from 'vue'
-import { getScrollHeight, getScrollTop, getWindowHeight } from '@/util/screen'
-import { throttle } from 'lodash'
+import {onMounted, onUnmounted} from 'vue'
+import {getScrollHeight, getScrollTop, getWindowHeight} from '@/util/screen'
+import {throttle} from 'lodash'
 
 const useReachBottom = callback => {
 	const onScroll = () => {

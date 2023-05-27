@@ -9,7 +9,7 @@
 			<template #suffix>
 				<el-icon @click="handleQuery"><i-search></i-search></el-icon>
 			</template>
-			<template #default="{ item }">
+			<template #default="{item}">
 				<div class="ac-content">
 					<div class="ac-type">
 						<svg-icon
@@ -33,13 +33,13 @@
 </template>
 
 <script setup>
-import { navbarSearch } from '@/api/search'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import {navbarSearch} from '@/api/search'
+import {ref} from 'vue'
+import {useRouter} from 'vue-router'
 
 const router = useRouter()
 const queryText = ref('')
-const handleQuery = ({ type, id }) => router.push({ name: type, params: { id } })
+const handleQuery = ({type, id}) => router.push({name: type, params: {id}})
 const querySearch = async (qs, callback) => {
 	if (!qs) return
 	const res = await navbarSearch(qs)

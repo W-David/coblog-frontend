@@ -8,10 +8,7 @@
 	"extends": [
 		"eslint:recommended",
 		"plugin:vue/vue3-recommended",
-		"prettier"
-	],
-	"plugins": [
-		"prettier"
+		"plugin:prettier/recommended"
 	],
 	"parser": "vue-eslint-parser",
 	"parserOptions": {
@@ -22,35 +19,15 @@
 			"globalReturn": false,
 			"impliedStrict": false,
 			"jsx": true
-		}
+		},
+		"extraFileExtensions": [
+			".vue"
+		]
 	},
 	"rules": {
 		// 关闭未使用变量检查
 		"no-unused-vars": "off",
 		"vue/multi-word-component-names": "off",
-		// prettier 作为规则
-		"prettier/prettier": [
-			"error",
-			{
-				"singleQuote": true,
-				"semi": false,
-				"printWidth": 160,
-				"tabWidth": 2,
-				"quoteProps": "as-needed",
-				"trailingComma": "none",
-				"bracketSpacing": true,
-				"bracketSameLine": true,
-				"arrowParens": "avoid",
-				"vueIndentScriptAndStyle": false,
-				"proseWrap": "preserve",
-				"htmlWhitespaceSensitivity": "ignore",
-				"endOfLine": "auto",
-				"embeddedLanguageFormatting": "auto",
-				"singleAttributePerLine": true
-			}
-		],
-		"arrow-body-style": "off",
-		"prefer-arrow-callback": "off",
 		"vue/no-v-html": "off",
 		"vue/html-self-closing": [
 			"error",

@@ -69,8 +69,8 @@
 </template>
 
 <script setup>
-import { defineEmits, defineProps, onMounted, ref, toRefs } from 'vue'
-import { useStore } from 'vuex'
+import {defineEmits, defineProps, onMounted, ref, toRefs} from 'vue'
+import {useStore} from 'vuex'
 
 const props = defineProps({
 	isUploaded: {
@@ -90,7 +90,7 @@ const props = defineProps({
 		default: '文件'
 	}
 })
-const { isUploaded, imgUrl, trigHint, descripHint } = toRefs(props)
+const {isUploaded, imgUrl, trigHint, descripHint} = toRefs(props)
 const emit = defineEmits(['on-upload', 'on-delete'])
 const store = useStore()
 const uploadRef = ref(null)

@@ -12,14 +12,14 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs, defineEmits } from 'vue'
+import {defineProps, toRefs, defineEmits} from 'vue'
 const props = defineProps({
 	modelValue: {
 		type: Boolean,
 		default: false
 	}
 })
-const { modelValue } = toRefs(props)
+const {modelValue} = toRefs(props)
 const emit = defineEmits(['update:modelValue'])
 const change = val => emit('update:modelValue', val)
 </script>

@@ -51,9 +51,9 @@ import ArticleHot from '@/components/ArticleHot.vue'
 import Toc from '@/components/Toc.vue'
 import Links from '@/components/Links.vue'
 
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
+import {computed} from 'vue'
+import {useRoute} from 'vue-router'
+import {useStore} from 'vuex'
 
 const store = useStore()
 const isArticlePage = computed(() => useRoute().name === 'article')

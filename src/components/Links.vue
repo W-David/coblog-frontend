@@ -23,10 +23,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import {ref} from 'vue'
 const links = ref([
-	{ type: 'default', href: 'http://coblog.fun:8088/', text: 'Hexo博客 / Cody' },
-	{ type: 'default', href: 'https://github.com/W-David', text: 'Github / W-David' }
+	{type: 'default', href: 'http://coblog.fun:8088/', text: 'Hexo博客 / Cody'},
+	{type: 'default', href: 'https://github.com/W-David', text: 'Github / W-David'}
 ])
 </script>
 

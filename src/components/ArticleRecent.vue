@@ -31,15 +31,15 @@
 </template>
 
 <script setup>
-import { computed, defineProps } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import {computed, defineProps} from 'vue'
+import {useRouter} from 'vue-router'
+import {useStore} from 'vuex'
 
 const router = useRouter()
 const store = useStore()
 const articles = computed(() => store.getters['article/getArticlesRecent'])
 const toArticle = id => {
-	router.push({ name: 'article', params: { id } })
+	router.push({name: 'article', params: {id}})
 }
 </script>
 

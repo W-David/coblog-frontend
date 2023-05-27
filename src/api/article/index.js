@@ -1,4 +1,4 @@
-import { DELETE, GET, PATCH, POST, PUT } from '@/util/http'
+import {DELETE, GET, PATCH, POST, PUT} from '@/util/http'
 
 export function createArticle(data) {
 	return POST({

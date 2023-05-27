@@ -93,10 +93,10 @@
 </template>
 
 <script setup>
-import { computed, ref, reactive } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import {computed, ref, reactive} from 'vue'
+import {useStore} from 'vuex'
+import {useRouter} from 'vue-router'
+import {ElMessage} from 'element-plus'
 import AvatarUpload from '@/components/FileUpload.vue'
 import useDOMCreate from '@/hooks/useDOMCreate'
 
@@ -129,7 +129,7 @@ const tapAvatar = () => {
 }
 const logout = async () => {
 	await store.dispatch('user/Logout')
-	router.push({ name: 'login' })
+	router.push({name: 'login'})
 }
 const handleCancel = () => {
 	openUserInfo.value = false
@@ -143,7 +143,7 @@ const handleUpdate = async () => {
 	})
 }
 const handleUpload = async file => {
-	const isSuccess = await store.dispatch('user/SetAvatar', { store, file })
+	const isSuccess = await store.dispatch('user/SetAvatar', {store, file})
 	ElMessage({
 		message: isSuccess ? '头像上传成功' : '上传失败',
 		type: isSuccess ? 'success' : 'error'

@@ -65,12 +65,12 @@
 	</div>
 </template>
 
-<script setup>
-import { defineProps, ref, toRefs } from 'vue'
-import { useRouter } from 'vue-router'
+<script setup lang="js">
+import {defineProps, ref, toRefs} from 'vue';
+import {useRouter} from 'vue-router';
 
-import CategoryPanel from '@/components/CategoryPanel'
-import TagPanel from '@/components/TagPanel'
+import CategoryPanel from '@/components/CategoryPanel';
+import TagPanel from '@/components/TagPanel';
 
 const router = useRouter()
 const props = defineProps({

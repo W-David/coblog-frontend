@@ -12,7 +12,7 @@ export function articles2Archive(rawArchive) {
 				? `${year}年, 第${rawArchive[i][format].split('-')[1]}周`
 				: `${year}年, ${rawArchive[i][format].split('-')[1]}月, ${rawArchive[i][format].split('-')[2]}日`
 		if (curTime !== time) {
-			const curArchive = { time, articles: [] }
+			const curArchive = {time, articles: []}
 			_list.push(curArchive)
 			curTime = time
 			curArticles = curArchive.articles

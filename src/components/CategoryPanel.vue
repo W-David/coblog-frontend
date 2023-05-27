@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="article-cate"
-		:style="{ fontSize: `${size}px`, height: `${size * 2}px`, lineHeight: `${size * 2}px`, borderRadius: `${size}px` }"
+		:style="{fontSize: `${size}px`, height: `${size * 2}px`, lineHeight: `${size * 2}px`, borderRadius: `${size}px`}"
 		@click.stop="toCategory(category.id)">
 		<el-icon :size="size"><i-folder-opened></i-folder-opened></el-icon>
 		{{ category.name }}
@@ -9,8 +9,8 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-import { defineProps, toRefs } from 'vue'
+import {useRouter} from 'vue-router'
+import {defineProps, toRefs} from 'vue'
 const router = useRouter()
 const props = defineProps({
 	category: {
@@ -22,9 +22,9 @@ const props = defineProps({
 		default: 16
 	}
 })
-const { category, size } = toRefs(props)
+const {category, size} = toRefs(props)
 const toCategory = id => {
-	router.push({ name: 'category', params: { id } })
+	router.push({name: 'category', params: {id}})
 }
 </script>
 

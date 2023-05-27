@@ -1,8 +1,8 @@
-import { onMounted, onUnmounted } from 'vue'
-import { getScrollTop } from '@/util/screen'
-import { throttle } from 'lodash'
+import {onMounted, onUnmounted} from 'vue'
+import {getScrollTop} from '@/util/screen'
+import {throttle} from 'lodash'
 
-const useScroll = ({ onScrollUp = offset => {}, onScrollDown = offset => {}, onScroll = offset => {}, delay = 200 }) => {
+const useScroll = ({onScrollUp = offset => {}, onScrollDown = offset => {}, onScroll = offset => {}, delay = 200}) => {
 	let scrollTopCache = 0
 	const onScrolling = () => {
 		const scrollTop = getScrollTop()

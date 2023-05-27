@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="article-tag"
-		:style="{ fontSize: `${size}px`, height: `${size * 2}px`, lineHeight: `${size * 2}px`, borderRadius: `${size}px` }"
+		:style="{fontSize: `${size}px`, height: `${size * 2}px`, lineHeight: `${size * 2}px`, borderRadius: `${size}px`}"
 		@click.stop="toTag(tag.id)">
 		<el-icon :size="size"><i-collection-tag></i-collection-tag></el-icon>
 		{{ tag.name }}
@@ -9,8 +9,8 @@
 </template>
 
 <script setup>
-import { toRefs, defineProps } from 'vue'
-import { useRouter } from 'vue-router'
+import {toRefs, defineProps} from 'vue'
+import {useRouter} from 'vue-router'
 const router = useRouter()
 const props = defineProps({
 	tag: {
@@ -22,9 +22,9 @@ const props = defineProps({
 		default: 16
 	}
 })
-const { tag, size } = toRefs(props)
+const {tag, size} = toRefs(props)
 const toTag = id => {
-	router.push({ name: 'tag', params: { id } })
+	router.push({name: 'tag', params: {id}})
 }
 </script>
 

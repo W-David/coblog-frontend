@@ -1,5 +1,5 @@
-import { createCategory, listCategory, detailCategory, deleteCategory, listCategoryArticles } from '@/api/category'
-import { cloneLoop, cloneForce } from '@jsmini/clone'
+import {createCategory, listCategory, detailCategory, deleteCategory, listCategoryArticles} from '@/api/category'
+import {cloneLoop, cloneForce} from '@jsmini/clone'
 
 const category = {
 	namespaced: true,
@@ -57,28 +57,28 @@ const category = {
 		}
 	},
 	actions: {
-		async CreateCategory({ state, commit }, params = {}) {
+		async CreateCategory({state, commit}, params = {}) {
 			const res = await createCategory(params)
 			const category = res.data || {}
 			commit('SET_CATEGORY', category)
 			commit('SET_CATEGORY_ARTICLE', category)
 			return category
 		},
-		async GetCategories({ state, commit }, params = {}) {
+		async GetCategories({state, commit}, params = {}) {
 			const res = await listCategory(params)
 			const categories = res.data.rows || []
 			const total = res.data.count || 0
 			commit('SET_CATEGORIES', categories)
 			return [categories, total]
 		},
-		async GetCategoryArticles({ state, commit }, data = {}) {
+		async GetCategoryArticles({state, commit}, data = {}) {
 			const res = await listCategoryArticles(data)
 			const categories = res.data.rows || []
 			const total = res.data.count || 0
 			commit('SET_CATEGORY_ARTICLES', categories)
 			return [categories, total]
 		},
-		async GetCategory({ state, commit }, categoryId) {
+		async GetCategory({state, commit}, categoryId) {
 			const curCategory = state.categoryMap.get(categoryId)
 			if (curCategory && curCategory.name) {
 				return Promise.resolve(curCategory)
@@ -88,7 +88,7 @@ const category = {
 			commit('SET_CATEGORY', category)
 			return category
 		},
-		async DelCategory({ state, commit }, categoryId) {
+		async DelCategory({state, commit}, categoryId) {
 			const res = await deleteCategory(categoryId)
 			const category = res.data || null
 			commit('DEL_CATEGORY', category.id)

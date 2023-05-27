@@ -1,5 +1,5 @@
-import { createTag, listTag, detailTag, deleteTag, listTagArticles } from '@/api/tag'
-import { cloneLoop, cloneForce } from '@jsmini/clone'
+import {createTag, listTag, detailTag, deleteTag, listTagArticles} from '@/api/tag'
+import {cloneLoop, cloneForce} from '@jsmini/clone'
 
 const tag = {
 	namespaced: true,
@@ -57,28 +57,28 @@ const tag = {
 		}
 	},
 	actions: {
-		async CreateTag({ state, commit }, params = {}) {
+		async CreateTag({state, commit}, params = {}) {
 			const res = await createTag(params)
 			const tag = res.data || {}
 			commit('SET_TAG', tag)
 			commit('SET_TAG_ARTICLE', tag)
 			return tag
 		},
-		async GetTags({ state, commit }, params = {}) {
+		async GetTags({state, commit}, params = {}) {
 			const res = await listTag(params)
 			const tags = res.data.rows || []
 			const total = res.data.count || 0
 			commit('SET_TAGS', tags)
 			return [tags, total]
 		},
-		async GetTagArticles({ state, commit }, data = {}) {
+		async GetTagArticles({state, commit}, data = {}) {
 			const res = await listTagArticles(data)
 			const tags = res.data.rows || []
 			const total = res.data.count || 0
 			commit('SET_TAG_ARTICLES', tags)
 			return [tags, total]
 		},
-		async GetTag({ state, commit }, tagId) {
+		async GetTag({state, commit}, tagId) {
 			const curTag = state.tagMap.get(tagId)
 			if (curTag && curTag.name) {
 				return Promise.resolve(curTag)
@@ -88,7 +88,7 @@ const tag = {
 			commit('SET_TAG', tag)
 			return tag
 		},
-		async DelTag({ state, commit }, tagId) {
+		async DelTag({state, commit}, tagId) {
 			const res = await deleteTag(tagId)
 			const tag = res.data || null
 			commit('DEL_TAG', tag.id)

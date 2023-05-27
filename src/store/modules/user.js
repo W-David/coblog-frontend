@@ -1,5 +1,5 @@
-import { setToken, removeToken, setUserType, removeUserType } from '@/util/auth'
-import { login, register, detailUser, auth, updateUser } from '@/api/user'
+import {setToken, removeToken, setUserType, removeUserType} from '@/util/auth'
+import {login, register, detailUser, auth, updateUser} from '@/api/user'
 import getOssClient from '@/util/alioss'
 
 const user = {
@@ -28,37 +28,37 @@ const user = {
 		}
 	},
 	actions: {
-		async SetAvatar({ state, commit }, { store, file }) {
+		async SetAvatar({state, commit}, {store, file}) {
 			const client = getOssClient(store)
 			const res = await client.put(file.name, file)
 			if (res.res.status === 200 && res.res.statusCode === 200) {
 				const url = res.url
 				commit('SET_AVATAR', url)
-				const updateRes = await updateUser({ ...state.userInfo, avatar: url })
+				const updateRes = await updateUser({...state.userInfo, avatar: url})
 				return updateRes.code === 200
 			} else {
 				return false
 			}
 		},
-		async DeleteAvatar({ state, commit }) {
+		async DeleteAvatar({state, commit}) {
 			commit('SET_AVATAR', '')
-			const deleteRes = await updateUser({ ...state.userInfo, avatar: '' })
+			const deleteRes = await updateUser({...state.userInfo, avatar: ''})
 			return deleteRes.code === 200
 		},
-		async SetUserInfo({ state, commit }, userInfo) {
-			const { username, email } = userInfo
+		async SetUserInfo({state, commit}, userInfo) {
+			const {username, email} = userInfo
 			commit('SET_USERINFO', {
 				id: state.userInfo.id,
 				username,
 				email
 			})
-			const updateRes = await updateUser({ ...state.userInfo, avatar: state.avatar })
+			const updateRes = await updateUser({...state.userInfo, avatar: state.avatar})
 			return updateRes.code === 200
 		},
-		async Login({ state, commit }, params = {}) {
+		async Login({state, commit}, params = {}) {
 			const res = await login(params)
 			const user = res.data || {}
-			const { id, username, email, token, avatar } = user
+			const {id, username, email, token, avatar} = user
 			if (res.code === 200) {
 				commit('SET_ISLOGIN', true)
 				commit('SET_AVATAR', avatar || '')
@@ -74,10 +74,10 @@ const user = {
 			}
 			return res
 		},
-		async Register({ state, commit }, params = {}) {
+		async Register({state, commit}, params = {}) {
 			const res = await register(params)
 			const user = res.data || {}
-			const { id, username, email, token } = user
+			const {id, username, email, token} = user
 			if (res.code === 200) {
 				commit('SET_ISLOGIN', true)
 				commit('SET_USERINFO', {
@@ -92,10 +92,10 @@ const user = {
 			}
 			return res
 		},
-		async GetInfo({ state, commit }) {
+		async GetInfo({state, commit}) {
 			const res = await auth()
 			const user = res.data || {}
-			const { id, username, email, avatar } = user
+			const {id, username, email, avatar} = user
 			if (res.code === 200) {
 				commit('SET_ISLOGIN', true)
 				commit('SET_AVATAR', avatar || '')
@@ -110,7 +110,7 @@ const user = {
 			}
 			return res
 		},
-		async Logout({ state, commit }) {
+		async Logout({state, commit}) {
 			commit('LOGOUT')
 		}
 	}

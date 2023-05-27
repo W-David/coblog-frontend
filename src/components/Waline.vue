@@ -12,10 +12,10 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
-import { onMounted, onUnmounted, watch, computed } from 'vue'
-import { Waline } from '@waline/client/dist/component'
-import { init } from '@waline/client'
+import {useRoute} from 'vue-router'
+import {onMounted, onUnmounted, watch, computed} from 'vue'
+import {Waline} from '@waline/client/dist/component'
+import {init} from '@waline/client'
 
 const route = useRoute()
 const serverURL = process.env.VUE_APP_WALINE_API

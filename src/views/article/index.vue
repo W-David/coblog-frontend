@@ -88,10 +88,10 @@
 </template>
 
 <script setup>
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { computed, onMounted, onUnmounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import {ElMessage, ElMessageBox} from 'element-plus'
+import {computed, onMounted, onUnmounted} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
+import {useStore} from 'vuex'
 // import MarkdownIt from 'markdown-it'
 // import MDHighLight from 'markdown-it-highlightjs'
 // import MDTocAndAnchor from 'markdown-it-toc-and-anchor'
@@ -125,25 +125,25 @@ const isCurAdmin = computed(() => article.value?.admin?.id === loginInfo.value?.
 
 const getArticle = async articleId => await store.dispatch('article/GetArticle', articleId)
 const handleDel = async () => {
-	const { value: title } = await ElMessageBox.prompt('【请输入文章标题确认删除】', '删除确认', {
+	const {value: title} = await ElMessageBox.prompt('【请输入文章标题确认删除】', '删除确认', {
 		confirmButtonText: '删除此文章',
 		cancelButtonText: '取消'
 	})
 	if (title !== article.value.title) {
-		ElMessage({ message: '请输入正确的文章标题', type: 'warning' })
+		ElMessage({message: '请输入正确的文章标题', type: 'warning'})
 		return
 	}
 	await store.dispatch('article/DelArticle', article.value.id)
-	router.push({ name: 'home' })
+	router.push({name: 'home'})
 }
 const handleEdit = () => {
-	router.push({ name: 'blog', params: { id: article.value.id } })
+	router.push({name: 'blog', params: {id: article.value.id}})
 }
 const toBack = () => {
 	router.back()
 }
 const handleFavorite = async () => {
-	const res = await store.dispatch('article/FavoriteArticle', { id: article.value.id })
+	const res = await store.dispatch('article/FavoriteArticle', {id: article.value.id})
 	if (res.code !== 200) return
 	article.value.isFavorited = !article.value.isFavorited
 	article.value.favoritedNum = res.data ? res.data : 0

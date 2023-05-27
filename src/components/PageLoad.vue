@@ -48,8 +48,8 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, toRefs, computed } from 'vue'
-import { useStore } from 'vuex'
+import {defineProps, defineEmits, toRefs, computed} from 'vue'
+import {useStore} from 'vuex'
 import LoadMore from './LoadMore.vue'
 const props = defineProps({
 	isLoadingMore: {
@@ -65,7 +65,7 @@ const store = useStore()
 const isTouchDevice = computed(() => store.getters.isTouchDevice)
 const emit = defineEmits(['on-load-more'])
 const handleLoadMore = () => emit('on-load-more')
-const { isLoadingMore, hasMore } = toRefs(props)
+const {isLoadingMore, hasMore} = toRefs(props)
 </script>
 
 <style lang="scss" scoped>

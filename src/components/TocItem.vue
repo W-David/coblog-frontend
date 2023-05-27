@@ -3,7 +3,7 @@
 		<div :class="['toc-item', isActived ? 'is-actived' : '']">
 			<div
 				class="item-content"
-				:style="{ 'text-indent': `${indent * Math.max(item.level - 1, 0)}px` }">
+				:style="{'text-indent': `${indent * Math.max(item.level - 1, 0)}px`}">
 				<!-- <a :href="`#${encodeURIComponent(item.anchor)}`">{{ item.content }}</a> -->
 				<a @click="anchor(item.anchor)">{{ item.content }}</a>
 			</div>
@@ -12,8 +12,8 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, toRefs } from 'vue'
-import { scrollToByView } from '@/util/scroll-to'
+import {ref, defineProps, defineEmits, toRefs} from 'vue'
+import {scrollToByView} from '@/util/scroll-to'
 
 const props = defineProps({
 	item: {
@@ -31,7 +31,7 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['on-checked'])
-const { item } = toRefs(props)
+const {item} = toRefs(props)
 const anchor = anchor => {
 	emits('on-checked', anchor)
 	scrollToByView(anchor)

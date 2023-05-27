@@ -19,9 +19,9 @@
 <script setup>
 import useDevice from '@/hooks/useDevice'
 import useWindowResize from '@/hooks/useWindowResize'
-import { computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
+import {computed, onMounted} from 'vue'
+import {useRoute} from 'vue-router'
+import {useStore} from 'vuex'
 import AppMain from './components/AppMain.vue'
 import HFooter from './components/HFooter.vue'
 import NavBar from './components/NavBar.vue'
@@ -37,18 +37,18 @@ const isLogin = isAdminLogin.value || isUserLogin.value
 const activePage = computed(() => '/' + route.name)
 
 const loginMenu = [
-	{ id: 0, name: '首页', path: '/home' },
-	{ id: 1, name: '归档', path: '/archive' },
-	{ id: 2, name: '标签', path: '/tag' },
-	{ id: 3, name: '分类', path: '/category' },
-	{ id: 4, name: '关于', path: '/about' }
+	{id: 0, name: '首页', path: '/home'},
+	{id: 1, name: '归档', path: '/archive'},
+	{id: 2, name: '标签', path: '/tag'},
+	{id: 3, name: '分类', path: '/category'},
+	{id: 4, name: '关于', path: '/about'}
 ]
 
 const unLoginMenu = [
-	{ id: 0, name: '首页', path: '/home' },
-	{ id: 1, name: '标签', path: '/tag' },
-	{ id: 2, name: '分类', path: '/category' },
-	{ id: 3, name: '关于', path: '/about' }
+	{id: 0, name: '首页', path: '/home'},
+	{id: 1, name: '标签', path: '/tag'},
+	{id: 2, name: '分类', path: '/category'},
+	{id: 3, name: '关于', path: '/about'}
 ]
 
 const menuList = isLogin ? loginMenu : unLoginMenu
@@ -57,8 +57,8 @@ onMounted(async () => {
 	await Promise.all([
 		store.dispatch('category/GetCategories'),
 		store.dispatch('tag/GetTags'),
-		store.dispatch('article/GetArticlesHot', { pageSize: 5 }),
-		store.dispatch('article/GetArticlesRecent', { pageSize: 5 })
+		store.dispatch('article/GetArticlesHot', {pageSize: 5}),
+		store.dispatch('article/GetArticlesRecent', {pageSize: 5})
 	])
 })
 </script>

@@ -19,9 +19,9 @@
 </template>
 
 <script setup>
-import { reactive, computed, onMounted, onUnmounted, ref, nextTick, watch } from 'vue'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import {reactive, computed, onMounted, onUnmounted, ref, nextTick, watch} from 'vue'
+import {useStore} from 'vuex'
+import {useRoute} from 'vue-router'
 
 import useReachBottom from '@/hooks/useReachBottom'
 
@@ -34,7 +34,7 @@ const checkedIds = computed(() => store.getters['tag/getCheckedTagIds'])
 const isChecked = id => checkedIds.value.includes(id)
 const hasMore = ref(true)
 const isLoadingMore = ref(false)
-const queryParams = reactive({ pageNum: 1, pageSize: 5 })
+const queryParams = reactive({pageNum: 1, pageSize: 5})
 const tagArticles = computed(() => store.getters['tag/getTagArticles']())
 
 const getTagArticles = async queryParams => {
@@ -46,7 +46,7 @@ const getTagArticles = async queryParams => {
 // useReachBottom(onLoadMore)
 const onLoadMore = async () => {
 	isLoadingMore.value = true
-	await getTagArticles({ ...queryParams, pageNum: queryParams.pageNum + 1 })
+	await getTagArticles({...queryParams, pageNum: queryParams.pageNum + 1})
 	queryParams.pageNum += 1
 	isLoadingMore.value = false
 }

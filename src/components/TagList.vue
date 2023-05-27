@@ -25,10 +25,10 @@
 </template>
 
 <script setup>
-import { reactive, computed, onMounted, ref, nextTick, watch, defineProps, toRefs } from 'vue'
-import { useStore } from 'vuex'
-import { useRoute, useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import {reactive, computed, onMounted, ref, nextTick, watch, defineProps, toRefs} from 'vue'
+import {useStore} from 'vuex'
+import {useRoute, useRouter} from 'vue-router'
+import {ElMessage} from 'element-plus'
 import usePrompt from '@/hooks/usePrompt'
 
 const store = useStore()
@@ -48,14 +48,14 @@ const handleChecked = item => {
 	}
 }
 const handleAdd = async () => {
-	const { setIsFinish, showPrompt, setHint } = usePrompt()
+	const {setIsFinish, showPrompt, setHint} = usePrompt()
 	setHint('已添加')
-	const { value: name } = await showPrompt('请输入添加的标签名称', '添加标签', '添加')
+	const {value: name} = await showPrompt('请输入添加的标签名称', '添加标签', '添加')
 	if (!name) {
-		ElMessage({ message: '名称不可为空', type: 'warning' })
+		ElMessage({message: '名称不可为空', type: 'warning'})
 		return
 	}
-	await store.dispatch('tag/CreateTag', { name })
+	await store.dispatch('tag/CreateTag', {name})
 	setIsFinish(true)
 }
 

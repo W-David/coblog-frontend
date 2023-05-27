@@ -1,4 +1,4 @@
-import { DELETE, GET, POST, PUT } from '@/util/http'
+import {DELETE, GET, POST, PUT} from '@/util/http'
 
 export function createCategory(data) {
 	return POST({

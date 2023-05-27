@@ -9,7 +9,7 @@
 	</div>
 	<!-- main-content -->
 	<router-view
-		v-slot="{ Component, route }"
+		v-slot="{Component, route}"
 		class="widget-list">
 		<transition :name="route.meta.transitionName">
 			<component
@@ -59,8 +59,8 @@ import CategoryList from '@/components/CategoryList.vue'
 import ArticleHot from '@/components/ArticleHot.vue'
 import Links from '@/components/Links.vue'
 import Waline from '@/components/Waline.vue'
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import {computed} from 'vue'
+import {useRoute} from 'vue-router'
 
 const isArticlePage = computed(() => useRoute().name === 'article')
 </script>

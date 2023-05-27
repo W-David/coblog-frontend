@@ -43,8 +43,8 @@
 </template>
 
 <script setup>
-import { ref, defineProps, toRefs } from 'vue'
-import { useRouter } from 'vue-router'
+import {ref, defineProps, toRefs} from 'vue'
+import {useRouter} from 'vue-router'
 const router = useRouter()
 const props = defineProps({
 	tag: {
@@ -53,9 +53,9 @@ const props = defineProps({
 	},
 	isActive: Boolean
 })
-const { tag, isActive } = toRefs(props)
+const {tag, isActive} = toRefs(props)
 const toArticle = id => {
-	router.push({ name: 'article', params: { id } })
+	router.push({name: 'article', params: {id}})
 }
 </script>
 

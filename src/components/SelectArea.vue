@@ -36,8 +36,8 @@
 </template>
 
 <script setup>
-import { ref, nextTick, toRefs, defineProps, defineEmits } from 'vue'
-import { ElMessage } from 'element-plus'
+import {ref, nextTick, toRefs, defineProps, defineEmits} from 'vue'
+import {ElMessage} from 'element-plus'
 
 const props = defineProps({
 	styl: {
@@ -57,7 +57,7 @@ const props = defineProps({
 		default: () => []
 	}
 })
-const { items, styl, selectText, addText } = toRefs(props)
+const {items, styl, selectText, addText} = toRefs(props)
 const touchAdd = ref(false)
 const inputValue = ref('')
 const inputRef = ref()
@@ -72,7 +72,7 @@ const handleCancel = () => {
 }
 const handleAdd = () => {
 	if (!inputValue.value) {
-		ElMessage({ message: '内容不能为空', type: 'warning' })
+		ElMessage({message: '内容不能为空', type: 'warning'})
 		touchAdd.value = false
 		inputValue.value = ''
 		return

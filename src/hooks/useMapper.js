@@ -1,12 +1,12 @@
-import { useStore, mapState, mapGetters, mapActions, createNamespacedHelpers } from 'vuex'
-import { computed } from 'vue'
+import {useStore, mapState, mapGetters, mapActions, createNamespacedHelpers} from 'vuex'
+import {computed} from 'vue'
 
 function useStateMapper(mapper, mapFn) {
 	const store = useStore()
 	const storeStateFns = mapFn(mapper)
 	const storeState = {}
 	Object.keys(storeStateFns).forEach(fnKey => {
-		storeState[fnKey] = computed(storeStateFns[fnKey].bind({ $store: store }))
+		storeState[fnKey] = computed(storeStateFns[fnKey].bind({$store: store}))
 	})
 	return storeState
 }
@@ -16,7 +16,7 @@ function useActionMapper(mapper, mapFn) {
 	const storeActionsFns = mapFn(mapper)
 	const storeAction = {}
 	Object.keys(storeActionsFns).forEach(fnKey => {
-		storeAction[fnKey] = storeActionsFns[fnKey].bind({ $store: store })
+		storeAction[fnKey] = storeActionsFns[fnKey].bind({$store: store})
 	})
 	return storeAction
 }

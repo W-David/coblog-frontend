@@ -66,9 +66,9 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import {computed, onMounted, reactive, ref} from 'vue'
+import {useRouter} from 'vue-router'
+import {useStore} from 'vuex'
 
 import useReachBottom from '@/hooks/useReachBottom'
 
@@ -103,11 +103,11 @@ const generateArchiveTitles = articles => {
 	}
 }
 const toArticle = id => {
-	router.push({ name: 'article', params: { id } })
+	router.push({name: 'article', params: {id}})
 }
 const onLoadMore = async () => {
 	isLoadingMore.value = true
-	await getArchive({ ...form, pageNum: form.pageNum + 1 })
+	await getArchive({...form, pageNum: form.pageNum + 1})
 	form.pageNum += 1
 	isLoadingMore.value = false
 }

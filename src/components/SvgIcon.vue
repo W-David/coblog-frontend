@@ -14,8 +14,8 @@
 </template>
 
 <script setup>
-import { isExternal as validIsExternal } from '@/util/validate'
-import { toRefs, computed, defineProps } from 'vue'
+import {isExternal as validIsExternal} from '@/util/validate'
+import {toRefs, computed, defineProps} from 'vue'
 
 const props = defineProps({
 	iconClass: {
@@ -27,7 +27,7 @@ const props = defineProps({
 		default: ''
 	}
 })
-const { iconClass, className } = toRefs(props)
+const {iconClass, className} = toRefs(props)
 const isExternal = computed(() => validIsExternal(iconClass.value))
 const iconName = computed(() => `#icon-${iconClass.value}`)
 const svgClass = computed(() => (className.value ? `svg-icon ${className.value}` : 'svg-icon'))

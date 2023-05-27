@@ -71,21 +71,21 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount, ref, reactive, watch, computed, toRaw, defineProps } from 'vue'
+import {onMounted, onBeforeUnmount, ref, reactive, watch, computed, toRaw, defineProps} from 'vue'
 import BannerUpload from '@/components/FileUpload.vue'
 import SelectArea from '@/components/SelectArea.vue'
 import SelectedList from '@/components/SelectedList.vue'
 import getOssClient from '@/util/alioss'
-import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
-import { ElMessage } from 'element-plus'
-import { mavonEditor as MavonEditor } from 'mavon-editor'
+import {useStore} from 'vuex'
+import {useRouter, useRoute} from 'vue-router'
+import {ElMessage} from 'element-plus'
+import {mavonEditor as MavonEditor} from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 
-import { createArticle, updateArticle } from '@/api/article'
-import { addFile, deleteFile } from '@/api/file'
-import { createTag, listTag } from '@/api/tag'
-import { createCategory, listCategory } from '@/api/category'
+import {createArticle, updateArticle} from '@/api/article'
+import {addFile, deleteFile} from '@/api/file'
+import {createTag, listTag} from '@/api/tag'
+import {createCategory, listCategory} from '@/api/category'
 
 const props = defineProps({
 	id: {
@@ -118,7 +118,7 @@ const isEditMode = computed(() => !!props.id)
 onMounted(() => {
 	if (isEditMode.value) {
 		const article = computed(() => store.getters['article/getArticleById'](+props.id))
-		const { title = '', content = '', banner = {}, description = '', categories = [], tags: tgs = [] } = article.value
+		const {title = '', content = '', banner = {}, description = '', categories = [], tags: tgs = []} = article.value
 
 		blogTitle.value = title
 		blogBannerId.value = (banner && banner.id) || ''
@@ -146,11 +146,11 @@ const uploadImg = async file => {
 	const client = getOssClient(store)
 	const res = await client.put(file.name, file)
 	if (res.res.status === 200 && res.res.statusCode === 200) {
-		ElMessage({ message: '上传成功', type: 'success' })
+		ElMessage({message: '上传成功', type: 'success'})
 		const url = res.url
 		return url
 	} else {
-		ElMessage({ message: '图片上传失败', type: 'error' })
+		ElMessage({message: '图片上传失败', type: 'error'})
 		return ''
 	}
 }
@@ -192,7 +192,7 @@ const handleCateSelect = async () => {
 	list.value = rawList.filter(item => !inCates(item))
 }
 const handleTagAdd = async tagName => {
-	const data = { name: tagName }
+	const data = {name: tagName}
 	const res = await createTag(data)
 	if (res.code !== 200) return
 	const tag = {
@@ -200,10 +200,10 @@ const handleTagAdd = async tagName => {
 		name: res.data.name
 	}
 	tags.value.push(tag)
-	ElMessage({ type: 'success', message: res.msg })
+	ElMessage({type: 'success', message: res.msg})
 }
 const handleCateAdd = async cateName => {
-	const data = { name: cateName }
+	const data = {name: cateName}
 	const res = await createCategory(data)
 	if (res.code !== 200) return
 	const cate = {
@@ -211,7 +211,7 @@ const handleCateAdd = async cateName => {
 		name: res.data.name
 	}
 	cates.value.push(cate)
-	ElMessage({ type: 'success', message: res.msg })
+	ElMessage({type: 'success', message: res.msg})
 }
 watch(showAll, (nv, ov) => {
 	if (!nv && ov) {
@@ -229,7 +229,7 @@ watch(showAll, (nv, ov) => {
 })
 
 const handleUpload = async file => {
-	const { name, size, type } = file
+	const {name, size, type} = file
 	const client = getOssClient(store)
 	const res = await client.put(file.name, file)
 	if (res.res.status === 200 && res.res.statusCode === 200) {
@@ -241,12 +241,12 @@ const handleUpload = async file => {
 			extension: type,
 			path: url
 		}
-		const addRes = await addFile({ ...fileData })
+		const addRes = await addFile({...fileData})
 		if (addRes.code !== 200) return
 		blogBannerId.value = addRes.data.id || ''
-		ElMessage({ message: '头图已成功上传', type: 'success' })
+		ElMessage({message: '头图已成功上传', type: 'success'})
 	} else {
-		ElMessage({ message: '头图上传失败', type: 'error' })
+		ElMessage({message: '头图上传失败', type: 'error'})
 		blogBanner.value = ''
 		return
 	}
@@ -259,7 +259,7 @@ const handleDelete = async () => {
 	blogBannerId.value = ''
 	const deleteRes = await deleteFile(bannerId)
 	if (deleteRes.code !== 200) return
-	ElMessage({ message: '头图已删除', type: 'success' })
+	ElMessage({message: '头图已删除', type: 'success'})
 }
 
 const submitBlog = async () => {
@@ -277,11 +277,11 @@ const submitBlog = async () => {
 		categoryIds,
 		tagIds
 	}
-	const articleRes = isEditMode.value ? await updateArticle({ ...blog, id: +props.id }) : await createArticle(blog)
+	const articleRes = isEditMode.value ? await updateArticle({...blog, id: +props.id}) : await createArticle(blog)
 	if (articleRes.code !== 200) return
 	store.commit('article/SET_ARTICLE', articleRes.data)
-	router.push({ name: 'home' })
-	ElMessage({ message: `已保存 • ${title}`, type: 'success' })
+	router.push({name: 'home'})
+	ElMessage({message: `已保存 • ${title}`, type: 'success'})
 }
 </script>
 

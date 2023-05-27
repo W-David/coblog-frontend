@@ -1,4 +1,4 @@
-import { getSTS } from '@/api/alioss'
+import {getSTS} from '@/api/alioss'
 
 const alioss = {
 	namespaced: true,
@@ -11,7 +11,7 @@ const alioss = {
 		}
 	},
 	actions: {
-		async FetchSTS({ commit }) {
+		async FetchSTS({commit}) {
 			const res = await getSTS()
 			const stsObj = res.data || {}
 			commit('SET_STS', stsObj)

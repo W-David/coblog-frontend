@@ -37,9 +37,9 @@
 <script setup>
 import particlesJs from '@/util/particles'
 
-import { onMounted, reactive, ref, computed, watch, defineProps, toRefs } from 'vue'
-import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
+import {onMounted, reactive, ref, computed, watch, defineProps, toRefs} from 'vue'
+import {useRoute} from 'vue-router'
+import {useStore} from 'vuex'
 
 import MainLeftSidebar from './LeftSidebar.vue'
 import MainRightSidebar from './RightSidebar.vue'

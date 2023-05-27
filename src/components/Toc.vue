@@ -16,9 +16,9 @@
 
 <script setup>
 import TocItem from './TocItem.vue'
-import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import {ref, computed, onMounted} from 'vue'
+import {useStore} from 'vuex'
+import {useRoute} from 'vue-router'
 import useScroll from '@/hooks/useScroll'
 
 const store = useStore()
@@ -41,7 +41,7 @@ const onScroll = offset => {
 		}
 	})
 }
-useScroll({ onScroll, delay: 100 })
+useScroll({onScroll, delay: 100})
 </script>
 
 <style lang="scss" scoped>

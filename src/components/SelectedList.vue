@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref, toRefs, watch, defineEmits, defineProps } from 'vue'
+import {ref, toRefs, watch, defineEmits, defineProps} from 'vue'
 const props = defineProps({
 	loading: {
 		type: Boolean,
@@ -37,7 +37,7 @@ const props = defineProps({
 		required: true
 	}
 })
-const { loading, isShow, list, checkedArr } = toRefs(props)
+const {loading, isShow, list, checkedArr} = toRefs(props)
 const emit = defineEmits(['update:checkedArr'])
 const checkedList = ref([])
 

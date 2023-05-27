@@ -1,5 +1,5 @@
-import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
-import { getYPosition } from '@/util/scroll-to'
+import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
+import {getYPosition} from '@/util/scroll-to'
 import controller from './controller'
 
 const Layout = () => import(/* webpackChunkName: "Layout" */ '@/layout/index')
@@ -78,7 +78,7 @@ const router = controller(
 			}
 			await new Promise(res => setTimeout(res, 500))
 			if (savedPosition) {
-				return { top: savedPosition.top, behavior: 'smooth' }
+				return {top: savedPosition.top, behavior: 'smooth'}
 			} else {
 				const routeName = to.name
 				const routeElMap = {
@@ -91,7 +91,7 @@ const router = controller(
 					category: '.category-page'
 				}
 				const top = getYPosition(document.querySelector(routeElMap[routeName])) - 80
-				return { top, behavior: 'smooth' }
+				return {top, behavior: 'smooth'}
 			}
 		},
 		routes

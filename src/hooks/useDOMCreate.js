@@ -1,4 +1,4 @@
-import { onUnmounted } from 'vue'
+import {onUnmounted} from 'vue'
 
 const useDOMCreate = id => {
 	const rootNode = document.createElement('div')

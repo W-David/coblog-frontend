@@ -98,10 +98,10 @@
 <script setup>
 import AvatarUpload from '@/components/FileUpload.vue'
 import useDOMCreate from '@/hooks/useDOMCreate'
-import { ElMessage } from 'element-plus'
-import { computed, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import {ElMessage} from 'element-plus'
+import {computed, reactive, ref} from 'vue'
+import {useRouter} from 'vue-router'
+import {useStore} from 'vuex'
 
 useDOMCreate('rootAdminInfo')
 const router = useRouter()
@@ -122,7 +122,7 @@ const isEN = ref(false)
 const isEE = ref(false)
 
 const toBlog = () => {
-	router.push({ name: 'blog' })
+	router.push({name: 'blog'})
 }
 const toAdminInfo = () => {
 	openAdminInfo.value = true
@@ -135,7 +135,7 @@ const tapAvatar = () => {
 }
 const logout = async () => {
 	await store.dispatch('admin/Logout')
-	router.push({ name: 'login' })
+	router.push({name: 'login'})
 }
 const handleCancel = () => {
 	openAdminInfo.value = false
@@ -149,7 +149,7 @@ const handleUpdate = async () => {
 	})
 }
 const handleUpload = async file => {
-	const isSuccess = await store.dispatch('admin/SetAvatar', { store, file })
+	const isSuccess = await store.dispatch('admin/SetAvatar', {store, file})
 	ElMessage({
 		message: isSuccess ? '头像上传成功' : '上传失败',
 		type: isSuccess ? 'success' : 'error'

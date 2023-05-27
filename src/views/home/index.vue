@@ -20,8 +20,8 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, computed } from 'vue'
-import { useStore } from 'vuex'
+import {onMounted, reactive, ref, computed} from 'vue'
+import {useStore} from 'vuex'
 import ArticleCard from '@/components/ArticleCard.vue'
 
 const store = useStore()

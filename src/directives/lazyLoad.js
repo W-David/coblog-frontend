@@ -32,7 +32,7 @@ function scrollEvent(el) {
 
 function loadImg(el) {
 	const clientHeight = getClientHeight()
-	const { top, bottom } = el.getBoundingClientRect()
+	const {top, bottom} = el.getBoundingClientRect()
 	const realSrc = el.$data_src
 	top < clientHeight && bottom > 0 && realSrc && (el.src = realSrc)
 }

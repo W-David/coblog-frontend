@@ -19,10 +19,10 @@ const app = {
 		}
 	},
 	actions: {
-		ToggleDeviceSize({ commit }, deviceSize) {
+		ToggleDeviceSize({commit}, deviceSize) {
 			commit('TOGGLE_DEVICE_SIZE', deviceSize)
 		},
-		ToggleSidebar({ commit }, open) {
+		ToggleSidebar({commit}, open) {
 			commit('TOGGLE_SIDEBAR', open)
 		}
 	}

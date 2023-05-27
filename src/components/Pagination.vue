@@ -14,8 +14,8 @@
 </template>
 
 <script setup>
-import { computed, defineProps, defineEmits, toRefs } from 'vue'
-import { scrollTo } from '@/util/scroll-to'
+import {computed, defineProps, defineEmits, toRefs} from 'vue'
+import {scrollTo} from '@/util/scroll-to'
 
 const props = defineProps({
 	total: {
@@ -43,7 +43,7 @@ const props = defineProps({
 		default: true
 	}
 })
-const { total, page, limit, layout, background, autoScroll } = toRefs(props)
+const {total, page, limit, layout, background, autoScroll} = toRefs(props)
 const emit = defineEmits('update:page', 'update:limit', 'pagination')
 const currentPage = computed({
 	get: () => props.page,
@@ -54,13 +54,13 @@ const pageSize = computed({
 	set: val => emit('update:limit', val)
 })
 const handleSizeChange = val => {
-	emit('pagination', { page: currentPage, limit: val })
+	emit('pagination', {page: currentPage, limit: val})
 	if (props.autoScroll) {
 		scrollTo(0, 660)
 	}
 }
 const handleCurrentChange = val => {
-	emit('pagination', { page: val, limit: pageSize })
+	emit('pagination', {page: val, limit: pageSize})
 	if (props.autoScroll) {
 		scrollTo(0, 660)
 	}

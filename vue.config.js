@@ -6,7 +6,7 @@ const path = require('path')
 const CompressionPlugin = require('compression-webpack-plugin')
 // const Icons = require('unplugin-icons/webpack')
 
-const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
+const {ElementPlusResolver} = require('unplugin-vue-components/resolvers')
 // const IconsResolver = require('unplugin-icons/resolver')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 

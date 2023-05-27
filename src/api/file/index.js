@@ -1,4 +1,4 @@
-import { POST, GET, DELETE } from '@/util/http'
+import {POST, GET, DELETE} from '@/util/http'
 
 export function uploadFile(data) {
 	return POST({

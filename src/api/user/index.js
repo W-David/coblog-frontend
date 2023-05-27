@@ -1,4 +1,4 @@
-import { GET, POST, PUT, DELETE } from '@/util/http'
+import {GET, POST, PUT, DELETE} from '@/util/http'
 
 export function login(data) {
 	return POST({

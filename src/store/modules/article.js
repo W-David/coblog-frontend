@@ -1,15 +1,6 @@
-import {
-	deleteArticle,
-	detailArticle,
-	favoriteArticle,
-	listArchive,
-	listArticle,
-	listByFavoArticle,
-	listByTimeArticle,
-	noAuthDetailArticle
-} from '@/api/article'
-import { articles2Archive, concatArchive } from '@/util/format'
-import { cloneLoop } from '@jsmini/clone'
+import {deleteArticle, detailArticle, favoriteArticle, listArchive, listArticle, listByFavoArticle, listByTimeArticle, noAuthDetailArticle} from '@/api/article'
+import {articles2Archive, concatArchive} from '@/util/format'
+import {cloneLoop} from '@jsmini/clone'
 
 const article = {
 	namespaced: true,
@@ -67,31 +58,31 @@ const article = {
 		}
 	},
 	actions: {
-		async GetArticles({ state, commit }, data) {
+		async GetArticles({state, commit}, data) {
 			const res = await listArticle(data)
 			const articles = res.data.rows || []
 			const total = res.data.count || 0
 			commit('SET_ARTICLES', articles)
 			return [articles, total]
 		},
-		async GetArticlesRecent({ state, commit }, data) {
+		async GetArticlesRecent({state, commit}, data) {
 			const res = await listByTimeArticle(data)
 			const articles = res.data || []
 			commit('CLEAR_ARTICLES_RECENT')
 			commit('SET_ARTICLES_RECENT', articles)
 			return articles
 		},
-		async GetArticlesHot({ state, commit }, data) {
+		async GetArticlesHot({state, commit}, data) {
 			const res = await listByFavoArticle(data)
 			const articles = res.data || []
 			commit('CLEAR_ARTICLES_HOT')
 			commit('SET_ARTICLES_HOT', articles)
 			return articles
 		},
-		async FavoriteArticle({ state, commit }, data) {
+		async FavoriteArticle({state, commit}, data) {
 			return favoriteArticle(data)
 		},
-		async GetArticleArchive({ state, commit }, data) {
+		async GetArticleArchive({state, commit}, data) {
 			const res = await listArchive(data)
 			const rawArchive = res.data.rows || []
 			const total = res.data.count || 0
@@ -104,14 +95,14 @@ const article = {
 			}
 			return [articleArchive, total]
 		},
-		async GetArticle({ state, commit, rootGetters }, articleId) {
+		async GetArticle({state, commit, rootGetters}, articleId) {
 			const isAdminLogin = rootGetters.isAdminLogin
 			const res = isAdminLogin ? await detailArticle(articleId) : await noAuthDetailArticle(articleId)
 			const article = res.data || null
 			commit('SET_ARTICLE', article)
 			return article
 		},
-		async DelArticle({ state, commit }, articleId) {
+		async DelArticle({state, commit}, articleId) {
 			const res = await deleteArticle(articleId)
 			const article = res.data || null
 			commit('DEL_ARTICLE', article.id)

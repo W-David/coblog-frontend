@@ -110,15 +110,15 @@
 </template>
 
 <script setup>
-import { defineProps, reactive, ref, toRef, toRefs, computed, onMounted, onUnmounted } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
+import {defineProps, reactive, ref, toRef, toRefs, computed, onMounted, onUnmounted} from 'vue'
+import {useStore} from 'vuex'
+import {useRouter, useRoute} from 'vue-router'
 import User from '@/components/User.vue'
 import Admin from '@/components/Admin.vue'
 import Search from '@/components/Search.vue'
 import SwitchDark from '@/components/SwitchDark.vue'
-import { getUserType } from '@/util/auth'
-import { useDark } from '@vueuse/core'
+import {getUserType} from '@/util/auth'
+import {useDark} from '@vueuse/core'
 
 const props = defineProps({
 	activePage: {
@@ -130,7 +130,7 @@ const props = defineProps({
 		required: true
 	}
 })
-const { activePage, menuList } = toRefs(props)
+const {activePage, menuList} = toRefs(props)
 const userType = getUserType()
 const store = useStore()
 const router = useRouter()
@@ -140,7 +140,7 @@ const setSidebarOpen = open => store.dispatch('app/ToggleSidebar', open)
 const menuRef = ref()
 
 const toHome = () => {
-	router.push({ name: 'home' })
+	router.push({name: 'home'})
 }
 
 const isAdminLogin = computed(() => store.getters.isAdminLogin)
@@ -158,16 +158,16 @@ const handleLogout = async () => {
 	handleChange()
 	if (userType === 'user') {
 		store.commit('user/LOGOUT')
-		router.push({ name: 'login' })
+		router.push({name: 'login'})
 	} else if (userType === 'admin') {
 		store.commit('admin/LOGOUT')
-		router.push({ name: 'login' })
+		router.push({name: 'login'})
 	} else {
-		router.push({ name: 'login' })
+		router.push({name: 'login'})
 	}
 }
 const toLogin = () => {
-	router.push({ name: 'login' })
+	router.push({name: 'login'})
 }
 </script>
 

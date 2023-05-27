@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { defineEmits } from 'vue'
+import {defineEmits} from 'vue'
 
 const emit = defineEmits(['on-load-more'])
 const loadMore = () => emit('on-load-more')

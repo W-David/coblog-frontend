@@ -1,6 +1,6 @@
 import store from '@/store'
-import { onBeforeMount, onBeforeUnmount, onMounted } from 'vue'
-import { device } from 'device.js'
+import {onBeforeMount, onBeforeUnmount, onMounted} from 'vue'
+import {device} from 'device.js'
 
 const useDevice = () => {
 	onMounted(() => $_get_device())
